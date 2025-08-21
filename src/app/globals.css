@@ -75,8 +75,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-roboto);
+  --font-mono: var(--font-roboto);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -89,5 +89,32 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-roboto), Arial, Helvetica, sans-serif;
+}
+
+/* Typography - Orbitron for headers, Roboto for everything else */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-orbitron), Arial, Helvetica, sans-serif;
+  font-weight: 700;
+}
+
+/* Ensure all other text uses Roboto */
+p,
+span,
+div,
+a,
+button,
+input,
+textarea,
+select,
+label,
+li,
+td,
+th {
+  font-family: var(--font-roboto), Arial, Helvetica, sans-serif;
 }
