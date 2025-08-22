@@ -26,9 +26,9 @@ export default function Home() {
                 </h2>
                 <p className="text-lg graphite dark:text-light-gray leading-relaxed">
                   Discover the power of atomic innovation and sustainable energy
-                  solutions. We're pioneering the next generation of nuclear
-                  technology to create a cleaner, more efficient world for
-                  future generations.
+                  solutions. We&apos;re pioneering the next generation of
+                  nuclear technology to create a cleaner, more efficient world
+                  for future generations.
                 </p>
               </div>
               <div className="bg-white dark:bg-dark-steel p-8 rounded-lg shadow-lg border border-cherenkov/20 dark:border-cherenkov/30">
@@ -73,8 +73,8 @@ export default function Home() {
                 <p className="text-lg graphite dark:text-light-gray leading-relaxed">
                   Our cutting-edge nuclear fusion technology represents a
                   breakthrough in sustainable energy production. With zero
-                  carbon emissions and virtually unlimited fuel supply, we're
-                  redefining what's possible.
+                  carbon emissions and virtually unlimited fuel supply,
+                  we&apos;re redefining what&apos;s possible.
                 </p>
               </div>
             </div>
@@ -160,8 +160,8 @@ export default function Home() {
                   Get in Touch
                 </h2>
                 <p className="text-lg graphite dark:text-light-gray leading-relaxed">
-                  Ready to be part of the energy revolution? We'd love to hear
-                  from you. Whether you're interested in partnerships,
+                  Ready to be part of the energy revolution? We&apos;d love to
+                  hear from you. Whether you&apos;re interested in partnerships,
                   investments, or just want to learn more, our team is here to
                   help.
                 </p>
