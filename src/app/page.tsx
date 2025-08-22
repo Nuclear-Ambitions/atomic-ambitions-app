@@ -21,7 +21,7 @@ export default function Home() {
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
                 <h2 className="text-4xl font-bold graphite dark:text-light-gray mb-6">
-                  Welcome to the Future
+                  Welcome to the Atomic Future
                 </h2>
                 <p className="text-lg graphite dark:text-light-gray leading-relaxed">
                   Discover the power of atomic innovation and sustainable energy

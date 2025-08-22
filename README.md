@@ -30,4 +30,10 @@ To learn more about Next.js, take a look at the following resources:
 
 We are hosting as a Cloudflare Worker, which is preferred over Pages.
 
-More to come once the first version is deployed.
+This works from my laptop.
+
+```bash
+npm run deploy
+```
+
+Still trying to get auto-builds to work.
