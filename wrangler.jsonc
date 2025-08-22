@@ -1,0 +1,8 @@
+{
+  "name": "aa-app",
+  // "main": "src/app/page.tsx",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2025-08-21",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": { "directory": ".open-next/assets", "binding": "ASSETS" }
+}
