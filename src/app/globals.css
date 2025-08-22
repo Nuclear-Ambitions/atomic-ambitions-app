@@ -12,6 +12,14 @@
   --color-graphite-light: #f5f5f6;
   --color-uranium-light: #fefef8;
   --color-cooling-tower-light: #f4f5f7;
+
+  /* Dark theme colors */
+  --color-dark-graphite: #1a1a1a;
+  --color-dark-blue: #0f1419;
+  --color-dark-steel: #2d3748;
+  --color-dark-charcoal: #1e293b;
+  --color-light-gray: #e2e8f0;
+  --color-white: #ffffff;
 }
 
 /* Custom utility classes for nuclear theme */
@@ -55,6 +63,49 @@
   background-color: var(--color-cooling-tower-light);
 }
 
+/* Dark theme utility classes */
+.dark-graphite {
+  color: var(--color-dark-graphite);
+}
+.bg-dark-graphite {
+  background-color: var(--color-dark-graphite);
+}
+
+.dark-blue {
+  color: var(--color-dark-blue);
+}
+.bg-dark-blue {
+  background-color: var(--color-dark-blue);
+}
+
+.dark-steel {
+  color: var(--color-dark-steel);
+}
+.bg-dark-steel {
+  background-color: var(--color-dark-steel);
+}
+
+.dark-charcoal {
+  color: var(--color-dark-charcoal);
+}
+.bg-dark-charcoal {
+  background-color: var(--color-dark-charcoal);
+}
+
+.light-gray {
+  color: var(--color-light-gray);
+}
+.bg-light-gray {
+  background-color: var(--color-light-gray);
+}
+
+.white {
+  color: var(--color-white);
+}
+.bg-white {
+  background-color: var(--color-white);
+}
+
 /* Gradient utilities */
 .bg-gradient-nuclear {
   background: linear-gradient(
@@ -77,6 +128,80 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-roboto);
   --font-mono: var(--font-roboto);
+}
+
+/* Dark theme styles */
+.dark {
+  --background: var(--color-dark-graphite);
+  --foreground: var(--color-uranium);
+}
+
+/* Dark theme overrides */
+.dark body {
+  background: var(--color-dark-graphite);
+  color: var(--color-uranium);
+}
+
+.dark .bg-cherenkov-light {
+  background-color: var(--color-dark-blue);
+}
+
+.dark .bg-uranium-light {
+  background-color: var(--color-dark-steel);
+}
+
+.dark .bg-cooling-tower-light {
+  background-color: var(--color-dark-charcoal);
+}
+
+.dark .bg-graphite-light {
+  background-color: var(--color-dark-graphite);
+}
+
+.dark .bg-white {
+  background-color: var(--color-dark-steel);
+}
+
+.dark .graphite {
+  color: var(--color-light-gray);
+}
+
+.dark .uranium {
+  color: var(--color-uranium);
+}
+
+.dark .white {
+  color: var(--color-white);
+}
+
+.dark .light-gray {
+  color: var(--color-light-gray);
+}
+
+/* Dark theme form elements */
+.dark input,
+.dark textarea,
+.dark select {
+  background-color: var(--color-dark-charcoal);
+  border-color: var(--color-dark-steel);
+  color: var(--color-light-gray);
+}
+
+.dark input:focus,
+.dark textarea:focus,
+.dark select:focus {
+  border-color: var(--color-cherenkov);
+  ring-color: var(--color-cherenkov);
+}
+
+/* Dark theme buttons - keep cherenkov for highlights */
+.dark .bg-graphite {
+  background-color: var(--color-cherenkov);
+}
+
+.dark .bg-graphite:hover {
+  background-color: var(--color-cherenkov);
+  opacity: 0.9;
 }
 
 @media (prefers-color-scheme: dark) {
