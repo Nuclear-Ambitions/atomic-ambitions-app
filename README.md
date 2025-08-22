@@ -30,10 +30,16 @@ To learn more about Next.js, take a look at the following resources:
 
 We are hosting as a Cloudflare Worker, which is preferred over Pages.
 
+### Auto-deployment
+
+Auto-deployment is enabled for the `staging` branch, which is our "production" branch at the moment. Subject to change once we release v1.0.
+
+Non-production branches are ignored by Cloudflare.
+
+### Deploying from local machine
+
 This works from my laptop.
 
 ```bash
 npm run deploy
 ```
-
-Still trying to get auto-builds to work.
