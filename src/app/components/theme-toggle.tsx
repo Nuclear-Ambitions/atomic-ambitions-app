@@ -2,13 +2,26 @@
 
 import { useTheme } from "../theme-context";
 
-export function ThemeToggle() {
+interface ThemeToggleProps {
+  variant?: "fixed" | "inline";
+  className?: string;
+}
+
+export function ThemeToggle({
+  variant = "fixed",
+  className = "",
+}: ThemeToggleProps) {
   const { theme, toggleTheme } = useTheme();
+
+  const baseClasses =
+    "p-3 rounded-full bg-cherenkov/20 backdrop-blur-sm border border-cherenkov/30 hover:bg-cherenkov/30 transition-all duration-300 group";
+  const variantClasses =
+    variant === "fixed" ? "fixed top-6 right-6 z-50" : "inline-flex";
 
   return (
     <button
       onClick={toggleTheme}
-      className="fixed top-6 right-6 z-50 p-3 rounded-full bg-cherenkov/20 backdrop-blur-sm border border-cherenkov/30 hover:bg-cherenkov/30 transition-all duration-300 group"
+      className={`${baseClasses} ${variantClasses} ${className}`}
       aria-label={`Switch to ${theme === "light" ? "dark" : "light"} theme`}>
       {theme === "light" ? (
         // Moon icon for dark mode
