@@ -9,12 +9,13 @@
   --color-cherenkov: #20c8fb;
   --color-graphite: #454749;
   --color-uranium: #fefadc;
+  --color-rust: #e46918;
   --color-cooling-tower: #8c92ac;
 
   /* Light variants for backgrounds */
   --color-cherenkov-light: #e6f7fe;
   --color-graphite-light: #f5f5f6;
-  --color-uranium-light: #fefef8;
+  --color-uranium-light: #f4ec59;
   --color-cooling-tower-light: #f4f5f7;
 
   /* Dark theme colors */
@@ -140,17 +141,17 @@
   --color-graphite: #454749;
   --color-uranium: #fefadc;
   --color-cooling-tower: #8c92ac;
-  --color-rust: #e74c3c;
+  --color-rust: #e46918;
 
   /* Light variants */
   --color-cherenkov-light: #e6f7fe;
   --color-graphite-light: #f5f5f6;
-  --color-uranium-light: #f2e744;
+  --color-uranium-light: #fefef8;
   --color-cooling-tower-light: #f4f5f7;
 
   /* Dark theme colors */
   --color-dark-graphite: #1a1a1a;
-  --color-dark-blue: #0f1419;
+  --color-dark-blue: #0f14f9;
   --color-dark-steel: #2d3748;
   --color-dark-charcoal: #1e293b;
   --color-light-gray: #e2e8f0;
@@ -165,15 +166,6 @@
   /* Override Tailwind color variables for dark mode */
   --color-background: var(--color-dark-graphite);
   --color-foreground: var(--color-uranium);
-
-  /* Override custom colors for dark mode */
-  --color-graphite: var(--color-light-gray);
-  --color-uranium: var(--color-uranium);
-  --color-cherenkov-light: var(--color-dark-blue);
-  --color-uranium-light: var(--color-dark-steel);
-  --color-cooling-tower-light: var(--color-dark-charcoal);
-  --color-graphite-light: var(--color-dark-graphite);
-  --color-white: var(--color-dark-steel);
 }
 
 /* Dark theme overrides */
@@ -182,12 +174,16 @@
   color: var(--color-uranium);
 }
 
+.dark .bg-cherenkov {
+  background-color: var(--color-cherenkov);
+}
+
 .dark .bg-cherenkov-light {
-  background-color: var(--color-dark-blue);
+  background-color: var(--color-cherenkov);
 }
 
 .dark .bg-uranium-light {
-  background-color: var(--color-dark-steel);
+  background-color: var(--color-uranium-light);
 }
 
 .dark .bg-cooling-tower-light {
@@ -234,13 +230,13 @@
   box-shadow: 0 0 0 2px var(--color-cherenkov);
 }
 
-/* Dark theme buttons - keep cherenkov for highlights */
+/* Dark theme buttons - keep graphite as graphite */
 .dark .bg-graphite {
-  background-color: var(--color-cherenkov);
+  background-color: var(--color-graphite);
 }
 
 .dark .bg-graphite:hover {
-  background-color: var(--color-cherenkov);
+  background-color: var(--color-graphite);
   opacity: 0.9;
 }
 

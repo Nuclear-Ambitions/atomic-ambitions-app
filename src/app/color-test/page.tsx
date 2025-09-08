@@ -41,13 +41,13 @@ export default function ColorTestPage() {
               </p>
             </div>
             <div className="space-y-4">
-              <div className="p-4 bg-cherenkov-light dark:bg-dark-blue rounded-lg">
-                <p className="text-sm graphite dark:text-light-gray">
+              <div className="p-4 bg-cherenkov-light rounded-lg">
+                <p className="text-sm text-graphite dark:text-light-gray">
                   This is text inside a Cherenkov light background container.
                 </p>
               </div>
               <div className="p-4 bg-uranium-light dark:bg-dark-steel rounded-lg">
-                <p className="text-sm graphite dark:text-light-gray">
+                <p className="text-sm dark:text-graphite">
                   This is text inside a Uranium light background container.
                 </p>
               </div>
@@ -77,10 +77,10 @@ export default function ColorTestPage() {
             <button className="px-6 py-3 bg-gradient-nuclear text-white rounded-lg hover:opacity-90 transition-opacity font-medium">
               Gradient Button
             </button>
-            <button className="px-6 py-3 bg-uranium text-graphite rounded-lg hover:bg-uranium/90 transition-colors font-medium">
+            <button className="px-6 py-3 bg-uranium-light text-graphite rounded-lg hover:bg-uranium/90 transition-colors font-medium">
               Light Button
             </button>
-            <button className="px-6 py-3 bg-cooling-tower text-white rounded-lg hover:bg-cooling-tower/90 transition-colors font-medium">
+            <button className="px-6 py-3 bg-rust text-white rounded-lg hover:bg-cooling-tower/90 transition-colors font-medium">
               Accent Button
             </button>
             <button className="px-6 py-3 bg-dark-steel text-light-gray rounded-lg hover:bg-dark-steel/90 transition-colors font-medium">
@@ -129,7 +129,7 @@ export default function ColorTestPage() {
                 that should be clearly visible and interactive.
               </p>
               <p>
-                Here's another{" "}
+                Here&apos;s another{" "}
                 <a
                   href="#"
                   className="text-graphite hover:text-graphite/80 underline transition-colors">
