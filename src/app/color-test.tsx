@@ -4,7 +4,7 @@ import { ThemeToggle } from "./components/theme-toggle";
 
 export default function ColorTestPage() {
   return (
-    <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
+    <div className="min-h-screen bg-white dark:bg-dark-graphite text-graphite dark:text-uranium transition-colors duration-300">
       {/* Header with theme toggle */}
       <header className="sticky top-0 z-40 w-full border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-dark-graphite/80 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
