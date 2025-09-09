@@ -19,7 +19,7 @@ export default function ColorTestPage() {
           <h2 className="text-3xl font-bold cherenkov">Typography</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
-              <h1 className="text-4xl font-bold graphite">
+              <h1 className="text-4xl font-bold primary">
                 Heading 1 - Graphite
               </h1>
               <h2 className="text-3xl font-bold cherenkov">
