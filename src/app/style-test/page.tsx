@@ -8,7 +8,7 @@ export default function ColorTestPage() {
       {/* Header with theme toggle */}
       <header className="sticky top-0 z-40 w-full border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-dark-graphite/80 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold cherenkov">Color Test Page</h1>
+          <h1 className="text-2xl font-bold cherenkov">Style Test Page</h1>
           <ThemeToggle />
         </div>
       </header>
@@ -65,13 +65,13 @@ export default function ColorTestPage() {
         <section className="space-y-6">
           <h2 className="text-3xl font-bold cherenkov">Buttons</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <button className="px-6 py-3 bg-cherenkov text-white rounded-lg hover:bg-cherenkov/90 transition-colors font-medium">
+            <button className="px-6 py-3 bg-primary rounded-lg hover:bg-cherenkov/90 transition-colors font-medium">
               Primary Button
             </button>
-            <button className="px-6 py-3 bg-graphite text-white rounded-lg hover:bg-graphite/90 transition-colors font-medium">
+            <button className="px-6 py-3 bg-secondary text-white rounded-lg hover:bg-graphite/90 transition-colors font-medium">
               Secondary Button
             </button>
-            <button className="px-6 py-3 border-2 border-cherenkov text-cherenkov rounded-lg hover:bg-cherenkov hover:text-white transition-colors font-medium">
+            <button className="px-6 py-3 border-2 border-highlight text-cherenkov rounded-lg hover:bg-cherenkov hover:text-white transition-colors font-medium">
               Outline Button
             </button>
             <button className="px-6 py-3 bg-gradient-nuclear text-white rounded-lg hover:opacity-90 transition-opacity font-medium">
