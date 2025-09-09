@@ -228,7 +228,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="bg-foreground text-primary-foreground py-8">
         <div className="container mx-auto text-center">
-          <p className="text-lg">©2025 Atomic Ambitions LLC</p>
+          <p className="text-lg">©2025 Nuclear Ambitions LLC</p>
         </div>
       </footer>
     </div>

@@ -44,8 +44,8 @@
   --info-foreground: #ffffff;
 
   /* Surface colors */
-  --card: #ffffff;
-  --card-foreground: #0f172a;
+  --card: var(--color-uranium);
+  --card-foreground: var(--color-dark-charcoal);
   --popover: #ffffff;
   --popover-foreground: #0f172a;
 
@@ -85,8 +85,8 @@
   --info-foreground: #0f172a;
 
   /* Surface colors */
-  --card: #ffffff;
-  --card-foreground: var(--color-dark-charcoal);
+  --card: var(--color-dark-steel);
+  --card-foreground: var(--color-uranium-alt);
   --popover: #1e293b;
   --popover-foreground: #f8fafc;
 

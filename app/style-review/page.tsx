@@ -285,10 +285,8 @@ export default function StyleReview() {
           </h2>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            <div className="bg-card border border-border rounded-lg p-6">
-              <h3 className="text-xl font-semibold text-card-foreground mb-2">
-                Basic Card
-              </h3>
+            <div className="card border border-border rounded-lg p-6">
+              <h3 className="text-xl font-semibold mb-2">Basic Card</h3>
               <p className="text-muted-foreground mb-4">
                 This is a basic card component with default styling.
               </p>
