@@ -27,18 +27,18 @@
   --primary: #3b82f6;
   --primary-foreground: var(--color-uranium);
   --secondary: var(--color-uranium-alt);
-  --secondary-foreground: var(--color-uranium-alt);
+  --secondary-foreground: var(--color-graphite);
   --accent: var(--color-rusty);
   --accent-foreground: #ffffff;
   --highlight: var(--color-cherenkov);
-  --highlight-foreground: #ffffff;
+  --highlight-background: #ffffff;
 
   /* Status colors */
   --success: #10b981;
   --success-foreground: #ffffff;
   --warning: #f59e0b;
   --warning-foreground: #ffffff;
-  --error: #ef4444;
+  --error: #d80e0e;
   --error-foreground: #ffffff;
   --info: #06b6d4;
   --info-foreground: #ffffff;
@@ -72,14 +72,14 @@
   --accent: var(--color-rusty);
   --accent-foreground: #0f172a;
   --highlight: var(--color-cherenkov);
-  --highlight-foreground: #ffffff;
+  --highlight-background: #000000;
 
   /* Status colors */
   --success: #34d399;
   --success-foreground: #0f172a;
-  --warning: #fbbf24;
+  --warning: #f59e0b;
   --warning-foreground: #0f172a;
-  --error: #f87171;
+  --error: #d80e0e;
   --error-foreground: #0f172a;
   --info: #22d3ee;
   --info-foreground: #0f172a;
@@ -111,7 +111,7 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-highlight: var(--highlight);
-  --color-highlight-foreground: var(--highlight-foreground);
+  --color-highlight-background: var(--highlight-background);
 
   /* Status colors */
   --color-success: var(--success);
@@ -275,12 +275,16 @@ code {
   @apply border border-border text-foreground hover:bg-muted;
 }
 
+.btn-outline-highlight {
+  @apply border border-highlight text-highlight bg-highlight-background hover:bg-muted;
+}
+
 .btn-ghost {
-  @apply text-primary hover:bg-muted;
+  @apply text-primary hover:bg-muted-foreground;
 }
 
 .card {
-  @apply bg-card border border-border rounded-lg p-6;
+  @apply bg-card border border-border text-card-foreground rounded-lg p-6;
 }
 
 .input {

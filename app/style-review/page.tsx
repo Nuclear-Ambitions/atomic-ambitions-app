@@ -64,7 +64,7 @@ export default function StyleReview() {
                   <code className="text-sm bg-muted px-2 py-1 rounded text-foreground">
                     inline code
                   </code>
-                  <pre className="text-sm card p-4 my-1 rounded overflow-x-auto">
+                  <pre className="text-sm card p-4 my-1 overflow-x-auto">
                     {`function example() {
   return "Hello World";
 }`}
@@ -250,12 +250,9 @@ export default function StyleReview() {
                 <button className="px-4 py-2 bg-accent text-accent-foreground rounded-lg font-medium hover:opacity-80 transition-opacity">
                   Accent
                 </button>
-                <button className="px-4 py-2 border border-border text-foreground rounded-lg font-medium hover:bg-muted transition-colors">
-                  Outline
-                </button>
-                <button className="px-4 py-2 text-primary rounded-lg font-medium hover:bg-muted transition-colors">
-                  Ghost
-                </button>
+                <button className="btn btn-outline">Outline</button>
+                <button className="btn btn-outline-highlight">Highlight</button>
+                <button className="btn btn-ghost">Ghost</button>
               </div>
             </div>
 
