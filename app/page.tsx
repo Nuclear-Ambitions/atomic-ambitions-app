@@ -1,11 +1,76 @@
 import { ThemeToggle } from "./components/theme-toggle";
+import Image from "next/image";
+
+// Reusable Join Form Component
+function JoinForm({
+  title = "Join Us",
+  className = "",
+}: {
+  title?: string;
+  className?: string;
+}) {
+  return (
+    <div className={`card max-w-md mx-auto ${className}`}>
+      <h3 className="text-xl font-semibold text-primary mb-4">{title}</h3>
+      <form className="space-y-4">
+        <input type="email" placeholder="Enter your email" className="input" />
+        <button type="submit" className="btn btn-primary w-full">
+          Subscribe
+        </button>
+      </form>
+    </div>
+  );
+}
+
+// Feature Card Component
+function FeatureCard({
+  title,
+  description,
+  icon,
+}: {
+  title: string;
+  description: string;
+  icon: string;
+}) {
+  return (
+    <div className="card hover:shadow-lg transition-shadow">
+      <div className="text-center">
+        <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+          <span className="text-2xl">{icon}</span>
+        </div>
+        <h3 className="text-xl font-semibold text-primary mb-3">{title}</h3>
+        <p className="text-muted-foreground">{description}</p>
+      </div>
+    </div>
+  );
+}
+
+// Benefit Item Component
+function BenefitItem({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="flex items-start space-x-3">
+      <div className="w-3 h-3 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+      <div>
+        <h4 className="font-semibold text-foreground">{title}</h4>
+        <p className="text-muted-foreground">{description}</p>
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       <ThemeToggle />
+
       {/* Header */}
-      <header className="py-8 bg-gradient-nuclear text-white">
+      <header className="py-8 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground">
         <div className="container mx-auto text-center">
           <h1 className="text-4xl md:text-7xl font-bold tracking-wider">
             Atomic Ambitions
@@ -15,155 +80,145 @@ export default function Home() {
 
       {/* Main Content */}
       <main className="flex-1">
-        {/* Section 1 */}
-        <section className="min-h-screen bg-cherenkov-light flex items-center">
-          <div className="container mx-auto px-6 py-16">
+        {/* Hero Section */}
+        <section className="py-16 bg-background">
+          <div className="container mx-auto px-6">
             <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div>
-                <h2 className="font-bold graphite dark:text-light-gray mb-6">
+              <div className="order-2 md:order-1">
+                <Image
+                  src="/nuclear-power-plant.jpg"
+                  alt="Nuclear Power Plant"
+                  width={600}
+                  height={400}
+                  className="rounded-lg shadow-lg"
+                />
+              </div>
+              <div className="order-1 md:order-2">
+                <h2 className="text-4xl font-bold text-foreground mb-6">
                   Welcome to the Atomic Future
                 </h2>
-                <p className="text-lg graphite dark:text-light-gray leading-relaxed">
+                <p className="text-lg text-muted-foreground leading-relaxed mb-8">
                   Discover the power of atomic innovation and sustainable energy
                   solutions. We&apos;re pioneering the next generation of
                   nuclear technology to create a cleaner, more efficient world
                   for future generations.
                 </p>
-              </div>
-              <div className="bg-white dark:bg-dark-steel p-8 rounded-lg shadow-lg border border-cherenkov/20 dark:border-cherenkov/30">
-                <h3 className="text-xl font-semibold cherenkov mb-4">
-                  Join Our Mission
-                </h3>
-                <form className="space-y-4">
-                  <input
-                    type="email"
-                    placeholder="Enter your email"
-                    className="w-full px-4 py-2 border border-cherenkov/30 rounded-md focus:outline-none focus:ring-2 focus:ring-cherenkov focus:border-cherenkov dark:bg-dark-charcoal dark:border-dark-steel dark:text-light-gray dark:placeholder-gray-400"
-                  />
-                  <button
-                    type="submit"
-                    className="w-full bg-cherenkov text-white py-2 px-4 rounded-md hover:bg-cherenkov/90 transition-colors">
-                    Subscribe
-                  </button>
-                </form>
+                <JoinForm />
               </div>
             </div>
           </div>
         </section>
 
-        {/* Section 2 */}
-        <section className="min-h-screen bg-uranium-light flex items-center">
-          <div className="container mx-auto px-6 py-16">
+        {/* Features Section */}
+        <section className="py-16 bg-muted/30">
+          <div className="container mx-auto px-6">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-foreground mb-4">
+                Our Platform Features
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Explore the comprehensive suite of tools and resources designed
+                to advance atomic energy innovation.
+              </p>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <FeatureCard
+                title="Atomic Flux"
+                description="Real-time monitoring and analysis of nuclear reactor performance and energy output."
+                icon="⚡"
+              />
+              <FeatureCard
+                title="Atomic Learning"
+                description="Educational resources and training programs for nuclear energy professionals."
+                icon="📚"
+              />
+              <FeatureCard
+                title="Atomic Adventures"
+                description="Interactive simulations and virtual experiences in nuclear technology."
+                icon="🎮"
+              />
+              <FeatureCard
+                title="Alchemy Lab"
+                description="Research and development tools for nuclear material science and innovation."
+                icon="🧪"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Benefits Section */}
+        <section className="py-16 bg-background">
+          <div className="container mx-auto px-6">
             <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div className="bg-white dark:bg-dark-steel p-8 rounded-lg shadow-lg border border-uranium/20 dark:border-uranium/30">
-                <h3 className="text-xl font-semibold graphite dark:text-light-gray mb-4">
-                  Our Technology
-                </h3>
-                <div className="w-full h-48 bg-gradient-nuclear rounded-md flex items-center justify-center">
-                  <span className="text-white font-semibold">
-                    Technology Preview
-                  </span>
+              <div>
+                <h2 className="text-3xl font-bold text-foreground mb-6">
+                  Benefits of Joining
+                </h2>
+                <div className="space-y-6">
+                  <BenefitItem
+                    title="Full Platform Access"
+                    description="Complete participation in all platform activities, including advanced simulations, research tools, and collaborative projects."
+                  />
+                  <BenefitItem
+                    title="Directory Listing"
+                    description="Get featured in our professional directory, connecting you with industry leaders, researchers, and innovators worldwide."
+                  />
+                  <BenefitItem
+                    title="Recognition & Credibility"
+                    description="Be recognized as a proponent of atomic energy advancement and gain credibility in the nuclear technology community."
+                  />
                 </div>
               </div>
               <div>
-                <h2 className="text-4xl font-bold graphite dark:text-light-gray mb-6">
-                  Revolutionary Technology
-                </h2>
-                <p className="text-lg graphite dark:text-light-gray leading-relaxed">
-                  Our cutting-edge nuclear fusion technology represents a
-                  breakthrough in sustainable energy production. With zero
-                  carbon emissions and virtually unlimited fuel supply,
-                  we&apos;re redefining what&apos;s possible.
-                </p>
+                <JoinForm title="Join Our Community" />
               </div>
             </div>
           </div>
         </section>
 
-        {/* Section 3 */}
-        <section className="min-h-screen bg-cooling-tower-light flex items-center">
-          <div className="container mx-auto px-6 py-16">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div>
-                <h2 className="text-4xl font-bold graphite dark:text-light-gray mb-6">
-                  Safety First
-                </h2>
-                <p className="text-lg graphite dark:text-light-gray leading-relaxed">
-                  Safety is our highest priority. Our advanced containment
-                  systems and fail-safe mechanisms ensure that our technology
-                  operates with the highest standards of security and
-                  reliability.
-                </p>
-              </div>
-              <div className="bg-white dark:bg-dark-steel p-8 rounded-lg shadow-lg border border-cooling-tower/20 dark:border-cooling-tower/30">
-                <h3 className="text-xl font-semibold cooling-tower mb-4">
-                  Safety Report
-                </h3>
-                <div className="space-y-3">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-3 h-3 bg-cherenkov rounded-full"></div>
-                    <span className="graphite dark:text-light-gray">
-                      99.9% Safety Rating
-                    </span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-3 h-3 bg-cherenkov rounded-full"></div>
-                    <span className="graphite dark:text-light-gray">
-                      Zero Incidents
-                    </span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-3 h-3 bg-cherenkov rounded-full"></div>
-                    <span className="graphite dark:text-light-gray">
-                      ISO Certified
-                    </span>
-                  </div>
+        {/* Story Section */}
+        <section className="py-16 bg-muted/30">
+          <div className="container mx-auto px-6">
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="text-3xl font-bold text-foreground mb-6">
+                About Atomic Ambitions
+              </h2>
+              <p className="text-lg text-muted-foreground leading-relaxed mb-8">
+                Atomic Ambitions was born from a vision to accelerate the
+                development and adoption of safe, efficient nuclear energy
+                technologies. We believe that atomic energy holds the key to
+                solving our planet&apos;s energy challenges while maintaining
+                environmental sustainability.
+              </p>
+              <p className="text-lg text-muted-foreground leading-relaxed mb-8">
+                Our platform serves as a bridge between researchers, engineers,
+                policymakers, and the public, fostering collaboration and
+                knowledge sharing that drives innovation forward. Through
+                education, simulation, and real-world application, we&apos;re
+                building a community dedicated to advancing atomic energy for
+                the benefit of all.
+              </p>
+              <div className="grid md:grid-cols-2 gap-8 mt-12">
+                <div className="card text-center">
+                  <h3 className="text-xl font-semibold text-primary mb-3">
+                    How You Can Help
+                  </h3>
+                  <p className="text-muted-foreground">
+                    Contribute your expertise, participate in research projects,
+                    share knowledge, and help educate others about the benefits
+                    of atomic energy.
+                  </p>
                 </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Section 4 */}
-        <section className="min-h-screen bg-graphite-light flex items-center">
-          <div className="container mx-auto px-6 py-16">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div className="bg-white dark:bg-dark-steel p-8 rounded-lg shadow-lg border border-graphite/20 dark:border-graphite/30">
-                <h3 className="text-xl font-semibold graphite dark:text-light-gray mb-4">
-                  Contact Us
-                </h3>
-                <form className="space-y-4">
-                  <input
-                    type="text"
-                    placeholder="Your name"
-                    className="w-full px-4 py-2 border border-graphite/30 rounded-md focus:outline-none focus:ring-2 focus:ring-graphite focus:border-graphite dark:bg-dark-charcoal dark:border-dark-steel dark:text-light-gray dark:placeholder-gray-400"
-                  />
-                  <input
-                    type="email"
-                    placeholder="Your email"
-                    className="w-full px-4 py-2 border border-graphite/30 rounded-md focus:outline-none focus:ring-2 focus:ring-graphite focus:border-graphite dark:bg-dark-charcoal dark:border-dark-steel dark:text-light-gray dark:placeholder-gray-400"
-                  />
-                  <textarea
-                    placeholder="Your message"
-                    rows={4}
-                    className="w-full px-4 py-2 border border-graphite/30 rounded-md focus:outline-none focus:ring-2 focus:ring-graphite focus:border-graphite dark:bg-dark-charcoal dark:border-dark-steel dark:text-light-gray dark:placeholder-gray-400"></textarea>
-                  <button
-                    type="submit"
-                    className="w-full bg-graphite text-white py-2 px-4 rounded-md hover:bg-graphite/90 transition-colors">
-                    Send Message
-                  </button>
-                </form>
-              </div>
-              <div>
-                <h2 className="text-4xl font-bold graphite dark:text-light-gray mb-6">
-                  Get in Touch
-                </h2>
-                <p className="text-lg graphite dark:text-light-gray leading-relaxed">
-                  Ready to be part of the energy revolution? We&apos;d love to
-                  hear from you. Whether you&apos;re interested in partnerships,
-                  investments, or just want to learn more, our team is here to
-                  help.
-                </p>
+                <div className="card text-center">
+                  <h3 className="text-xl font-semibold text-primary mb-3">
+                    How We Help You
+                  </h3>
+                  <p className="text-muted-foreground">
+                    Access cutting-edge tools, connect with industry leaders,
+                    advance your career, and be part of the solution to global
+                    energy challenges.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -171,9 +226,9 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-graphite text-white py-8">
+      <footer className="bg-foreground text-primary-foreground py-8">
         <div className="container mx-auto text-center">
-          <p className="text-lg uranium">©2025 Nuclear Ambitions LLC</p>
+          <p className="text-lg">©2025 Atomic Ambitions LLC</p>
         </div>
       </footer>
     </div>
