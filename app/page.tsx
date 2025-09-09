@@ -15,7 +15,7 @@ function JoinForm({
       <form className="space-y-4">
         <input type="email" placeholder="Enter your email" className="input" />
         <button type="submit" className="btn btn-primary w-full">
-          Subscribe
+          Join
         </button>
       </form>
     </div>
@@ -98,10 +98,13 @@ export default function Home() {
                   Welcome to the Atomic Future
                 </h2>
                 <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-                  Discover the power of atomic innovation and sustainable energy
-                  solutions. We&apos;re pioneering the next generation of
-                  nuclear technology to create a cleaner, more efficient world
-                  for future generations.
+                  Atomic energy is everywhere. Stuff is made from atoms, and
+                  each atom is loaded with an amazing amount of energy. Some
+                  atoms are ready to burst. They just need a little push.
+                </p>
+                <p className="text-lg text-muted-foreground leading-relaxed mb-8">
+                  If you already are a fan of atomic energy? Do you want to find
+                  out what atomic energy can do for us? Join us for full access.
                 </p>
                 <JoinForm />
               </div>
@@ -114,32 +117,32 @@ export default function Home() {
           <div className="container mx-auto px-6">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-foreground mb-4">
-                Our Platform Features
+                Featuring...
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Explore the comprehensive suite of tools and resources designed
-                to advance atomic energy innovation.
+                We have lots of ways to learn about atomic energy and related
+                topics. Take your time and explore these features.
               </p>
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               <FeatureCard
                 title="Atomic Flux"
-                description="Real-time monitoring and analysis of nuclear reactor performance and energy output."
+                description="A collegial social discussion forum for exchanging ideas about atomic energy and anything else."
                 icon="⚡"
               />
               <FeatureCard
                 title="Atomic Learning"
-                description="Educational resources and training programs for nuclear energy professionals."
+                description="Short lessons for understanding the fundamentals of atomic energy. We try to make them interesting and memorable."
                 icon="📚"
               />
               <FeatureCard
                 title="Atomic Adventures"
-                description="Interactive simulations and virtual experiences in nuclear technology."
-                icon="🎮"
+                description="We are working on an epic series. Kind of like Harry Potter or the Avengers. Still early days, but give it a try, and tell us what you think."
+                icon="🏔️"
               />
               <FeatureCard
                 title="Alchemy Lab"
-                description="Research and development tools for nuclear material science and innovation."
+                description="Explore atomic concepts using these simulations and thought experiments."
                 icon="🧪"
               />
             </div>
