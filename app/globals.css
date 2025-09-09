@@ -27,7 +27,7 @@
   --primary: #3b82f6;
   --primary-foreground: var(--color-uranium);
   --secondary: var(--color-uranium-alt);
-  --secondary-foreground: #0f172a;
+  --secondary-foreground: var(--color-uranium-alt);
   --accent: var(--color-rusty);
   --accent-foreground: #ffffff;
   --highlight: var(--color-cherenkov);
@@ -160,7 +160,24 @@ h6 {
   font-family: var(--font-orbitron), Arial, Helvetica, sans-serif;
   font-weight: 700;
 }
-
+h1 {
+  font-size: 3rem;
+}
+h2 {
+  font-size: 2rem;
+}
+h3 {
+  font-size: 1.5rem;
+}
+h4 {
+  font-size: 1rem;
+}
+h5 {
+  font-size: 0.9rem;
+}
+h6 {
+  font-size: 0.75rem;
+}
 /* Ensure all other text uses Roboto */
 p,
 span,
@@ -188,7 +205,7 @@ code {
   color: var(--primary);
 }
 .text-secondary {
-  color: var(--secondary-foreground);
+  color: var(--secondary);
 }
 .text-muted {
   color: var(--muted-foreground);
@@ -243,15 +260,15 @@ code {
 
 /* Component utility classes */
 .btn {
-  @apply px-4 py-2 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2;
+  @apply px-4 py-2 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 hover:opacity-80;
 }
 
 .btn-primary {
-  @apply bg-primary text-primary-foreground hover:opacity-90;
+  @apply bg-primary text-primary-foreground;
 }
 
 .btn-secondary {
-  @apply bg-secondary text-secondary-foreground hover:opacity-90;
+  @apply bg-secondary text-secondary-foreground;
 }
 
 .btn-outline {

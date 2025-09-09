@@ -19,44 +19,26 @@ export default function StyleReview() {
 
         {/* Typography Section */}
         <section className="mb-16">
-          <h2 className="text-3xl font-semibold text-foreground mb-8">
-            Typography
-          </h2>
+          <h2 className="text-secondary">Typography</h2>
 
           <div className="grid gap-8 md:grid-cols-2">
             <div className="space-y-6">
               <div>
-                <h3 className="text-xl font-medium text-foreground mb-4">
-                  Headings
-                </h3>
+                <h3 className="text-highlight">Headings</h3>
                 <div className="space-y-4">
-                  <h1 className="text-4xl font-bold text-foreground">
-                    Heading 1
-                  </h1>
-                  <h2 className="text-3xl font-semibold text-foreground">
-                    Heading 2
-                  </h2>
-                  <h3 className="text-2xl font-medium text-foreground">
-                    Heading 3
-                  </h3>
-                  <h4 className="text-xl font-medium text-foreground">
-                    Heading 4
-                  </h4>
-                  <h5 className="text-lg font-medium text-foreground">
-                    Heading 5
-                  </h5>
-                  <h6 className="text-base font-medium text-foreground">
-                    Heading 6
-                  </h6>
+                  <h1>Heading 1</h1>
+                  <h2>Heading 2</h2>
+                  <h3>Heading 3</h3>
+                  <h4>Heading 4</h4>
+                  <h5>Heading 5</h5>
+                  <h6>Heading 6</h6>
                 </div>
               </div>
             </div>
 
             <div className="space-y-6">
               <div>
-                <h3 className="text-xl font-medium text-foreground mb-4">
-                  Body Text
-                </h3>
+                <h3 className="text-highlight">Body Text</h3>
                 <div className="space-y-4">
                   <p className="text-lg text-foreground">
                     Large body text - Lorem ipsum dolor sit amet, consectetur
@@ -77,9 +59,7 @@ export default function StyleReview() {
               </div>
 
               <div>
-                <h3 className="text-xl font-medium text-foreground mb-4">
-                  Code & Monospace
-                </h3>
+                <h3 className="text-highlight">Code & Monospace</h3>
                 <div className="space-y-2">
                   <code className="text-sm bg-muted px-2 py-1 rounded text-foreground">
                     inline code
@@ -264,10 +244,10 @@ export default function StyleReview() {
                 Secondary Buttons
               </h3>
               <div className="flex flex-wrap gap-4">
-                <button className="px-4 py-2 bg-secondary text-secondary-foreground rounded-lg font-medium hover:opacity-90 transition-opacity">
+                <button className="btn px-4 py-2 bg-secondary text-secondary-foreground rounded-lg font-medium transition-opacity">
                   Secondary
                 </button>
-                <button className="px-4 py-2 bg-accent text-accent-foreground rounded-lg font-medium hover:opacity-90 transition-opacity">
+                <button className="px-4 py-2 bg-accent text-accent-foreground rounded-lg font-medium hover:opacity-80 transition-opacity">
                   Accent
                 </button>
                 <button className="px-4 py-2 border border-border text-foreground rounded-lg font-medium hover:bg-muted transition-colors">
@@ -284,7 +264,7 @@ export default function StyleReview() {
                 Status Buttons
               </h3>
               <div className="flex flex-wrap gap-4">
-                <button className="px-4 py-2 bg-success text-success-foreground rounded-lg font-medium hover:opacity-90 transition-opacity">
+                <button className="px-4 py-2 bg-success text-success-foreground rounded-lg font-medium transition-opacity">
                   Success
                 </button>
                 <button className="px-4 py-2 bg-warning text-warning-foreground rounded-lg font-medium hover:opacity-90 transition-opacity">

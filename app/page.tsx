@@ -7,8 +7,8 @@ export default function Home() {
       {/* Header */}
       <header className="py-8 bg-gradient-nuclear text-white">
         <div className="container mx-auto text-center">
-          <h1 className="text-5xl md:text-7xl font-bold tracking-wider">
-            <span className="uranium drop-shadow-lg">Atomic Ambitions</span>
+          <h1 className="text-4xl md:text-7xl font-bold tracking-wider">
+            Atomic Ambitions
           </h1>
         </div>
       </header>
@@ -20,7 +20,7 @@ export default function Home() {
           <div className="container mx-auto px-6 py-16">
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
-                <h2 className="text-4xl font-bold graphite dark:text-light-gray mb-6">
+                <h2 className="font-bold graphite dark:text-light-gray mb-6">
                   Welcome to the Atomic Future
                 </h2>
                 <p className="text-lg graphite dark:text-light-gray leading-relaxed">
