@@ -1,68 +1,9 @@
 import { ThemeToggle } from "./components/theme-toggle";
+import JoinForm from "./components/join-form";
+import FeatureCard from "./components/feature-card";
+import BenefitItem from "./components/benefit-item";
+import Attribution from "./components/attribution";
 import Image from "next/image";
-
-// Reusable Join Form Component
-function JoinForm({
-  title = "Join Us",
-  className = "",
-}: {
-  title?: string;
-  className?: string;
-}) {
-  return (
-    <div className={`card max-w-md mx-auto ${className}`}>
-      <h3 className="text-xl font-semibold text-primary mb-4">{title}</h3>
-      <form className="space-y-4">
-        <input type="email" placeholder="Enter your email" className="input" />
-        <button type="submit" className="btn btn-primary w-full">
-          Join
-        </button>
-      </form>
-    </div>
-  );
-}
-
-// Feature Card Component
-function FeatureCard({
-  title,
-  description,
-  icon,
-}: {
-  title: string;
-  description: string;
-  icon: string;
-}) {
-  return (
-    <div className="card hover:shadow-lg transition-shadow">
-      <div className="text-center">
-        <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-          <span className="text-2xl">{icon}</span>
-        </div>
-        <h3 className="text-xl font-semibold text-primary mb-3">{title}</h3>
-        <p className="text-muted-foreground">{description}</p>
-      </div>
-    </div>
-  );
-}
-
-// Benefit Item Component
-function BenefitItem({
-  title,
-  description,
-}: {
-  title: string;
-  description: string;
-}) {
-  return (
-    <div className="flex items-start space-x-3">
-      <div className="w-3 h-3 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-      <div>
-        <h4 className="font-semibold text-foreground">{title}</h4>
-        <p className="text-muted-foreground">{description}</p>
-      </div>
-    </div>
-  );
-}
 
 export default function Home() {
   return (
@@ -91,6 +32,12 @@ export default function Home() {
                   width={600}
                   height={400}
                   className="rounded-lg shadow-lg"
+                />
+                <Attribution
+                  artist="Patrick Federi"
+                  artistLink="https://unsplash.com/@federi?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+                  source="Unsplash"
+                  sourceLink="https://unsplash.com/photos/white-smoke-coming-out-from-green-field-uvtUELc92SI?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
                 />
               </div>
               <div className="order-1 md:order-2">
