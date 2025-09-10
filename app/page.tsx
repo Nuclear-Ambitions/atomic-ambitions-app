@@ -26,19 +26,19 @@ export default function Home() {
           <div className="container mx-auto px-6">
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div className="order-2 md:order-1">
-                <Image
-                  src="/nuclear-power-plant.jpg"
-                  alt="Nuclear Power Plant"
-                  width={600}
-                  height={400}
-                  className="rounded-lg shadow-lg"
-                />
                 <Attribution
                   artist="Patrick Federi"
                   artistLink="https://unsplash.com/@federi?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
                   source="Unsplash"
-                  sourceLink="https://unsplash.com/photos/white-smoke-coming-out-from-green-field-uvtUELc92SI?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
-                />
+                  sourceLink="https://unsplash.com/photos/white-smoke-coming-out-from-green-field-uvtUELc92SI?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">
+                  <Image
+                    src="/nuclear-power-plant.jpg"
+                    alt="Nuclear Power Plant"
+                    width={600}
+                    height={400}
+                    className="rounded-lg shadow-lg"
+                  />
+                </Attribution>
               </div>
               <div className="order-1 md:order-2">
                 <h2 className="text-4xl font-bold text-foreground mb-6">
