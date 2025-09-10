@@ -50,12 +50,13 @@ export const statementSets = [
   ],
   [
     "Moving in can be disruptive.",
-    "Especially if the atom is already full.",
+    "Especially if the nucleus gets crowded.",
+    "Some say it's exciting.",
   ],
   [
     "There are two ways an atom deals with instability.",
     "One is to decay.",
-    "An itty bit of the atom decides to leave, and off it goes.",
+    "A bit of the atom decides to leave, and off it goes.",
   ],
   [
     "The other way is to fission, meaning that it splits into two or more pieces.",
@@ -65,9 +66,10 @@ export const statementSets = [
   [
     "That's the interesting part.",
     "Neutrons can encourage atoms to change from one kind to another.",
+    "One atom of uranium can become one atom of barium and one of krypton.",
   ],
   [
-    "When an atom decays or splits, it releases energy.",
+    "Whenever an atom decays or splits, it releases energy.",
     "Sometimes more neutrons get kicked out in the process.",
   ],
   [
