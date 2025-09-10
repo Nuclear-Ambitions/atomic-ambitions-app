@@ -120,6 +120,13 @@ export default function Home() {
                 </div>
               </div>
               <div>
+                <Image
+                  src="/atomic-ambitions-logo.png"
+                  alt="Atomic Ambitions Logo"
+                  width={420}
+                  height={130}
+                  className="mb-12"
+                />
                 <JoinForm title="Join Our Community" />
               </div>
             </div>
