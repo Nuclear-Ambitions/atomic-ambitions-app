@@ -1,24 +1,12 @@
-import { ThemeToggle } from "./components/theme-toggle";
-import JoinForm from "./components/join-form";
-import FeatureCard from "./components/feature-card";
-import BenefitItem from "./components/benefit-item";
-import Attribution from "./components/attribution";
+import JoinForm from "../components/join-form";
+import FeatureCard from "../components/feature-card";
+import BenefitItem from "../components/benefit-item";
+import Attribution from "../components/attribution";
 import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col">
-      <ThemeToggle />
-
-      {/* Header */}
-      <header className="py-8 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground">
-        <div className="container mx-auto text-center">
-          <h1 className="text-4xl md:text-7xl font-bold tracking-wider">
-            Atomic Ambitions
-          </h1>
-        </div>
-      </header>
-
+    <div>
       {/* Main Content */}
       <main className="flex-1">
         {/* Hero Section */}
@@ -181,13 +169,6 @@ export default function Home() {
           </div>
         </section>
       </main>
-
-      {/* Footer */}
-      <footer className="bg-foreground text-primary-foreground py-8">
-        <div className="container mx-auto text-center">
-          <p className="text-lg">©2025 Nuclear Ambitions LLC</p>
-        </div>
-      </footer>
     </div>
   );
 }

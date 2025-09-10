@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { statementSets } from "../lib/data/statements";
+import { statementSets } from "../../lib/data/statements";
 import { ArrowFatRightIcon } from "@phosphor-icons/react";
 
 export default function NeutronTales() {
