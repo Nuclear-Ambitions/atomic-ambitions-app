@@ -6,7 +6,7 @@ export default function AdventurePage() {
           Ready for Fun?
         </h1>
         <p className="text-xl text-muted-foreground mb-8">
-          Ready for some exciting games and challenges? Let's explore what
+          Ready for some exciting games and challenges? Let&apos;s explore what
           adventures await!
         </p>
         <div className="bg-card border border-border rounded-lg p-8">
@@ -14,8 +14,8 @@ export default function AdventurePage() {
             🎮 Ready to Play?
           </h2>
           <p className="text-card-foreground mb-6">
-            We're preparing some amazing games and interactive experiences for
-            you. Stay tuned as we add more exciting content!
+            We&apos;re preparing some amazing games and interactive experiences
+            for you. Stay tuned as we add more exciting content!
           </p>
           <div className="text-sm text-muted-foreground">
             More games and adventures coming soon...

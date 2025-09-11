@@ -16,7 +16,7 @@ export function ThemeToggle({
   const baseClasses =
     "p-3 rounded-full bg-cherenkov/20 backdrop-blur-sm border border-cherenkov/30 hover:bg-cherenkov/30 transition-all duration-300 group";
   const variantClasses =
-    variant === "fixed" ? "fixed top-6 right-6 z-50" : "inline-flex";
+    variant === "fixed" ? "fixed bottom-6 right-6 z-50" : "inline-flex";
 
   return (
     <button
