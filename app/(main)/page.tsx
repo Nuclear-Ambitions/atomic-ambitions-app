@@ -109,7 +109,7 @@ export default function Home() {
               </div>
               <div>
                 <Image
-                  src="/atomic-ambitions-logo.png"
+                  src="/atomic-ambitions-logo-bdr.png"
                   alt="Atomic Ambitions Logo"
                   width={420}
                   height={130}

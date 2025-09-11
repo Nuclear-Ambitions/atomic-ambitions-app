@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { AccountWidget } from "../components/account-widget";
+import Image from "next/image";
 
 interface AdventureLayoutProps {
   children: ReactNode;
@@ -9,17 +10,20 @@ export default function AdventureLayout({ children }: AdventureLayoutProps) {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="bg-card border-b border-border">
-        <div className="container mx-auto px-4 py-4">
+      <header className="bg-header-background border-b border-border">
+        <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
-            {/* Logo placeholder */}
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-lg">
-                  A
-                </span>
+              <div className="rounded-lg flex">
+                <Image
+                  src="/atomic-ambitions-logo-sq.png"
+                  alt="Atomic Ambitions Logo"
+                  width={75}
+                  height={75}
+                  className="min-w-16 min-h-16"
+                />
               </div>
-              <h1 className="text-2xl font-bold text-foreground">Adventure</h1>
+              <h1 className="text-2xl font-bold text-highlight">Adventure</h1>
             </div>
 
             {/* Account Widget */}
@@ -35,7 +39,8 @@ export default function AdventureLayout({ children }: AdventureLayoutProps) {
       <footer className="bg-muted border-t border-border py-3">
         <div className="container mx-auto px-4">
           <div className="text-center text-muted-foreground text-sm">
-            © {new Date().getFullYear()} Atomic Ambitions. All rights reserved.
+            © {new Date().getFullYear()} Nuclear Ambitions LLC. All rights
+            reserved.
           </div>
         </div>
       </footer>

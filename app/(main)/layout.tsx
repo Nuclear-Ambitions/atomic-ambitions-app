@@ -1,5 +1,6 @@
 import { ThemeToggle } from "../components/theme-toggle";
 import { AccountWidget } from "../components/account-widget";
+import Image from "next/image";
 
 export default function RootLayout({
   children,
@@ -11,18 +12,24 @@ export default function RootLayout({
       <ThemeToggle />
 
       {/* Header */}
-      <header className="py-8 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground">
+      <header className="bg-header-background border-b border-border">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between">
-            <div className="flex-1"></div>
-            <div className="text-center">
-              <h1 className="text-4xl md:text-7xl font-bold tracking-wider">
+          <div className="flex justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="rounded-lg flex">
+                <Image
+                  src="/atomic-ambitions-logo-sq.png"
+                  alt="Atomic Ambitions Logo"
+                  width={75}
+                  height={75}
+                  className="min-w-16 min-h-16"
+                />
+              </div>
+              <h1 className="text-2xl font-bold text-highlight">
                 Atomic Ambitions
               </h1>
             </div>
-            <div className="flex-1 flex justify-end">
-              <AccountWidget />
-            </div>
+            <AccountWidget />
           </div>
         </div>
       </header>

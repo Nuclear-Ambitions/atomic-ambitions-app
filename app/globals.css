@@ -112,6 +112,8 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-highlight: var(--highlight);
   --color-highlight-background: var(--highlight-background);
+  --color-logo-background: var(--color-dark-charcoal);
+  --color-header-background: var(--color-dark-charcoal);
 
   /* Status colors */
   --color-success: var(--success);
