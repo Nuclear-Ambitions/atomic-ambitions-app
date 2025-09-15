@@ -1,5 +1,6 @@
 import { ThemeToggle } from "../components/theme-toggle";
 import { AccountWidget } from "../components/account-widget";
+import DynamicMenu from "../components/dynamic-menu";
 import Image from "next/image";
 
 export default function RootLayout({
@@ -12,7 +13,7 @@ export default function RootLayout({
       <ThemeToggle />
 
       {/* Header */}
-      <header className="bg-header-background border-b border-border">
+      <header className="border-b-2 border-border">
         <div className="container mx-auto px-4">
           <div className="flex justify-between">
             <div className="flex items-center space-x-3">
@@ -29,14 +30,17 @@ export default function RootLayout({
                 Atomic Ambitions
               </h1>
             </div>
-            <AccountWidget />
+            <div className="flex items-center space-x-4">
+              <DynamicMenu />
+              <AccountWidget />
+            </div>
           </div>
         </div>
       </header>
 
       {children}
       {/* Footer */}
-      <footer className="bg-foreground text-primary-foreground py-8">
+      <footer className="py-8 border-t-2 border-border">
         <div className="container mx-auto text-center">
           <p className="text-lg">©2025 Nuclear Ambitions LLC</p>
         </div>

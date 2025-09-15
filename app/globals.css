@@ -312,3 +312,11 @@ code {
 .alert-info {
   @apply bg-info/10 border-info/20 text-info;
 }
+
+/* Text truncation utilities */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
