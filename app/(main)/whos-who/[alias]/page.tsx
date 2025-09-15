@@ -204,6 +204,25 @@ export default function ProfilePage({ params }: ProfilePageProps) {
           </div>
         </div>
 
+        {/* Profile Video Section */}
+        {profile.profileVideoUrl && (
+          <div className="card mb-8">
+            <h2 className="text-2xl font-bold text-card-foreground mb-4">
+              Profile Video
+            </h2>
+            <div className="relative w-full max-w-2xl mx-auto">
+              <video
+                controls
+                className="w-full rounded-lg shadow-lg"
+                poster={profile.avatarUrl || undefined}
+                preload="metadata">
+                <source src={profile.profileVideoUrl} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </div>
+        )}
+
         {/* Bio Section */}
         {profile.bio && (
           <div className="card mb-8">

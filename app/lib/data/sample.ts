@@ -2,6 +2,7 @@ export interface Profile {
   id: string;
   alias: string | null;
   avatarUrl: string | null;
+  profileVideoUrl: string | null;
   bio: string | null;
   joinReason: string | null;
   joinedAt: Date;
@@ -20,6 +21,7 @@ export const sampleProfiles: Profile[] = [
     id: "profile-001",
     alias: "Fiona",
     avatarUrl: "https://cdn.worldofnuclear.com/static/images/adventure/lab-tech-female.jpg",
+    profileVideoUrl: "https://cdn.worldofnuclear.com/static/images/adventure/fiona-profile.mp4",
     bio: "Nuclear engineer with 8 years of experience in reactor design. Passionate about clean energy and sustainable nuclear technology. Love hiking and reading sci-fi novels.",
     joinReason: "Looking to connect with fellow nuclear professionals and share knowledge about advanced reactor technologies.",
     joinedAt: new Date("2024-08-15T10:30:00Z"),
@@ -35,6 +37,7 @@ export const sampleProfiles: Profile[] = [
     id: "profile-002",
     alias: "Zanzibar",
     avatarUrl: "https://cdn.worldofnuclear.com/static/images/shared/Zanzibar.jpg",
+    profileVideoUrl: "https://cdn.worldofnuclear.com/static/images/adventure/zanzi-profile.mp4",
     bio: "Physics PhD student researching quantum mechanics applications in nuclear physics. Amateur photographer and chess enthusiast. Always up for a good debate about energy policy.",
     joinReason: "Want to learn from industry experts and contribute to discussions about the future of nuclear energy.",
     joinedAt: new Date("2024-08-28T16:45:00Z"),
@@ -50,6 +53,7 @@ export const sampleProfiles: Profile[] = [
     id: "profile-003",
     alias: "Shilpa",
     avatarUrl: "https://cdn.worldofnuclear.com/static/images/adventure/smart-female-nuclear-engineer-2.jpg",
+    profileVideoUrl: "https://cdn.worldofnuclear.com/static/images/adventure/shilpa-profile.mp4",
     bio: "Environmental scientist turned nuclear advocate. Worked in renewable energy for 5 years before realizing nuclear is essential for our clean energy future. Mom of two, coffee addict.",
     joinReason: "Excited to be part of a community that understands the critical role nuclear energy plays in combating climate change.",
     joinedAt: new Date("2024-09-08T08:20:00Z"),
