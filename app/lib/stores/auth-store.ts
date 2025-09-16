@@ -1,12 +1,11 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { Profile } from '../data/sample';
 
 export interface User {
   id: string;
-  email: string;
-  alias: string;
   name?: string; // Full name for display
-  avatarUrl?: string;
+  profile?: Profile;
   roles: string[];
   permissions: string[];
 }

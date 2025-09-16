@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { useTheme } from "../theme-context";
 import { useAuthStore } from "../lib/stores/auth-store";
+import { sampleUserZanzibar } from "../lib/data/sample";
 
 interface AccountWidgetProps {
   className?: string;
@@ -14,16 +14,7 @@ const useMockAuth = () => {
 
   const signIn = () => {
     // Mock user data - replace with real authentication
-    const mockUser = {
-      id: "user-001",
-      email: "zanzi@atomicambitions.com",
-      alias: "Zanzibar",
-      name: "Zanzibar Nuhero",
-      avatarUrl:
-        "https://cdn.worldofnuclear.com/static/images/adventure/zanzi.jpg",
-      roles: ["member"],
-      permissions: ["view_content", "edit_profile"],
-    };
+    const mockUser = sampleUserZanzibar;
     authSignIn(mockUser);
   };
 
@@ -35,7 +26,6 @@ const useMockAuth = () => {
 };
 
 export function AccountWidget({ className = "" }: AccountWidgetProps) {
-  const { theme } = useTheme();
   const { isSignedIn, user } = useAuthStore();
   const { signIn, signOut } = useMockAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -91,18 +81,18 @@ export function AccountWidget({ className = "" }: AccountWidgetProps) {
         className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-cherenkov to-primary text-primary-foreground font-semibold text-sm transition-all duration-200 hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-2 border-transparent hover:border-cherenkov/30"
         aria-label="Open account menu"
         aria-expanded={isDropdownOpen}>
-        {user?.avatarUrl ? (
+        {user?.profile?.avatarUrl ? (
           <img
-            src={user.avatarUrl}
-            alt={user.name || user.alias}
+            src={user.profile?.avatarUrl}
+            alt={user.name || user.profile?.alias || "Unknown"}
             className="w-full h-full rounded-full object-cover"
           />
         ) : (
           <span className="text-sm font-bold">
             {user?.name
               ? getInitials(user.name)
-              : user?.alias
-              ? getInitials(user.alias)
+              : user?.profile?.alias
+              ? getInitials(user.profile?.alias)
               : "U"}
           </span>
         )}
@@ -114,9 +104,8 @@ export function AccountWidget({ className = "" }: AccountWidgetProps) {
           {/* User Info Header */}
           <div className="px-4 py-3 border-b border-border">
             <p className="text-sm font-medium text-popover-foreground">
-              {user?.name || user?.alias}
+              {user?.name || user?.profile?.alias || "Unknown"}
             </p>
-            <p className="text-xs text-muted-foreground">{user?.email}</p>
           </div>
 
           {/* Menu Items */}

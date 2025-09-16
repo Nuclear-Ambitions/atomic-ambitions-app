@@ -67,3 +67,33 @@ export const sampleProfiles: Profile[] = [
   }
 ];
 
+export interface User {
+  id: string;
+  name?: string; // Full name for display
+  profile?: Profile;
+  roles: string[];
+  permissions: string[];
+}
+
+export const sampleUserZanzibar: User = {
+  id: "user-001",
+  name: "Zanzibar Nuhero",
+  profile: {
+    id: "profile-002",
+    alias: "Zanzibar",
+    avatarUrl: "https://cdn.worldofnuclear.com/static/images/shared/Zanzibar.jpg",
+    profileVideoUrl: "https://cdn.worldofnuclear.com/static/images/adventure/zanzi-profile.mp4",
+    bio: "Physics PhD student researching quantum mechanics applications in nuclear physics. Amateur photographer and chess enthusiast. Always up for a good debate about energy policy.",
+    joinReason: "Want to learn from industry experts and contribute to discussions about the future of nuclear energy.",
+    joinedAt: new Date("2024-08-28T16:45:00Z"),
+    location: "Cambridge, Massachusetts",
+    nuclearLikes: ["Quantum Computing", "Nuclear Medicine", "Particle Physics", "Energy Storage"],
+    website: null,
+    xUsername: "@ZanzibarNuclear",
+    karmaScore: 89,
+    createdAt: new Date("2024-08-28T16:45:00Z"),
+    updatedAt: new Date("2024-09-12T09:15:00Z")
+  },
+  roles: ["member", "editor", "moderator", "admin"],
+  permissions: []
+};

@@ -15,26 +15,31 @@ interface NavigationItem {
 const baseNavigationItems: NavigationItem[] = [
   { href: "/", label: "Home", description: "Main page" },
   {
+    href: "/adventure",
+    label: "Adventure",
+    description: "Explore and discover",
+  },
+  { href: "/flux", label: "Atomic Flux", description: "Social idea exchange " },
+  {
+    href: "/learning",
+    label: "Atomic Learning",
+    description: "Learn about atomic energy",
+  },
+  { href: "/whos-who", label: "Who's Who", description: "Meet the community" },
+  {
     href: "/why-join",
     label: "Why Join",
     description: "Benefits of membership",
   },
-  { href: "/whos-who", label: "Who's Who", description: "Meet the community" },
-  { href: "/adventure", label: "Adventure", description: "Explore adventures" },
   {
     href: "/a-neutron-tale",
-    label: "A Neutron Tale",
-    description: "Stories & tales",
+    label: "A Neutron's Tale",
+    description: "A quickie ",
   },
   {
     href: "/art-gallery",
     label: "Art Gallery",
-    description: "Visual creations",
-  },
-  {
-    href: "/style-review",
-    label: "Style Review",
-    description: "Fashion & style",
+    description: "Flux-inspired eye candy",
   },
 ];
 
@@ -49,7 +54,7 @@ const getConditionalNavigationItems = (
     items.push({
       href: "/member-area",
       label: "Member Area",
-      description: "Exclusive content",
+      description: "Your account and settings",
     });
   }
 
@@ -66,7 +71,15 @@ const getConditionalNavigationItems = (
     items.push({
       href: "/admin",
       label: "Admin Panel",
-      description: "Administrative tools",
+      description: "For overlords only",
+    });
+  }
+
+  if (isSignedIn) {
+    items.push({
+      href: "/style-review",
+      label: "Style Review",
+      description: "UI theme test pattern",
     });
   }
 
