@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAuthStore } from "../lib/stores/auth-store";
 
 interface NavigationItem {
   href: string;
@@ -10,7 +11,8 @@ interface NavigationItem {
   description?: string;
 }
 
-const navigationItems: NavigationItem[] = [
+// Base navigation items that are always visible
+const baseNavigationItems: NavigationItem[] = [
   { href: "/", label: "Home", description: "Main page" },
   {
     href: "/why-join",
@@ -18,17 +20,6 @@ const navigationItems: NavigationItem[] = [
     description: "Benefits of membership",
   },
   { href: "/whos-who", label: "Who's Who", description: "Meet the community" },
-  {
-    href: "/member-area",
-    label: "Member Area",
-    description: "Exclusive content",
-  },
-  {
-    href: "/style-review",
-    label: "Style Review",
-    description: "Fashion & style",
-  },
-  { href: "/sign-in", label: "Sign In", description: "Access your account" },
   { href: "/adventure", label: "Adventure", description: "Explore adventures" },
   {
     href: "/a-neutron-tale",
@@ -40,11 +31,58 @@ const navigationItems: NavigationItem[] = [
     label: "Art Gallery",
     description: "Visual creations",
   },
+  {
+    href: "/style-review",
+    label: "Style Review",
+    description: "Fashion & style",
+  },
 ];
+
+// Conditional navigation items based on auth state
+const getConditionalNavigationItems = (
+  isSignedIn: boolean,
+  hasRole: (role: string) => boolean
+): NavigationItem[] => {
+  const items: NavigationItem[] = [];
+
+  if (isSignedIn) {
+    items.push({
+      href: "/member-area",
+      label: "Member Area",
+      description: "Exclusive content",
+    });
+  }
+
+  if (!isSignedIn) {
+    items.push({
+      href: "/sign-in",
+      label: "Sign In",
+      description: "Access your account",
+    });
+  }
+
+  // Example: Admin-only items
+  if (hasRole("admin")) {
+    items.push({
+      href: "/admin",
+      label: "Admin Panel",
+      description: "Administrative tools",
+    });
+  }
+
+  return items;
+};
 
 export default function DynamicMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const { isSignedIn, hasRole } = useAuthStore();
+
+  // Combine base and conditional navigation items
+  const navigationItems = [
+    ...baseNavigationItems,
+    ...getConditionalNavigationItems(isSignedIn, hasRole),
+  ];
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);

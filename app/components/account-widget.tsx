@@ -2,56 +2,42 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useTheme } from "../theme-context";
+import { useAuthStore } from "../lib/stores/auth-store";
 
 interface AccountWidgetProps {
   className?: string;
 }
 
-// Mock authentication state - will be replaced with real auth
-const useAuth = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState<{
-    name: string;
-    email: string;
-    avatar?: string;
-  } | null>(null);
-
-  // Mock user data for demonstration
-  useEffect(() => {
-    // Simulate checking auth status
-    const mockUser = {
-      name: "Dr. Sarah Chen",
-      email: "sarah.chen@atomicambitions.com",
-      avatar: undefined, // Will use initials fallback
-    };
-
-    // For demo purposes, you can toggle this to see both states
-    // setIsAuthenticated(true);
-    // setUser(mockUser);
-  }, []);
+// Mock sign in function for demonstration - replace with real auth
+const useMockAuth = () => {
+  const { signIn: authSignIn, signOut: authSignOut } = useAuthStore();
 
   const signIn = () => {
-    // Mock sign in - will be replaced with real auth
+    // Mock user data - replace with real authentication
     const mockUser = {
-      name: "Dr. Sarah Chen",
-      email: "sarah.chen@atomicambitions.com",
-      avatar: undefined,
+      id: "user-001",
+      email: "zanzi@atomicambitions.com",
+      alias: "Zanzibar",
+      name: "Zanzibar Nuhero",
+      avatarUrl:
+        "https://cdn.worldofnuclear.com/static/images/adventure/zanzi.jpg",
+      roles: ["member"],
+      permissions: ["view_content", "edit_profile"],
     };
-    setIsAuthenticated(true);
-    setUser(mockUser);
+    authSignIn(mockUser);
   };
 
   const signOut = () => {
-    setIsAuthenticated(false);
-    setUser(null);
+    authSignOut();
   };
 
-  return { isAuthenticated, user, signIn, signOut };
+  return { signIn, signOut };
 };
 
 export function AccountWidget({ className = "" }: AccountWidgetProps) {
   const { theme } = useTheme();
-  const { isAuthenticated, user, signIn, signOut } = useAuth();
+  const { isSignedIn, user } = useAuthStore();
+  const { signIn, signOut } = useMockAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -82,7 +68,7 @@ export function AccountWidget({ className = "" }: AccountWidgetProps) {
       .slice(0, 2);
   };
 
-  if (!isAuthenticated) {
+  if (!isSignedIn) {
     return (
       <div className={`flex items-center ${className}`}>
         <button
@@ -105,15 +91,19 @@ export function AccountWidget({ className = "" }: AccountWidgetProps) {
         className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-cherenkov to-primary text-primary-foreground font-semibold text-sm transition-all duration-200 hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-2 border-transparent hover:border-cherenkov/30"
         aria-label="Open account menu"
         aria-expanded={isDropdownOpen}>
-        {user?.avatar ? (
+        {user?.avatarUrl ? (
           <img
-            src={user.avatar}
-            alt={user.name}
+            src={user.avatarUrl}
+            alt={user.name || user.alias}
             className="w-full h-full rounded-full object-cover"
           />
         ) : (
           <span className="text-sm font-bold">
-            {user?.name ? getInitials(user.name) : "U"}
+            {user?.name
+              ? getInitials(user.name)
+              : user?.alias
+              ? getInitials(user.alias)
+              : "U"}
           </span>
         )}
       </button>
@@ -124,7 +114,7 @@ export function AccountWidget({ className = "" }: AccountWidgetProps) {
           {/* User Info Header */}
           <div className="px-4 py-3 border-b border-border">
             <p className="text-sm font-medium text-popover-foreground">
-              {user?.name}
+              {user?.name || user?.alias}
             </p>
             <p className="text-xs text-muted-foreground">{user?.email}</p>
           </div>
