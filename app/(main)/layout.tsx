@@ -41,8 +41,19 @@ export default function RootLayout({
       {children}
       {/* Footer */}
       <footer className="py-8 border-t-2 border-border">
-        <div className="container mx-auto text-center">
-          <p className="text-lg">©2025 Nuclear Ambitions LLC</p>
+        <div className="container mx-auto flex items-center justify-center">
+          <div className="flex flex-col items-center space-y-4 md:flex-row md:space-y-0 md:space-x-4">
+            <Image
+              src="/atomic-ambitions-logo-bdr.png"
+              alt="Atomic Ambitions Logo"
+              width={226}
+              height={70}
+              className="min-w-16 min-h-16"
+            />
+            <p className="text-sm text-muted-foreground md:ml-4">
+              ©2025 Nuclear Ambitions LLC
+            </p>
+          </div>
         </div>
       </footer>
     </div>
