@@ -1,12 +1,12 @@
 import { ReactNode } from "react";
-import { AccountWidget } from "../components/account-widget";
+import { AccountWidget } from "../../components/account-widget";
 import Image from "next/image";
 
-interface AdventureLayoutProps {
+interface AdventuresLayoutProps {
   children: ReactNode;
 }
 
-export default function AdventureLayout({ children }: AdventureLayoutProps) {
+export default function AdventuresLayout({ children }: AdventuresLayoutProps) {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}

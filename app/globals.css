@@ -26,7 +26,7 @@
   /* Brand colors */
   --primary: #3b82f6;
   --primary-foreground: var(--color-uranium);
-  --secondary: var(--color-uranium-alt);
+  --secondary: var(--color-rusty);
   --secondary-foreground: var(--color-graphite);
   --accent: var(--color-rusty);
   --accent-foreground: #ffffff;

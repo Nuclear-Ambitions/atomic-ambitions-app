@@ -16,7 +16,7 @@ const FeaturesPage = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="/why-join/membership-level"
+              href="/why-join/join"
               className="bg-cherenkov text-white font-semibold py-4 px-8 rounded-lg hover:opacity-90 transition-all duration-200 shadow-lg text-lg">
               Join the Community
             </Link>

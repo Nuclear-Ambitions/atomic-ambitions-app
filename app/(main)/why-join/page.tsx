@@ -399,9 +399,9 @@ const WhyJoinPage = () => {
               className="btn btn-primary m-4">
               Join the Revolution
             </Link>
-            <a href="/whos-who" className="btn btn-secondary m-4">
+            <Link href="/whos-who" className="btn btn-secondary m-4">
               Meet Our Members
-            </a>
+            </Link>
           </div>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
