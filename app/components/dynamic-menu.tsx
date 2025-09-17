@@ -15,7 +15,7 @@ interface NavigationItem {
 
 // Base navigation items that are always visible
 const baseNavigationItems: NavigationItem[] = [
-  { href: "/", label: "Home", icon: "Home", description: "Main page" },
+  { href: "/", label: "Home", icon: "House", description: "Main page" },
   // {
   //   href: "/adventure",
   //   label: "Adventure",
@@ -31,11 +31,13 @@ const baseNavigationItems: NavigationItem[] = [
   {
     href: "/why-join",
     label: "Why Join",
+    icon: "Question",
     description: "Benefits of membership",
   },
   {
     href: "/a-neutron-tale",
     label: "A Neutron's Tale",
+    icon: "Circle",
     description: "A quickie ",
   },
   // {
@@ -56,6 +58,7 @@ const getConditionalNavigationItems = (
     items.push({
       href: "/member-area",
       label: "Member Area",
+      icon: "User",
       description: "Your account and settings",
     });
   }
@@ -64,6 +67,7 @@ const getConditionalNavigationItems = (
     items.push({
       href: "/sign-in",
       label: "Sign In",
+      icon: "SignIn",
       description: "Access your account",
     });
   }
@@ -73,6 +77,7 @@ const getConditionalNavigationItems = (
     items.push({
       href: "/admin-console",
       label: "Atomic Admin",
+      icon: "Gear",
       description: "For overlords only",
     });
   }
@@ -81,6 +86,7 @@ const getConditionalNavigationItems = (
     items.push({
       href: "/style-review",
       label: "Style Review",
+      icon: "Palette",
       description: "UI theme test pattern",
     });
   }
@@ -162,18 +168,39 @@ export default function DynamicMenu() {
                           ? "bg-highlight text-highlight-background"
                           : "text-popover-foreground hover:bg-muted hover:text-foreground"
                       }`}>
-                      <div className="flex flex-col">
-                        <span className="font-medium">{item.label}</span>
-                        {item.description && (
-                          <span
-                            className={`text-sm ${
-                              isActive
-                                ? "text-highlight-background/80"
-                                : "text-muted-foreground group-hover:text-foreground/70"
-                            }`}>
-                            {item.description}
+                      <div className="flex items-start gap-3">
+                        {/* Icon column - fixed width for alignment */}
+                        <div className="flex-shrink-0 w-6 h-6 flex items-center justify-center">
+                          {item.icon && (
+                            <Icon
+                              name={item.icon}
+                              size={20}
+                              weight="duotone"
+                              className={`${
+                                isActive
+                                  ? "text-highlight-background"
+                                  : "text-muted-foreground group-hover:text-foreground"
+                              }`}
+                            />
+                          )}
+                        </div>
+
+                        {/* Text column - flexible width */}
+                        <div className="flex-1 min-w-0">
+                          <span className="font-medium block">
+                            {item.label}
                           </span>
-                        )}
+                          {item.description && (
+                            <span
+                              className={`text-sm block ${
+                                isActive
+                                  ? "text-highlight-background/80"
+                                  : "text-muted-foreground group-hover:text-foreground/70"
+                              }`}>
+                              {item.description}
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </Link>
                   );
