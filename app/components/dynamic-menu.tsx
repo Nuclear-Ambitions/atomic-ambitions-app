@@ -4,28 +4,30 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuthStore } from "../lib/stores/auth-store";
+import Icon from "./icon";
 
 interface NavigationItem {
   href: string;
   label: string;
+  icon?: string;
   description?: string;
 }
 
 // Base navigation items that are always visible
 const baseNavigationItems: NavigationItem[] = [
-  { href: "/", label: "Home", description: "Main page" },
-  {
-    href: "/adventure",
-    label: "Adventure",
-    description: "Explore and discover",
-  },
-  { href: "/flux", label: "Atomic Flux", description: "Social idea exchange " },
-  {
-    href: "/learning",
-    label: "Atomic Learning",
-    description: "Learn about atomic energy",
-  },
-  { href: "/whos-who", label: "Who's Who", description: "Meet the community" },
+  { href: "/", label: "Home", icon: "Home", description: "Main page" },
+  // {
+  //   href: "/adventure",
+  //   label: "Adventure",
+  //   description: "Explore and discover",
+  // },
+  // { href: "/flux", label: "Atomic Flux", description: "Social idea exchange " },
+  // {
+  //   href: "/learning",
+  //   label: "Atomic Learning",
+  //   description: "Learn about atomic energy",
+  // },
+  // { href: "/whos-who", label: "Who's Who", description: "Meet the community" },
   {
     href: "/why-join",
     label: "Why Join",
@@ -36,11 +38,11 @@ const baseNavigationItems: NavigationItem[] = [
     label: "A Neutron's Tale",
     description: "A quickie ",
   },
-  {
-    href: "/art-gallery",
-    label: "Art Gallery",
-    description: "Flux-inspired eye candy",
-  },
+  // {
+  //   href: "/art-gallery",
+  //   label: "Art Gallery",
+  //   description: "Flux-inspired eye candy",
+  // },
 ];
 
 // Conditional navigation items based on auth state
@@ -69,8 +71,8 @@ const getConditionalNavigationItems = (
   // Example: Admin-only items
   if (hasRole("admin")) {
     items.push({
-      href: "/admin",
-      label: "Admin Panel",
+      href: "/admin-console",
+      label: "Atomic Admin",
       description: "For overlords only",
     });
   }
