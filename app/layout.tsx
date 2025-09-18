@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Orbitron, Roboto } from "next/font/google";
+import { Orbitron, Roboto, Courier_Prime } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "./theme-context";
 
@@ -12,6 +12,12 @@ const roboto = Roboto({
   variable: "--font-roboto",
   subsets: ["latin"],
   weight: ["300", "400", "500", "700"],
+});
+
+const courier_prime = Courier_Prime({
+  variable: "--font-courier-prime",
+  subsets: ["latin"],
+  weight: ["400", "700"],
 });
 
 export const metadata: Metadata = {
@@ -27,7 +33,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${orbitron.variable} ${roboto.variable} antialiased`}>
+      <body
+        className={`${orbitron.variable} ${roboto.variable} ${courier_prime.variable} antialiased`}>
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

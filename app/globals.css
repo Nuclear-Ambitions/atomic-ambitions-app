@@ -26,7 +26,7 @@
   /* Brand colors */
   --primary: #3b82f6;
   --primary-foreground: var(--color-uranium);
-  --secondary: var(--color-uranium-alt);
+  --secondary: var(--color-rusty);
   --secondary-foreground: var(--color-graphite);
   --accent: var(--color-rusty);
   --accent-foreground: #ffffff;
@@ -112,6 +112,8 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-highlight: var(--highlight);
   --color-highlight-background: var(--highlight-background);
+  --color-logo-background: var(--color-dark-charcoal);
+  --color-header-background: var(--color-dark-charcoal);
 
   /* Status colors */
   --color-success: var(--success);
@@ -309,4 +311,12 @@ code {
 
 .alert-info {
   @apply bg-info/10 border-info/20 text-info;
+}
+
+/* Text truncation utilities */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

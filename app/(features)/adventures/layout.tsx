@@ -1,0 +1,49 @@
+import { ReactNode } from "react";
+import { AccountWidget } from "../../components/account-widget";
+import Image from "next/image";
+
+interface AdventuresLayoutProps {
+  children: ReactNode;
+}
+
+export default function AdventuresLayout({ children }: AdventuresLayoutProps) {
+  return (
+    <div className="min-h-screen flex flex-col">
+      {/* Header */}
+      <header className="bg-header-background border-b border-border">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="rounded-lg flex">
+                <Image
+                  src="/atomic-ambitions-logo-sq.png"
+                  alt="Atomic Ambitions Logo"
+                  width={75}
+                  height={75}
+                  className="min-w-16 min-h-16"
+                />
+              </div>
+              <h1 className="text-2xl font-bold text-highlight">Adventure</h1>
+            </div>
+
+            {/* Account Widget */}
+            <AccountWidget />
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="flex-1 bg-background">{children}</main>
+
+      {/* Footer */}
+      <footer className="bg-muted border-t border-border py-3">
+        <div className="container mx-auto px-4">
+          <div className="text-center text-muted-foreground text-sm">
+            © {new Date().getFullYear()} Nuclear Ambitions LLC. All rights
+            reserved.
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
