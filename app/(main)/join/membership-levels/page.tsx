@@ -11,9 +11,7 @@ const MembershipLevelPage = () => {
             Choose Your Impact Level
           </h1>
           <p className="text-lg md:text-xl mb-8 text-white/90 max-w-3xl mx-auto">
-            You've seen what's possible. You know the problems we're solving.
-            Now it's time to decide how deeply you want to be involved in
-            building the future.
+            Blargy blargy blargy.
           </p>
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 max-w-4xl mx-auto">
             <p className="text-white/90 text-lg mb-4">
@@ -21,7 +19,7 @@ const MembershipLevelPage = () => {
               $21,500+ per year
             </p>
             <p className="text-white text-xl">
-              But you'll pay less than most people spend on coffee each month.
+              Pay less than most people spend on coffee each month.
             </p>
           </div>
         </div>
@@ -249,7 +247,7 @@ const MembershipLevelPage = () => {
               Still Think About the Cost?
             </h2>
             <p className="text-xl text-graphite/80 dark:text-light-gray/80 max-w-3xl mx-auto">
-              Let's put this in perspective. What else could you spend $11 on?
+              Put this in perspective. What else could you spend $11 on?
             </p>
           </div>
 
@@ -326,20 +324,16 @@ const MembershipLevelPage = () => {
                 Can I cancel anytime?
               </h3>
               <p className="text-graphite/80 dark:text-light-gray/80">
-                Absolutely. No long-term contracts, no hidden fees. Cancel
-                whenever you want, though we're confident you'll want to stay
-                once you see the value.
+                Blargy blargy.
               </p>
             </div>
 
             <div className="bg-muted p-8 rounded-xl">
               <h3 className="text-xl font-bold mb-4 text-card-foreground">
-                What if I'm not satisfied?
+                Blargy blargy.
               </h3>
               <p className="text-graphite/80 dark:text-light-gray/80">
-                We offer a 30-day money-back guarantee. If you're not completely
-                satisfied with your membership within the first 30 days, we'll
-                refund your payment, no questions asked.
+                Blargy blargy.
               </p>
             </div>
 
@@ -359,10 +353,7 @@ const MembershipLevelPage = () => {
                 How do I know this is worth it?
               </h3>
               <p className="text-graphite/80 dark:text-light-gray/80">
-                Start with our free Explorer membership and see what we're
-                about. Read our member testimonials, explore the content, and
-                meet some of our community. Then upgrade when you're ready for
-                more.
+                Blargy blargy.
               </p>
             </div>
           </div>
@@ -376,9 +367,7 @@ const MembershipLevelPage = () => {
             Ready to Make Your Choice?
           </h2>
           <p className="text-xl mb-8 text-white/90 max-w-3xl mx-auto">
-            The future of clean energy is being built right now. The question
-            isn't whether you'll be part of it—it's how much you want to
-            contribute to making it happen.
+            Blargy blargy.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-6 justify-center mb-8">

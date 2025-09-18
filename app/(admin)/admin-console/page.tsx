@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 // Fake data for the admin dashboard
 const userStats = {
   totalUsers: 1247,

@@ -3,7 +3,8 @@
 import { useState, useRef, useEffect } from "react";
 import { useAuthStore } from "../lib/stores/auth-store";
 import { sampleUserZanzibar } from "../lib/data/sample";
-import Icon from "./icon";
+import { Icon } from "@iconify/react";
+import Image from "next/image";
 
 interface AccountWidgetProps {
   className?: string;
@@ -79,12 +80,14 @@ export function AccountWidget({ className = "" }: AccountWidgetProps) {
       {/* Avatar Button */}
       <button
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-        className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-cherenkov to-primary text-primary-foreground font-semibold text-sm transition-all duration-200 hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-2 border-transparent hover:border-cherenkov/30"
+        className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-cherenkov to-primary text-primary-foreground font-semibold text-sm transition-all duration-200 hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-2 border-transparent hover:border-cherenkov/30"
         aria-label="Open account menu"
         aria-expanded={isDropdownOpen}>
         {user?.profile?.avatarUrl ? (
-          <img
+          <Image
             src={user.profile?.avatarUrl}
+            width={60}
+            height={60}
             alt={user.name || user.profile?.alias || "Unknown"}
             className="w-full h-full rounded-full object-cover"
           />
@@ -116,9 +119,8 @@ export function AccountWidget({ className = "" }: AccountWidgetProps) {
               className="flex items-center px-4 py-2 text-sm text-popover-foreground hover:bg-muted transition-colors duration-150"
               onClick={() => setIsDropdownOpen(false)}>
               <Icon
-                name="User"
-                size={16}
-                weight="duotone"
+                icon="ph:user-duotone"
+                width={16}
                 className="mr-3 text-muted-foreground"
               />
               Account
@@ -129,9 +131,8 @@ export function AccountWidget({ className = "" }: AccountWidgetProps) {
               className="flex items-center px-4 py-2 text-sm text-popover-foreground hover:bg-muted transition-colors duration-150"
               onClick={() => setIsDropdownOpen(false)}>
               <Icon
-                name="Gear"
-                size={16}
-                weight="duotone"
+                icon="ph:gear-duotone"
+                width={16}
                 className="mr-3 text-muted-foreground"
               />
               Settings
@@ -142,9 +143,8 @@ export function AccountWidget({ className = "" }: AccountWidgetProps) {
               className="flex items-center px-4 py-2 text-sm text-popover-foreground hover:bg-muted transition-colors duration-150"
               onClick={() => setIsDropdownOpen(false)}>
               <Icon
-                name="UserCircle"
-                size={16}
-                weight="duotone"
+                icon="ph:user-circle-duotone"
+                width={16}
                 className="mr-3 text-muted-foreground"
               />
               Profile
@@ -159,12 +159,7 @@ export function AccountWidget({ className = "" }: AccountWidgetProps) {
               }}
               className="flex items-center w-full px-4 py-2 text-sm text-error hover:bg-error/10 transition-colors duration-150"
               aria-label="Sign out of your account">
-              <Icon
-                name="SignOut"
-                size={16}
-                weight="duotone"
-                className="mr-3"
-              />
+              <Icon icon="ph:sign-out-duotone" width={16} className="mr-3" />
               Sign Out
             </button>
           </div>

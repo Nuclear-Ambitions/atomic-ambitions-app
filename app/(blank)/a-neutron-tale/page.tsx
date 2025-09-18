@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { statementSets } from "../../lib/data/statements";
@@ -62,6 +62,17 @@ export default function NeutronTales() {
   }, [visibleStatements, currentSetIndex, isFirstSet, isTransitioning]);
 
   // Add keyboard event listener for right arrow key
+  const handleContinue = useCallback(() => {
+    if (currentSetIndex < statementSets.length - 1) {
+      setIsTransitioning(true);
+      setCurrentSetIndex(currentSetIndex + 1);
+      setVisibleStatements([]);
+      setShowContinue(false);
+    } else {
+      router.push("/");
+    }
+  }, [currentSetIndex, router]);
+
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       if (event.key === "ArrowRight" && showContinue) {
@@ -71,18 +82,7 @@ export default function NeutronTales() {
 
     window.addEventListener("keydown", handleKeyPress);
     return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [showContinue]);
-
-  const handleContinue = () => {
-    if (currentSetIndex < statementSets.length - 1) {
-      setIsTransitioning(true);
-      setCurrentSetIndex(currentSetIndex + 1);
-      setVisibleStatements([]);
-      setShowContinue(false);
-    } else {
-      router.push("/");
-    }
-  };
+  }, [showContinue, handleContinue]);
 
   return (
     <div className="min-h-screen relative max-w-screen-lg mx-auto">

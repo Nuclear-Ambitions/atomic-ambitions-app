@@ -11,9 +11,7 @@ const WhyJoinPage = () => {
             The Future of Energy Starts Here
           </h1>
           <p className="text-lg md:text-xl mb-8 text-white/90 max-w-3xl mx-auto">
-            While others debate, we build. While others fear, we create. Join
-            the community that's solving humanity's greatest energy challenges
-            and unlocking abundance for generations to come.
+            Blargy blargy blargy.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
@@ -24,7 +22,7 @@ const WhyJoinPage = () => {
             <a
               href="#problems"
               className="border-2 border-white text-white font-semibold py-4 px-8 rounded-lg hover:bg-white hover:text-graphite transition-all duration-200 text-lg">
-              See What We're Solving
+              Blargy
             </a>
           </div>
         </div>
@@ -38,9 +36,7 @@ const WhyJoinPage = () => {
               The Biggest Problems Are Often Emotional
             </h2>
             <p className="text-xl text-muted-foreground max-w-4xl mx-auto">
-              Behind every technical challenge lies a human story. Behind every
-              breakthrough, there's someone who refused to accept the
-              impossible.
+              Blargy blargy blargy.
             </p>
           </div>
 
@@ -51,14 +47,9 @@ const WhyJoinPage = () => {
                   Climate Anxiety vs. Climate Action
                 </h3>
                 <p className="text-muted-foreground mb-4">
-                  Every day, millions wake up worried about the planet their
-                  children will inherit. They recycle, they vote, they protest.
-                  But deep down, they wonder: "Is it enough?"
+                  Blargy blargy blargy.
                 </p>
-                <p className="text-muted-foreground">
-                  The truth? We need solutions that scale. We need energy that's
-                  clean, abundant, and available 24/7. That's nuclear power.
-                </p>
+                <p className="text-muted-foreground">Blargy blargy blargy.</p>
               </div>
 
               <div className="bg-gradient-to-r from-cherenkov/10 to-uranium-alt/10 p-8 rounded-xl border-l-4 border-cherenkov">
@@ -66,14 +57,9 @@ const WhyJoinPage = () => {
                   The Knowledge Gap
                 </h3>
                 <p className="text-muted-foreground mb-4">
-                  Most people learned about nuclear energy from movies about
-                  disasters, not from understanding the science of splitting
-                  atoms safely.
+                  Blargy blargy blargy.
                 </p>
-                <p className="text-muted-foreground">
-                  This gap between fear and fact is costing us decades of
-                  progress. It's time to bridge it.
-                </p>
+                <p className="text-muted-foreground">Blargy blargy blargy.</p>
               </div>
 
               <div className="bg-gradient-to-r from-uranium-alt/10 to-rusty/10 p-8 rounded-xl border-l-4 border-uranium-alt">
@@ -81,21 +67,16 @@ const WhyJoinPage = () => {
                   The Innovation Bottleneck
                 </h3>
                 <p className="text-muted-foreground mb-4">
-                  Brilliant minds exist everywhere, but they're isolated.
-                  Engineers in one country don't know about breakthroughs
-                  happening in another.
+                  Blargy blargy blargy.
                 </p>
-                <p className="text-muted-foreground">
-                  We're building the network that connects these minds and
-                  accelerates innovation.
-                </p>
+                <p className="text-muted-foreground">Blargy blargy blargy.</p>
               </div>
             </div>
 
             <div className="bg-gradient-to-br from-cherenkov/5 to-uranium-alt/5 p-12 rounded-2xl text-center">
               <div className="text-6xl mb-6">⚡</div>
               <h3 className="text-3xl font-bold mb-6 text-card-foreground">
-                But Here's What's Possible
+                Blargy blargy blargy.
               </h3>
               <div className="space-y-6 text-left">
                 <div className="flex items-start space-x-4">
@@ -111,10 +92,7 @@ const WhyJoinPage = () => {
                   <div className="w-8 h-8 bg-cherenkov rounded-full flex items-center justify-center text-white font-bold text-sm">
                     2
                   </div>
-                  <p className="text-card-foreground">
-                    <strong>Energy independence</strong> that doesn't depend on
-                    weather or geography
-                  </p>
+                  <p className="text-card-foreground">Blargy blargy blargy.</p>
                 </div>
                 <div className="flex items-start space-x-4">
                   <div className="w-8 h-8 bg-cherenkov rounded-full flex items-center justify-center text-white font-bold text-sm">
@@ -153,12 +131,10 @@ const WhyJoinPage = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-6 text-card-foreground">
-              What's This Really Worth?
+              Blargy blargy blargy.
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Let's be honest about the value you're getting. This isn't just a
-              community—it's access to knowledge, connections, and opportunities
-              that could change your career and your perspective.
+              Blargy blargy blargy.
             </p>
           </div>
 
@@ -252,10 +228,7 @@ const WhyJoinPage = () => {
             <h3 className="text-3xl font-bold mb-4">
               Total Value: $21,500+ per year
             </h3>
-            <p className="text-xl mb-6 opacity-90">
-              But you won't pay thousands. You'll pay less than a Netflix
-              subscription.
-            </p>
+            <p className="text-xl mb-6 opacity-90">Blargy blargy blargy.</p>
             <Link
               href="/why-join/membership-level"
               className="btn btn-outline-highlight">
@@ -315,7 +288,7 @@ const WhyJoinPage = () => {
 
               <div className="bg-gradient-to-r from-cherenkov/10 to-rusty/10 p-8 rounded-xl">
                 <h3 className="text-2xl font-bold mb-4 text-card-foreground">
-                  The Breakthroughs We're Watching
+                  Blargy blargy blargy.
                 </h3>
                 <ul className="space-y-4 text-muted-foreground">
                   <li className="flex items-start space-x-3">
@@ -375,7 +348,7 @@ const WhyJoinPage = () => {
             <Link
               href="/why-join/membership-level"
               className="bg-uranium-alt text-graphite font-bold py-4 px-8 rounded-lg hover:opacity-90 transition-all duration-200 shadow-lg text-lg inline-block">
-              I Want to See What's Possible
+              Blargy blargy blargy.
             </Link>
           </div>
         </div>
@@ -388,10 +361,7 @@ const WhyJoinPage = () => {
             The Future Is Being Built Now
           </h2>
           <p className="text-xl mb-8 max-w-3xl mx-auto">
-            Every day you wait is a day you're not part of the solution. Every
-            breakthrough you miss is an opportunity you'll never get back. The
-            question isn't whether nuclear energy will power our future—it's
-            whether you'll be part of making it happen.
+            Blargy blargy blargy.
           </p>
           <div className="flex flex-col sm:flex-row justify-center">
             <Link
