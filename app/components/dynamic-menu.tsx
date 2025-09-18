@@ -211,7 +211,7 @@ export default function DynamicMenu() {
             {/* Footer */}
             <div className="px-4 py-3 bg-muted border-t border-border">
               <p className="text-xs text-muted-foreground text-center">
-                Atomic Ambitions Navigation
+                Enjoy Atomic Ambitions
               </p>
             </div>
           </div>

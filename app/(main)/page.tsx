@@ -3,6 +3,7 @@ import FeatureCard from "../components/feature-card";
 import BenefitItem from "../components/benefit-item";
 import Attribution from "../components/attribution";
 import Image from "next/image";
+import Link from "next/link";
 
 const features = [
   {
@@ -54,6 +55,11 @@ const benefits = [
     title: "Earn Atomic Karma",
     description:
       "Accrue karma points as you participate. Get rewarded by joining, setting up a profile page, posting on Flux, and more.",
+  },
+  {
+    title: "Bragging Rights",
+    description:
+      "Atomic energy is a complicated subject. Gain the respect of others for hanging out with the smart crowd.",
   },
 ];
 
@@ -173,44 +179,51 @@ export default function Home() {
         <section className="py-16 bg-muted/30">
           <div className="container mx-auto px-6">
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-3xl font-bold text-foreground mb-6">
+              <h2 className="text-3xl font-bold text-highlight mb-6">
                 About Atomic Ambitions
               </h2>
-              <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-                Atomic Ambitions was born from a vision to accelerate the
-                development and adoption of safe, efficient nuclear energy
-                technologies. We believe that atomic energy holds the key to
-                solving our planet&apos;s energy challenges while maintaining
-                environmental sustainability.
-              </p>
-              <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-                Our platform serves as a bridge between researchers, engineers,
-                policymakers, and the public, fostering collaboration and
-                knowledge sharing that drives innovation forward. Through
-                education, simulation, and real-world application, we&apos;re
-                building a community dedicated to advancing atomic energy for
-                the benefit of all.
-              </p>
+              <div className="space-y-6 text-muted-foreground leading-relaxed">
+                <p>
+                  Atomic Ambitions was born from a vision of a thriving society,
+                  supported by abundant, clean, atomic energy. We want to
+                  encourage people to replace their fears with myth-busting
+                  truths. We want to help people feel good about relying on
+                  atomic energy to improve the quality of life for everyone.
+                </p>
+                <p>
+                  Anyone who wants to make a positive global impact should
+                  support the productive use of atomic energy. Through
+                  exploration, education, and open-minded discussion, we want to
+                  help people form a rational view of this infinite source of
+                  energy.
+                </p>
+              </div>
               <div className="grid md:grid-cols-2 gap-8 mt-12">
                 <div className="card text-center">
                   <h3 className="text-xl font-semibold text-primary mb-3">
                     How You Can Help
                   </h3>
-                  <p className="text-muted-foreground">
-                    Contribute your expertise, participate in research projects,
-                    share knowledge, and help educate others about the benefits
-                    of atomic energy.
+                  <p className="text-muted-foreground text-sm mb-6">
+                    Join the Atomic Ambitions platform. Contribute your
+                    expertise. Answer questions in a friendly way. Try to
+                    understand what holds others back.
                   </p>
+                  <Link href="/why-join/join" className="btn btn-primary m-4">
+                    Join
+                  </Link>
                 </div>
                 <div className="card text-center">
                   <h3 className="text-xl font-semibold text-primary mb-3">
                     How We Help You
                   </h3>
-                  <p className="text-muted-foreground">
-                    Access cutting-edge tools, connect with industry leaders,
-                    advance your career, and be part of the solution to global
-                    energy challenges.
+                  <p className="text-muted-foreground text-sm mb-6">
+                    Join the Atomic Ambitions platform. Ask questions. Keep an
+                    open mind to the answers you get. See if any ideas need an
+                    upgrade.
                   </p>
+                  <Link href="/why-join/join" className="btn btn-primary">
+                    Join
+                  </Link>
                 </div>
               </div>
             </div>
