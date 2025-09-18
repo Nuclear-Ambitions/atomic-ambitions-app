@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useAuthStore } from "../lib/stores/auth-store";
 import { sampleUserZanzibar } from "../lib/data/sample";
-import Icon from "./icon";
+import { Icon } from "@iconify/react";
 import Image from "next/image";
 
 interface AccountWidgetProps {
@@ -119,9 +119,8 @@ export function AccountWidget({ className = "" }: AccountWidgetProps) {
               className="flex items-center px-4 py-2 text-sm text-popover-foreground hover:bg-muted transition-colors duration-150"
               onClick={() => setIsDropdownOpen(false)}>
               <Icon
-                name="User"
-                size={16}
-                weight="duotone"
+                icon="ph:user-duotone"
+                width={16}
                 className="mr-3 text-muted-foreground"
               />
               Account
@@ -132,9 +131,8 @@ export function AccountWidget({ className = "" }: AccountWidgetProps) {
               className="flex items-center px-4 py-2 text-sm text-popover-foreground hover:bg-muted transition-colors duration-150"
               onClick={() => setIsDropdownOpen(false)}>
               <Icon
-                name="Gear"
-                size={16}
-                weight="duotone"
+                icon="ph:gear-duotone"
+                width={16}
                 className="mr-3 text-muted-foreground"
               />
               Settings
@@ -145,9 +143,8 @@ export function AccountWidget({ className = "" }: AccountWidgetProps) {
               className="flex items-center px-4 py-2 text-sm text-popover-foreground hover:bg-muted transition-colors duration-150"
               onClick={() => setIsDropdownOpen(false)}>
               <Icon
-                name="UserCircle"
-                size={16}
-                weight="duotone"
+                icon="ph:user-circle-duotone"
+                width={16}
                 className="mr-3 text-muted-foreground"
               />
               Profile
@@ -162,12 +159,7 @@ export function AccountWidget({ className = "" }: AccountWidgetProps) {
               }}
               className="flex items-center w-full px-4 py-2 text-sm text-error hover:bg-error/10 transition-colors duration-150"
               aria-label="Sign out of your account">
-              <Icon
-                name="SignOut"
-                size={16}
-                weight="duotone"
-                className="mr-3"
-              />
+              <Icon icon="ph:sign-out-duotone" width={16} className="mr-3" />
               Sign Out
             </button>
           </div>

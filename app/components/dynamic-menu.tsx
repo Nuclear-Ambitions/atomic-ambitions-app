@@ -4,7 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuthStore } from "../lib/stores/auth-store";
-import Icon from "./icon";
+// import Icon from "./icon";
+// import { UserRectangle, User, SignIn, Gear } from "react-icons/ph";
+import { Icon } from "@iconify/react";
 
 interface NavigationItem {
   href: string;
@@ -15,7 +17,12 @@ interface NavigationItem {
 
 // Base navigation items that are always visible
 const baseNavigationItems: NavigationItem[] = [
-  { href: "/", label: "Home", icon: "House", description: "Main page" },
+  {
+    href: "/",
+    label: "Home",
+    icon: "ph:house-duotone",
+    description: "Main page",
+  },
   // {
   //   href: "/adventure",
   //   label: "Adventure",
@@ -31,18 +38,18 @@ const baseNavigationItems: NavigationItem[] = [
     href: "/whos-who",
     label: "Atomic Who",
     description: "Meet the community",
-    icon: "UserRectangle",
+    icon: "ph:user-rectangle-duotone",
   },
   {
     href: "/join",
     label: "Why Join",
-    icon: "SignIn",
+    icon: "ph-sign-in-duotone",
     description: "Benefits of membership",
   },
   {
     href: "/a-neutron-tale",
     label: "A Neutron's Tale",
-    icon: "Circle",
+    icon: "ph:circle-duotone",
     description: "A quickie ",
   },
   // {
@@ -63,7 +70,7 @@ const getConditionalNavigationItems = (
     items.push({
       href: "/member-area",
       label: "Member Area",
-      icon: "User",
+      icon: "ph:user-duotone",
       description: "Your account and settings",
     });
   }
@@ -72,7 +79,7 @@ const getConditionalNavigationItems = (
     items.push({
       href: "/sign-in",
       label: "Sign In",
-      icon: "SignIn",
+      icon: "ph:sign-in-duotone",
       description: "Access your account",
     });
   }
@@ -82,7 +89,7 @@ const getConditionalNavigationItems = (
     items.push({
       href: "/admin-console",
       label: "Atomic Admin",
-      icon: "Gear",
+      icon: "ph:gear-duotone",
       description: "For overlords only",
     });
   }
@@ -91,7 +98,7 @@ const getConditionalNavigationItems = (
     items.push({
       href: "/style-review",
       label: "Style Review",
-      icon: "Palette",
+      icon: "ph:palette-duotone",
       description: "UI theme test pattern",
     });
   }
@@ -178,9 +185,8 @@ export default function DynamicMenu() {
                         <div className="flex-shrink-0 w-6 h-6 flex items-center justify-center">
                           {item.icon && (
                             <Icon
-                              name={item.icon}
-                              size={20}
-                              weight="duotone"
+                              icon={item.icon}
+                              width={20}
                               className={`${
                                 isActive
                                   ? "text-highlight-background"
