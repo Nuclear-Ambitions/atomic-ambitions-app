@@ -4,9 +4,9 @@ import Image from "next/image";
 import { sampleProfiles, Profile } from "../../../lib/data/sample";
 
 interface ProfilePageProps {
-  params: {
+  params: Promise<{
     alias: string;
-  };
+  }>;
 }
 
 // Helper function to find profile by alias
@@ -42,8 +42,9 @@ function getTimeSinceJoining(date: Date): string {
   }
 }
 
-export default function ProfilePage({ params }: ProfilePageProps) {
-  const profile = findProfileByAlias(params.alias);
+export default async function ProfilePage({ params }: ProfilePageProps) {
+  const { alias } = await params;
+  const profile = findProfileByAlias(alias);
 
   if (!profile) {
     notFound();
@@ -69,7 +70,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                 d="M15 19l-7-7 7-7"
               />
             </svg>
-            Back to Who's Who
+            Back to Who&apos;s Who
           </Link>
         </div>
 

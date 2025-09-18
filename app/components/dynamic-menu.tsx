@@ -27,11 +27,16 @@ const baseNavigationItems: NavigationItem[] = [
   //   label: "Atomic Learning",
   //   description: "Learn about atomic energy",
   // },
-  // { href: "/whos-who", label: "Who's Who", description: "Meet the community" },
   {
-    href: "/why-join",
+    href: "/whos-who",
+    label: "Atomic Who",
+    description: "Meet the community",
+    icon: "UserRectangle",
+  },
+  {
+    href: "/join",
     label: "Why Join",
-    icon: "Question",
+    icon: "SignIn",
     description: "Benefits of membership",
   },
   {

@@ -2,7 +2,8 @@ import * as Phosphor from "@phosphor-icons/react";
 import React from "react";
 
 interface IconProps {
-  name: string; // e.g., "House", "Star", "Heart"
+  name: keyof typeof Phosphor; // e.g., "House", "Star", "Heart"
+  // name: string; // e.g., "House", "Star", "Heart"
   size?: number | string;
   weight?: "thin" | "light" | "regular" | "bold" | "fill" | "duotone";
   color?: string;
@@ -18,7 +19,8 @@ const Icon: React.FC<IconProps> = ({
   className,
   ...props
 }) => {
-  const PhosphorIcon = (Phosphor as any)[name];
+  // const PhosphorIcon = Phosphor[name];
+  const PhosphorIcon = Phosphor[name] as Phosphor.Icon | undefined;
 
   if (!PhosphorIcon) {
     console.warn(`Icon "${name}" not found in Phosphor Icons`);
