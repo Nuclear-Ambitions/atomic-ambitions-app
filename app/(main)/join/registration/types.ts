@@ -3,7 +3,7 @@ export interface RegistrationData {
   email: string;
   termsAccepted: boolean;
   turnstileToken: string;
-  membershipLevel: "explorer" | "supporter";
+  membershipLevel: "explorer" | "supporter" | "charter";
 }
 
 export interface StepProps {

@@ -59,7 +59,7 @@ const RegistrationContent = () => {
                 }`}>
                 1
               </div>
-              <span className="ml-2 font-medium">Account</span>
+              <span className="ml-2 font-medium">Register</span>
             </div>
             <div
               className={`flex-1 h-1 mx-4 ${
@@ -75,7 +75,7 @@ const RegistrationContent = () => {
                 }`}>
                 2
               </div>
-              <span className="ml-2 font-medium">Membership</span>
+              <span className="ml-2 font-medium">Level Up</span>
             </div>
             <div
               className={`flex-1 h-1 mx-4 ${

@@ -19,7 +19,7 @@ const Step2: React.FC<StepProps> = ({ formData, setFormData, onNext }) => {
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-8">
+      <div className="grid md:grid-cols-3 gap-8">
         {/* Explorer Membership */}
         <div
           className={`card cursor-pointer transition-all ${
@@ -39,25 +39,25 @@ const Step2: React.FC<StepProps> = ({ formData, setFormData, onNext }) => {
           <div className="space-y-3 mb-6">
             <div className="flex items-center space-x-3">
               <span className="text-green-500 font-bold">✓</span>
-              <span className="text-foreground">Access to public forums</span>
-            </div>
-            <div className="flex items-center space-x-3">
-              <span className="text-green-500 font-bold">✓</span>
               <span className="text-foreground">
-                Basic educational resources
+                Participate in public forums
               </span>
             </div>
             <div className="flex items-center space-x-3">
               <span className="text-green-500 font-bold">✓</span>
-              <span className="text-foreground">Member directory access</span>
+              <span className="text-foreground">
+                Unlimited access to learning
+              </span>
+            </div>
+            <div className="flex items-center space-x-3">
+              <span className="text-green-500 font-bold">✓</span>
+              <span className="text-foreground">
+                Basic listing in member directory
+              </span>
             </div>
             <div className="flex items-center space-x-3">
               <span className="text-muted-foreground">✗</span>
               <span className="text-muted-foreground">Premium content</span>
-            </div>
-            <div className="flex items-center space-x-3">
-              <span className="text-muted-foreground">✗</span>
-              <span className="text-muted-foreground">Exclusive events</span>
             </div>
           </div>
 
@@ -98,19 +98,15 @@ const Step2: React.FC<StepProps> = ({ formData, setFormData, onNext }) => {
             </div>
             <div className="flex items-center space-x-3">
               <span className="text-green-500 font-bold">✓</span>
-              <span className="text-foreground">Premium research papers</span>
+              <span className="text-foreground">Premium content</span>
             </div>
             <div className="flex items-center space-x-3">
               <span className="text-green-500 font-bold">✓</span>
-              <span className="text-foreground">Exclusive webinars</span>
+              <span className="text-foreground">Good karma</span>
             </div>
             <div className="flex items-center space-x-3">
               <span className="text-green-500 font-bold">✓</span>
-              <span className="text-foreground">Early job access</span>
-            </div>
-            <div className="flex items-center space-x-3">
-              <span className="text-green-500 font-bold">✓</span>
-              <span className="text-foreground">Priority support</span>
+              <span className="text-foreground">Money-back guarantee</span>
             </div>
           </div>
 
@@ -122,6 +118,57 @@ const Step2: React.FC<StepProps> = ({ formData, setFormData, onNext }) => {
               checked={formData.membershipLevel === "supporter"}
               onChange={() =>
                 setFormData({ ...formData, membershipLevel: "supporter" })
+              }
+              className="w-5 h-5"
+            />
+          </div>
+        </div>
+
+        {/* Charter Membership */}
+        <div
+          className={`card cursor-pointer transition-all ${
+            formData.membershipLevel === "charter"
+              ? "ring-2 ring-primary bg-primary/5"
+              : "hover:shadow-lg"
+          }`}
+          onClick={() =>
+            setFormData({ ...formData, membershipLevel: "charter" })
+          }>
+          <div className="text-center mb-6">
+            <h3 className="text-2xl font-bold text-primary mb-2">Charter</h3>
+            <div className="text-4xl font-bold text-primary mb-2">$111</div>
+            <p className="text-muted-foreground">per year</p>
+          </div>
+
+          <div className="space-y-3 mb-6">
+            <div className="flex items-center space-x-3">
+              <span className="text-green-500 font-bold">✓</span>
+              <span className="text-foreground">Same as Supporter</span>
+            </div>
+            <div className="flex items-center space-x-3">
+              <span className="text-green-500 font-bold">✓</span>
+              <span className="text-foreground">15% Discount</span>
+            </div>
+            <div className="flex items-center space-x-3">
+              <span className="text-green-500 font-bold">✓</span>
+              <span className="text-foreground">Charter member badge</span>
+            </div>
+            <div className="flex items-center space-x-3">
+              <span className="text-green-500 font-bold">✓</span>
+              <span className="text-foreground">
+                Same money-back guarantee*
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-center mb-4">
+            <input
+              type="radio"
+              name="membership"
+              value="charter"
+              checked={formData.membershipLevel === "charter"}
+              onChange={() =>
+                setFormData({ ...formData, membershipLevel: "charter" })
               }
               className="w-5 h-5"
             />

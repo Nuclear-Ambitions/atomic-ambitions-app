@@ -156,7 +156,6 @@ const Step1: React.FC<StepProps> = ({
           )}
 
           <div className="flex justify-center">
-            <TurnstileWidget />
             <Turnstile
               sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ""}
               onSuccess={(token) =>
