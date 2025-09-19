@@ -201,12 +201,12 @@ export default function Home() {
               <div className="grid md:grid-cols-2 gap-8 mt-12">
                 <JoinCta
                   title="How You Can Help"
-                  rationale="Join the Atomic Ambitions platform. Contribute your expertise. Answer questions in a friendly way. Try to understand what holds others back."
+                  encouragement="Join the Atomic Ambitions platform. Contribute your expertise. Answer questions in a friendly way. Try to understand what holds others back."
                   buttonText="Share Your Expertise"
                 />
                 <JoinCta
                   title="How We Help You"
-                  rationale="Join the Atomic Ambitions platform. Ask questions. Keep an open mind to the answers you get. See if any ideas need an upgrade."
+                  encouragement="Join the Atomic Ambitions platform. Ask questions. Keep an open mind to the answers you get. See if any ideas need an upgrade."
                   buttonText="Give It a Try"
                 />
               </div>

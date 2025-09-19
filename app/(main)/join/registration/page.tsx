@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import Turnstile from "react-turnstile";
 import FeatureCard from "../../../components/feature-card";
 import Image from "next/image";
@@ -14,6 +15,7 @@ interface RegistrationData {
 }
 
 const RegistrationPage = () => {
+  const searchParams = useSearchParams();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<RegistrationData>({
     alias: "",
@@ -24,6 +26,14 @@ const RegistrationPage = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Prepopulate alias from query parameter
+  useEffect(() => {
+    const requestedAlias = searchParams.get("requested-alias");
+    if (requestedAlias) {
+      setFormData((prev) => ({ ...prev, alias: requestedAlias }));
+    }
+  }, [searchParams]);
 
   const validateStep1 = () => {
     const newErrors: Record<string, string> = {};

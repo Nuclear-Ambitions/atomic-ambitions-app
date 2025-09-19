@@ -28,7 +28,7 @@ const faq = [
       "Yes, this is truly a platform that supports people who appreciate or want to learn about atomic energy and related science and engineering. This is for geeks, pragmatists, and futurists. This is for believers and skeptics alike. If you are into learning and the civilized exchange of ideas, this is the place for you. Enjoy!",
   },
 ];
-export default function Home() {
+export default function JoinPage() {
   return (
     <div>
       {/* Main Content */}
@@ -136,9 +136,9 @@ export default function Home() {
                 </p>
               </div>
               <div className="my-12">
-                <Link href="/join/registration" className="btn btn-primary">
+                <a href="#join" className="btn btn-primary">
                   Join Now
-                </Link>
+                </a>
               </div>
             </div>
           </div>
