@@ -41,7 +41,7 @@ const baseNavigationItems: NavigationItem[] = [
     icon: "ph:user-rectangle-duotone",
   },
   {
-    href: "/join",
+    href: "/join/reasons",
     label: "Why Join",
     icon: "ph-sign-in-duotone",
     description: "Benefits of membership",

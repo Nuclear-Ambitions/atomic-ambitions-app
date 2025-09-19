@@ -199,32 +199,16 @@ export default function Home() {
                 </p>
               </div>
               <div className="grid md:grid-cols-2 gap-8 mt-12">
-                <div className="card text-center">
-                  <h3 className="text-xl font-semibold text-primary mb-3">
-                    How You Can Help
-                  </h3>
-                  <p className="text-muted-foreground text-sm mb-6">
-                    Join the Atomic Ambitions platform. Contribute your
-                    expertise. Answer questions in a friendly way. Try to
-                    understand what holds others back.
-                  </p>
-                  <Link href="/why-join/join" className="btn btn-primary m-4">
-                    Join
-                  </Link>
-                </div>
-                <div className="card text-center">
-                  <h3 className="text-xl font-semibold text-primary mb-3">
-                    How We Help You
-                  </h3>
-                  <p className="text-muted-foreground text-sm mb-6">
-                    Join the Atomic Ambitions platform. Ask questions. Keep an
-                    open mind to the answers you get. See if any ideas need an
-                    upgrade.
-                  </p>
-                  <Link href="/why-join/join" className="btn btn-primary">
-                    Join
-                  </Link>
-                </div>
+                <JoinCta
+                  title="How You Can Help"
+                  rationale="Join the Atomic Ambitions platform. Contribute your expertise. Answer questions in a friendly way. Try to understand what holds others back."
+                  buttonText="Share Your Expertise"
+                />
+                <JoinCta
+                  title="How We Help You"
+                  rationale="Join the Atomic Ambitions platform. Ask questions. Keep an open mind to the answers you get. See if any ideas need an upgrade."
+                  buttonText="Give It a Try"
+                />
               </div>
             </div>
           </div>

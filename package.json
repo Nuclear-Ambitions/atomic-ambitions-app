@@ -17,11 +17,14 @@
     "@opennextjs/cloudflare": "^1.6.5",
     "@phosphor-icons/react": "^2.1.10",
     "@tailwindcss/forms": "^0.5.10",
+    "@types/uuid": "^10.0.0",
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.12",
     "next": "15.5.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "react-turnstile": "^1.1.4",
+    "uuid": "^13.0.0",
     "zustand": "^5.0.8"
   },
   "devDependencies": {
