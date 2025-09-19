@@ -2,12 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import { RegistrationData } from "./types";
 import Step1 from "./step1";
 import Step2 from "./step2";
 import Step3 from "./step3";
 
-const RegistrationPage = () => {
+const RegistrationContent = () => {
   const searchParams = useSearchParams();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<RegistrationData>({
@@ -95,12 +96,35 @@ const RegistrationPage = () => {
           </div>
         </div>
 
-        {/* Step content */}
         {currentStep === 1 && <Step1 {...stepProps} />}
         {currentStep === 2 && <Step2 {...stepProps} />}
         {currentStep === 3 && <Step3 {...stepProps} />}
       </div>
     </div>
+  );
+};
+
+const RegistrationPage = () => {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-background py-12">
+          <div className="container mx-auto px-6">
+            <div className="max-w-md mx-auto">
+              <div className="card">
+                <div className="text-center">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+                  <p className="text-muted-foreground">
+                    Loading registration form...
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }>
+      <RegistrationContent />
+    </Suspense>
   );
 };
 
