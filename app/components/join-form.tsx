@@ -32,7 +32,7 @@ export default function JoinForm({
       <h3 className="text-primary mb-4">{title}</h3>
       <p className="mb-4">
         Ready to join the Atomic Ambitions community? Choose an alias to get
-        started, or leave it blank and we'll help you pick one during
+        started, or leave it blank and we will help you pick one during
         registration.
       </p>
       <form onSubmit={handleSubmit} className="space-y-4">

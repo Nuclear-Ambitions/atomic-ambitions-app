@@ -1,5 +1,4 @@
 import JoinForm from "../../components/join-form";
-import Link from "next/link";
 
 const faq = [
   {

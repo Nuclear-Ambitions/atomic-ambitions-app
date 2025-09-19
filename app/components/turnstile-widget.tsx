@@ -1,10 +1,10 @@
 import Turnstile, { useTurnstile } from "react-turnstile";
 
-function TurnstileWidget() {
+export default function TurnstileWidget() {
   const turnstile = useTurnstile();
   return (
     <Turnstile
-      sitekey="1x00000000000000000000AA"
+      sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ""}
       onVerify={(token) => {
         fetch("/login", {
           method: "POST",
