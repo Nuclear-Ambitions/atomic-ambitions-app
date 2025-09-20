@@ -26,22 +26,33 @@ const Step3: React.FC<StepProps> = ({ formData, setFormData }) => {
           <div className="bg-primary/5 border border-primary/20 rounded-lg p-6 mb-8">
             <p className="text-foreground">
               <strong>Next steps:</strong> Please check your email and verify
-              your account. Once verified, you can set up your profile and start
-              exploring our community!
+              your account. Also, you can set up your profile.
             </p>
           </div>
         </div>
 
         <div className="mb-12">
           <h3 className="text-2xl font-bold text-primary mb-6 text-center">
-            Choose Your First Adventure
+            Jump Into the Action
           </h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <FeatureCard
+              title="Club Atomic"
+              description="The best place to start exploring"
+              icon="🎉"
+              href="/clubroom"
+            />
             <FeatureCard
               title="Adventures"
               description="Explore interactive learning experiences"
               icon="🚀"
               href="/adventures"
+            />
+            <FeatureCard
+              title="Atomic Flux"
+              description="Stay updated with the latest news"
+              icon="⚡"
+              href="/flux"
             />
             <FeatureCard
               title="Lessons"
@@ -50,28 +61,16 @@ const Step3: React.FC<StepProps> = ({ formData, setFormData }) => {
               href="/lessons"
             />
             <FeatureCard
-              title="Lab"
+              title="Alchemy Lab"
               description="Hands-on experiments and simulations"
               icon="🧪"
               href="/lab"
             />
             <FeatureCard
-              title="Flux"
-              description="Stay updated with the latest news"
-              icon="⚡"
-              href="/flux"
-            />
-            <FeatureCard
-              title="Who's Who"
+              title="Atomic Who"
               description="Connect with other community members"
               icon="👥"
               href="/whos-who"
-            />
-            <FeatureCard
-              title="Clubroom"
-              description="Join discussions and share ideas"
-              icon="💬"
-              href="/clubroom"
             />
           </div>
         </div>
