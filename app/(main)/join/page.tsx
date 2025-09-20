@@ -1,4 +1,5 @@
 import JoinForm from "../../components/join-form";
+import Image from "next/image";
 
 const faq = [
   {
@@ -108,6 +109,14 @@ export default function JoinPage() {
                     bibendum elit, nec luctus magna felis sollicitudin mauris.
                   </p>
                 </div>
+              </div>
+              <div>
+                <Image
+                  src="/flowing-river-home.jpg"
+                  width={512}
+                  height={288}
+                  alt="Peaceful river scene"
+                />
               </div>
             </div>
           </div>

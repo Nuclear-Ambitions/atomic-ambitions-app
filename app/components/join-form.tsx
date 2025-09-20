@@ -31,9 +31,8 @@ export default function JoinForm({
     <div className={`card max-w-md mx-auto ${className}`}>
       <h3 className="text-primary mb-4">{title}</h3>
       <p className="mb-4">
-        Ready to join the Atomic Ambitions community? Choose an alias to get
-        started, or leave it blank and we will help you pick one during
-        registration.
+        To get started, pick a name for yourself. Something fun, something
+        clever. A way for people to know you.
       </p>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -47,7 +46,7 @@ export default function JoinForm({
             id="alias"
             value={alias}
             onChange={(e) => setAlias(e.target.value)}
-            placeholder="Enter your alias"
+            placeholder="Your alias"
             className="input w-full"
           />
           <p className="text-xs text-muted-foreground mt-1">
