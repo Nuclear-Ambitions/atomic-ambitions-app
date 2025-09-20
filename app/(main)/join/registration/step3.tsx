@@ -4,7 +4,7 @@ import React from "react";
 import FeatureCard from "@/components/feature-card";
 import { StepProps } from "./types";
 
-const Step3: React.FC<StepProps> = ({ formData, setFormData }) => {
+const Step3: React.FC<StepProps> = ({ formData, setFormData, onPrevious }) => {
   const handlePaymentComplete = () => {
     // This would be called after successful payment processing
     // For now, just show the completion message
@@ -133,12 +133,8 @@ const Step3: React.FC<StepProps> = ({ formData, setFormData }) => {
         </div>
 
         <div className="flex gap-4">
-          <button
-            onClick={() =>
-              setFormData({ ...formData, membershipLevel: "explorer" })
-            }
-            className="btn btn-outline flex-1">
-            Choose Explorer Instead
+          <button onClick={onPrevious} className="btn btn-outline flex-1">
+            Pick a Different Level
           </button>
           <button
             onClick={handlePaymentComplete}

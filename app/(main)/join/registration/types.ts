@@ -14,4 +14,5 @@ export interface StepProps {
   isSubmitting: boolean;
   setIsSubmitting: React.Dispatch<React.SetStateAction<boolean>>;
   onNext: () => void;
+  onPrevious?: () => void;
 }

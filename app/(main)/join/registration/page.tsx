@@ -33,6 +33,10 @@ const RegistrationContent = () => {
     setCurrentStep((prev) => prev + 1);
   };
 
+  const handlePrevious = () => {
+    setCurrentStep((prev) => prev - 1);
+  };
+
   const stepProps = {
     formData,
     setFormData,
@@ -41,6 +45,7 @@ const RegistrationContent = () => {
     isSubmitting,
     setIsSubmitting,
     onNext: handleNext,
+    onPrevious: handlePrevious,
   };
 
   return (
