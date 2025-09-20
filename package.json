@@ -24,6 +24,7 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-turnstile": "^1.1.4",
+    "stripe": "^18.5.0",
     "uuid": "^13.0.0",
     "zustand": "^5.0.8"
   },
@@ -33,6 +34,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/stripe": "^8.0.416",
     "eslint": "^9",
     "eslint-config-next": "15.5.0",
     "tailwindcss": "^4",
