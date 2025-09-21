@@ -45,6 +45,7 @@ export async function POST(request: NextRequest) {
 
     // Create checkout session
     const session = await stripe.checkout.sessions.create({
+      ui_mode: 'embedded',
       billing_address_collection: 'auto',
       line_items: [
         {
