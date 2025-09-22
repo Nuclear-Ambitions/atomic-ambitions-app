@@ -79,7 +79,7 @@ export interface StepConfig {
   name: string;
   title: string;
   description: string;
-  isRequired: boolean;
+  canSkip: (formData: RegistrationData) => boolean;
   nextStep?: RegistrationStep;
   previousStep?: RegistrationStep;
 }

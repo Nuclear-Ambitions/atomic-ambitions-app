@@ -30,7 +30,6 @@ const IdentityStep: React.FC<StepProps> = ({
         }),
       });
 
-      // FIXME: what's going on here?
       if (response.ok) {
         const { authUrl } = (await response.json()) as { authUrl: string };
         window.location.href = authUrl;
@@ -64,6 +63,8 @@ const IdentityStep: React.FC<StepProps> = ({
 
       if (response.ok) {
         setErrors({});
+        // Update form data to mark identity as verified
+        setFormData((prev) => ({ ...prev, identityVerified: true }));
         // Show success message
         alert(
           "Magic link sent! Check your email and click the link to verify your identity."

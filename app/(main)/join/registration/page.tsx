@@ -20,20 +20,21 @@ const RegistrationContent = () => {
   const searchParams = useSearchParams();
   const { isSignedIn, user } = useAuthStore();
 
-  // Step configuration
+  // Step configuration with canSkip functions
   const stepConfigs: Record<RegistrationStep, StepConfig> = {
     IdentityStep: {
       name: "IdentityStep",
       title: "Verify Identity",
       description: "Confirm your identity",
-      isRequired: true,
+      canSkip: (formData) =>
+        !!formData.identityVerified || !!formData.accountId,
       nextStep: "AccountStep",
     },
     AccountStep: {
       name: "AccountStep",
       title: "Create Account",
       description: "Set up your free Explorer account",
-      isRequired: true,
+      canSkip: (formData) => !!formData.accountId,
       nextStep: "ConfirmMembershipStep",
       previousStep: "IdentityStep",
     },
@@ -41,15 +42,17 @@ const RegistrationContent = () => {
       name: "ConfirmMembershipStep",
       title: "Welcome Explorer",
       description: "Your free account is ready",
-      isRequired: true,
+      canSkip: (formData) => false, // Always required - shows welcome and benefits
       nextStep: "SubscribeStep",
-      previousStep: "IdentityStep",
+      previousStep: "AccountStep",
     },
     SubscribeStep: {
       name: "SubscribeStep",
       title: "Level Up",
       description: "Choose a paid subscription",
-      isRequired: false,
+      canSkip: (formData) =>
+        formData.membershipLevel === "explorer" ||
+        !!formData.subscriptionStatus,
       nextStep: "ConfirmSubscriptionStep",
       previousStep: "ConfirmMembershipStep",
     },
@@ -57,23 +60,25 @@ const RegistrationContent = () => {
       name: "ConfirmSubscriptionStep",
       title: "Complete",
       description: "Finish your registration",
-      isRequired: false,
+      canSkip: (formData) => formData.membershipLevel === "explorer", // Skip if staying as Explorer
       previousStep: "SubscribeStep",
     },
   };
 
   // Determine initial step based on user state
   const getInitialStep = (): RegistrationStep => {
-    if (isSignedIn && user?.id) {
-      // User has account, check if they need identity verification
-      if (!user.name && !formData.identityVerified) {
-        return "IdentityStep";
+    // Always start with Identity verification first
+    if (isSignedIn && user?.id && user?.name) {
+      // User has verified identity, check if they have an account
+      if (formData.accountId) {
+        // User has account, can go to subscription selection
+        return "SubscribeStep";
       }
-      // User is verified, check if they want to subscribe
-      return "SubscribeStep";
+      // User has identity but no account yet
+      return "AccountStep";
     }
-    // No account, start from beginning
-    return "AccountStep";
+    // Start with identity verification
+    return "IdentityStep";
   };
 
   const [stepFlow, setStepFlow] = useState<StepFlow>({
@@ -132,7 +137,7 @@ const RegistrationContent = () => {
 
   const handleSkip = () => {
     const currentConfig = stepConfigs[stepFlow.currentStep];
-    if (!currentConfig.isRequired && currentConfig.nextStep) {
+    if (currentConfig.canSkip(formData) && currentConfig.nextStep) {
       setStepFlow((prev) => ({
         ...prev,
         currentStep: currentConfig.nextStep!,
