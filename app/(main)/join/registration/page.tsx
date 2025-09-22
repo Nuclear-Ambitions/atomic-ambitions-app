@@ -19,6 +19,7 @@ import { useAuthStore } from "@/lib/stores/auth-store";
 const RegistrationContent = () => {
   const searchParams = useSearchParams();
   const { isSignedIn, user } = useAuthStore();
+  const [isInitializing, setIsInitializing] = useState(true);
 
   // Step configuration with canSkip functions
   const stepConfigs: Record<RegistrationStep, StepConfig> = {
@@ -66,12 +67,26 @@ const RegistrationContent = () => {
     },
   };
 
-  // Determine initial step based on user state
-  const getInitialStep = (): RegistrationStep => {
+  // Initialize form data state
+  const [formData, setFormData] = useState<RegistrationData>({
+    alias: "",
+    email: "",
+    termsAcceptedAt: undefined,
+    turnstileToken: "",
+    membershipLevel: undefined,
+    accountId: undefined,
+    identityVerified: false,
+    subscriptionStatus: undefined,
+  });
+
+  // Determine initial step based on loaded registration state
+  const getInitialStep = (
+    loadedFormData: RegistrationData
+  ): RegistrationStep => {
     // Always start with Identity verification first
-    if (isSignedIn && user?.id && user?.name) {
+    if (loadedFormData.identityVerified) {
       // User has verified identity, check if they have an account
-      if (formData.accountId) {
+      if (loadedFormData.accountId) {
         // User has account, can go to subscription selection
         return "SubscribeStep";
       }
@@ -83,7 +98,7 @@ const RegistrationContent = () => {
   };
 
   const [stepFlow, setStepFlow] = useState<StepFlow>({
-    currentStep: getInitialStep(),
+    currentStep: "IdentityStep", // Default, will be updated after loading
     completedSteps: [],
     availableSteps: [
       "IdentityStep",
@@ -93,31 +108,89 @@ const RegistrationContent = () => {
       "ConfirmSubscriptionStep",
     ],
   });
-
-  const [formData, setFormData] = useState<RegistrationData>({
-    alias: "",
-    email: "",
-    termsAcceptedAt: undefined,
-    turnstileToken: "",
-    membershipLevel: undefined,
-    accountId: user?.id,
-    identityVerified: isSignedIn && !!user?.name,
-    subscriptionStatus: undefined,
-  });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  // Prepopulate alias from query parameter
+  // Load registration state on mount
   useEffect(() => {
-    const requestedAlias = searchParams.get("requested-alias");
-    if (requestedAlias) {
-      setFormData((prev) => ({ ...prev, alias: requestedAlias }));
-    }
+    const loadRegistrationState = async () => {
+      try {
+        // Try to load existing registration state from backend
+        const response = await fetch("/api/registration/state", {
+          method: "GET",
+          credentials: "include",
+        });
+
+        let loadedData: RegistrationData = {
+          alias: "",
+          email: "",
+          termsAcceptedAt: undefined,
+          turnstileToken: "",
+          membershipLevel: undefined,
+          accountId: undefined,
+          identityVerified: false,
+          subscriptionStatus: undefined,
+        };
+
+        if (response.ok) {
+          const stateData =
+            (await response.json()) as Partial<RegistrationData>;
+          loadedData = { ...loadedData, ...stateData };
+        }
+
+        // Prepopulate alias from query parameter if not already set
+        const requestedAlias = searchParams.get("requested-alias");
+        if (requestedAlias && !loadedData.alias) {
+          loadedData.alias = requestedAlias;
+        }
+
+        // Update form data with loaded state
+        setFormData(loadedData);
+
+        // Determine and set the appropriate initial step
+        const initialStep = getInitialStep(loadedData);
+        setStepFlow((prev) => ({
+          ...prev,
+          currentStep: initialStep,
+        }));
+      } catch (error) {
+        console.error("Failed to load registration state:", error);
+        // Fall back to default state if loading fails
+        const requestedAlias = searchParams.get("requested-alias");
+        if (requestedAlias) {
+          setFormData((prev) => ({ ...prev, alias: requestedAlias }));
+        }
+      } finally {
+        setIsInitializing(false);
+      }
+    };
+
+    loadRegistrationState();
   }, [searchParams]);
+
+  // Save registration state to backend
+  const saveRegistrationState = async (data: RegistrationData) => {
+    try {
+      await fetch("/api/registration/state", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(data),
+      });
+    } catch (error) {
+      console.error("Failed to save registration state:", error);
+      // Don't throw - this shouldn't block the user flow
+    }
+  };
 
   const handleNext = () => {
     const currentConfig = stepConfigs[stepFlow.currentStep];
     if (currentConfig.nextStep) {
+      // Save current state before moving to next step
+      saveRegistrationState(formData);
+
       setStepFlow((prev) => ({
         ...prev,
         currentStep: currentConfig.nextStep!,
@@ -139,6 +212,9 @@ const RegistrationContent = () => {
   const handleSkip = () => {
     const currentConfig = stepConfigs[stepFlow.currentStep];
     if (currentConfig.canSkip(formData) && currentConfig.nextStep) {
+      // Save current state before skipping
+      saveRegistrationState(formData);
+
       setStepFlow((prev) => ({
         ...prev,
         currentStep: currentConfig.nextStep!,
@@ -167,6 +243,26 @@ const RegistrationContent = () => {
     SubscribeStep: SubscribeStep,
     ConfirmSubscriptionStep: ConfirmSubscriptionStep,
   };
+
+  // Show loading state while initializing
+  if (isInitializing) {
+    return (
+      <div className="min-h-screen bg-background py-12">
+        <div className="container mx-auto px-6">
+          <div className="max-w-md mx-auto">
+            <div className="card">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+                <p className="text-muted-foreground">
+                  Loading registration state...
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const CurrentStepComponent = stepComponents[stepFlow.currentStep];
 
