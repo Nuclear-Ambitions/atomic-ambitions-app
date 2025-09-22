@@ -26,15 +26,16 @@ const RegistrationContent = () => {
       name: "IdentityStep",
       title: "Verify Identity",
       description: "Confirm your identity",
-      canSkip: (formData) =>
-        !!formData.identityVerified || !!formData.accountId,
+      canSkip: (formData) => {
+        return !!formData.identityVerified;
+      },
       nextStep: "AccountStep",
     },
     AccountStep: {
       name: "AccountStep",
       title: "Create Account",
       description: "Set up your free Explorer account",
-      canSkip: (formData) => !!formData.accountId,
+      canSkip: (formData) => !!formData.joinedAt,
       nextStep: "ConfirmMembershipStep",
       previousStep: "IdentityStep",
     },
