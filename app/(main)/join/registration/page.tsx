@@ -3,20 +3,100 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
-import { RegistrationData } from "./types";
-import Step1 from "./step1";
-import Step2 from "./step2";
-import Step3 from "./step3";
+import {
+  RegistrationData,
+  RegistrationStep,
+  StepFlow,
+  StepConfig,
+} from "./types";
+import AccountStep from "./AccountStep";
+import IdentityStep from "./IdentityStep";
+import ConfirmMembershipStep from "./ConfirmMembershipStep";
+import SubscribeStep from "./SubscribeStep";
+import ConfirmSubscriptionStep from "./ConfirmSubscriptionStep";
+import { useAuthStore } from "@/lib/stores/auth-store";
 
 const RegistrationContent = () => {
   const searchParams = useSearchParams();
-  const [currentStep, setCurrentStep] = useState(1);
+  const { isSignedIn, user } = useAuthStore();
+
+  // Step configuration
+  const stepConfigs: Record<RegistrationStep, StepConfig> = {
+    IdentityStep: {
+      name: "IdentityStep",
+      title: "Verify Identity",
+      description: "Confirm your identity",
+      isRequired: true,
+      nextStep: "AccountStep",
+    },
+    AccountStep: {
+      name: "AccountStep",
+      title: "Create Account",
+      description: "Set up your free Explorer account",
+      isRequired: true,
+      nextStep: "ConfirmMembershipStep",
+      previousStep: "IdentityStep",
+    },
+    ConfirmMembershipStep: {
+      name: "ConfirmMembershipStep",
+      title: "Welcome Explorer",
+      description: "Your free account is ready",
+      isRequired: true,
+      nextStep: "SubscribeStep",
+      previousStep: "IdentityStep",
+    },
+    SubscribeStep: {
+      name: "SubscribeStep",
+      title: "Level Up",
+      description: "Choose a paid subscription",
+      isRequired: false,
+      nextStep: "ConfirmSubscriptionStep",
+      previousStep: "ConfirmMembershipStep",
+    },
+    ConfirmSubscriptionStep: {
+      name: "ConfirmSubscriptionStep",
+      title: "Complete",
+      description: "Finish your registration",
+      isRequired: false,
+      previousStep: "SubscribeStep",
+    },
+  };
+
+  // Determine initial step based on user state
+  const getInitialStep = (): RegistrationStep => {
+    if (isSignedIn && user?.id) {
+      // User has account, check if they need identity verification
+      if (!user.name && !formData.identityVerified) {
+        return "IdentityStep";
+      }
+      // User is verified, check if they want to subscribe
+      return "SubscribeStep";
+    }
+    // No account, start from beginning
+    return "AccountStep";
+  };
+
+  const [stepFlow, setStepFlow] = useState<StepFlow>({
+    currentStep: getInitialStep(),
+    completedSteps: [],
+    availableSteps: [
+      "IdentityStep",
+      "AccountStep",
+      "ConfirmMembershipStep",
+      "SubscribeStep",
+      "ConfirmSubscriptionStep",
+    ],
+  });
+
   const [formData, setFormData] = useState<RegistrationData>({
     alias: "",
     email: "",
-    termsAccepted: false,
+    termsAcceptedAt: undefined,
     turnstileToken: "",
-    membershipLevel: "explorer",
+    membershipLevel: undefined,
+    accountId: user?.id,
+    identityVerified: isSignedIn && !!user?.name,
+    subscriptionStatus: undefined,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -30,11 +110,35 @@ const RegistrationContent = () => {
   }, [searchParams]);
 
   const handleNext = () => {
-    setCurrentStep((prev) => prev + 1);
+    const currentConfig = stepConfigs[stepFlow.currentStep];
+    if (currentConfig.nextStep) {
+      setStepFlow((prev) => ({
+        ...prev,
+        currentStep: currentConfig.nextStep!,
+        completedSteps: [...prev.completedSteps, prev.currentStep],
+      }));
+    }
   };
 
   const handlePrevious = () => {
-    setCurrentStep((prev) => prev - 1);
+    const currentConfig = stepConfigs[stepFlow.currentStep];
+    if (currentConfig.previousStep) {
+      setStepFlow((prev) => ({
+        ...prev,
+        currentStep: currentConfig.previousStep!,
+      }));
+    }
+  };
+
+  const handleSkip = () => {
+    const currentConfig = stepConfigs[stepFlow.currentStep];
+    if (!currentConfig.isRequired && currentConfig.nextStep) {
+      setStepFlow((prev) => ({
+        ...prev,
+        currentStep: currentConfig.nextStep!,
+        completedSteps: [...prev.completedSteps, prev.currentStep],
+      }));
+    }
   };
 
   const stepProps = {
@@ -46,64 +150,61 @@ const RegistrationContent = () => {
     setIsSubmitting,
     onNext: handleNext,
     onPrevious: handlePrevious,
+    onSkip: handleSkip,
   };
+
+  // Get step components mapping
+  const stepComponents = {
+    AccountStep: AccountStep,
+    IdentityStep: IdentityStep,
+    ConfirmMembershipStep: ConfirmMembershipStep,
+    SubscribeStep: SubscribeStep,
+    ConfirmSubscriptionStep: ConfirmSubscriptionStep,
+  };
+
+  const CurrentStepComponent = stepComponents[stepFlow.currentStep];
 
   return (
     <div className="min-h-screen bg-background py-12">
       <div className="container mx-auto px-6">
         {/* Progress indicator */}
-        <div className="max-w-2xl mx-auto mb-12">
+        <div className="max-w-4xl mx-auto mb-12">
           <div className="flex items-center justify-between">
-            <div
-              className={`flex items-center ${
-                currentStep >= 1 ? "text-primary" : "text-muted-foreground"
-              }`}>
-              <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                  currentStep >= 1 ? "bg-primary text-white" : "bg-muted"
-                }`}>
-                1
-              </div>
-              <span className="ml-2 font-medium">Register</span>
-            </div>
-            <div
-              className={`flex-1 h-1 mx-4 ${
-                currentStep >= 2 ? "bg-primary" : "bg-muted"
-              }`}></div>
-            <div
-              className={`flex items-center ${
-                currentStep >= 2 ? "text-primary" : "text-muted-foreground"
-              }`}>
-              <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                  currentStep >= 2 ? "bg-primary text-white" : "bg-muted"
-                }`}>
-                2
-              </div>
-              <span className="ml-2 font-medium">Level Up</span>
-            </div>
-            <div
-              className={`flex-1 h-1 mx-4 ${
-                currentStep >= 3 ? "bg-primary" : "bg-muted"
-              }`}></div>
-            <div
-              className={`flex items-center ${
-                currentStep >= 3 ? "text-primary" : "text-muted-foreground"
-              }`}>
-              <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                  currentStep >= 3 ? "bg-primary text-white" : "bg-muted"
-                }`}>
-                3
-              </div>
-              <span className="ml-2 font-medium">Complete</span>
-            </div>
+            {stepFlow.availableSteps.map((stepName, index) => {
+              const config = stepConfigs[stepName];
+              const isCompleted = stepFlow.completedSteps.includes(stepName);
+              const isCurrent = stepFlow.currentStep === stepName;
+              const isActive = isCurrent || isCompleted;
+
+              return (
+                <React.Fragment key={stepName}>
+                  <div
+                    className={`flex items-center ${
+                      isActive ? "text-primary" : "text-muted-foreground"
+                    }`}>
+                    <div
+                      className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                        isActive ? "bg-primary text-white" : "bg-muted"
+                      }`}>
+                      {isCompleted ? "✓" : index + 1}
+                    </div>
+                    <span className="ml-2 font-medium hidden sm:block">
+                      {config.title}
+                    </span>
+                  </div>
+                  {index < stepFlow.availableSteps.length - 1 && (
+                    <div
+                      className={`flex-1 h-1 mx-4 ${
+                        isCompleted ? "bg-primary" : "bg-muted"
+                      }`}></div>
+                  )}
+                </React.Fragment>
+              );
+            })}
           </div>
         </div>
 
-        {currentStep === 1 && <Step1 {...stepProps} />}
-        {currentStep === 2 && <Step2 {...stepProps} />}
-        {currentStep === 3 && <Step3 {...stepProps} />}
+        <CurrentStepComponent {...stepProps} />
       </div>
     </div>
   );

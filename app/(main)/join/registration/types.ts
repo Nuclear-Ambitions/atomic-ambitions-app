@@ -1,9 +1,66 @@
-export interface RegistrationData {
+export enum MembershipLevel {
+  Explorer = "explorer",
+  Supporter = "supporter",
+  Charter = "charter",
+  LifetimeCharter = "lifetime_charter",
+}
+
+export enum AccountStatus {
+  Pending = "pending",
+  Active = "active",
+  Suspended = "suspended",
+  Cancelled = "cancelled",
+}
+
+export enum SubscriptionStatus {
+  Pending = "pending",
+  Active = "active",
+  Cancelled = "cancelled",
+}
+
+export enum Role {
+  User = "user",
+  Admin = "admin",
+  Moderator = "moderator",
+  Editor = "editor",
+  Contributor = "contributor",
+}
+
+export interface AccountData {
+  id: string;
   alias: string;
   email: string;
-  termsAccepted: boolean;
-  turnstileToken: string;
-  membershipLevel: "explorer" | "supporter" | "charter";
+  membershipLevel: MembershipLevel;
+  roles: Role[];
+  status: AccountStatus;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface RegistrationData {
+  accountId?: string;
+  identityVerified?: boolean;
+  alias?: string;
+  email?: string;
+  termsAcceptedAt?: Date;
+  turnstileToken?: string;
+  joinedAt?: Date;
+  membershipLevel?: MembershipLevel;
+  subscriptionStatus?: SubscriptionStatus;
+  subscriptionExpiresAt?: Date;
+}
+
+export type RegistrationStep =
+  | "AccountStep"
+  | "IdentityStep"
+  | "ConfirmMembershipStep"
+  | "SubscribeStep"
+  | "ConfirmSubscriptionStep";
+
+export interface StepFlow {
+  currentStep: RegistrationStep;
+  completedSteps: RegistrationStep[];
+  availableSteps: RegistrationStep[];
 }
 
 export interface StepProps {
@@ -15,4 +72,14 @@ export interface StepProps {
   setIsSubmitting: React.Dispatch<React.SetStateAction<boolean>>;
   onNext: () => void;
   onPrevious?: () => void;
+  onSkip?: () => void;
+}
+
+export interface StepConfig {
+  name: string;
+  title: string;
+  description: string;
+  isRequired: boolean;
+  nextStep?: RegistrationStep;
+  previousStep?: RegistrationStep;
 }
