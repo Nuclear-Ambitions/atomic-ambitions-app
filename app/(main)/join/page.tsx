@@ -1,5 +1,6 @@
-import JoinForm from "../../components/join-form";
+import JoinForm from "@/components/join-form";
 import Image from "next/image";
+import SignIn from "@/components/sign-in";
 
 const faq = [
   {
@@ -51,6 +52,7 @@ export default function JoinPage() {
                     a bright future with atomic energy.
                   </p>
                 </div>
+                <SignIn />
               </div>
             </div>
           </div>
