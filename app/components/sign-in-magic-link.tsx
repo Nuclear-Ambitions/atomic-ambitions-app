@@ -11,7 +11,7 @@ const emailSchema = z.object({
     .min(1, "Email is required"),
 });
 
-export function MagicLinkSignIn() {
+export default function MagicLinkSignIn() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -75,11 +75,9 @@ export function MagicLinkSignIn() {
 
   return (
     <div className="card max-w-md mx-auto">
+      <h4 className="text-center">Sign in with a magic link.</h4>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium mb-2">
-            Email Address
-          </label>
+        <div className="mt-4">
           <input
             id="email"
             type="email"
