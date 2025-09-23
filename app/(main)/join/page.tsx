@@ -1,6 +1,7 @@
 import JoinForm from "@/components/join-form";
 import Image from "next/image";
 import SignIn from "@/components/sign-in";
+import { MagicLinkSignIn } from "@/components/sign-in-magic-link";
 
 const faq = [
   {
@@ -52,7 +53,10 @@ export default function JoinPage() {
                     a bright future with atomic energy.
                   </p>
                 </div>
-                <SignIn />
+                <div className="my-6">
+                  <SignIn />
+                </div>
+                <MagicLinkSignIn />
               </div>
             </div>
           </div>

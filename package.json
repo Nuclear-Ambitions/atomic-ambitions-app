@@ -33,6 +33,7 @@
     "react-turnstile": "^1.1.4",
     "stripe": "^18.5.0",
     "uuid": "^13.0.0",
+    "zod": "^4.1.11",
     "zustand": "^5.0.8"
   },
   "devDependencies": {
