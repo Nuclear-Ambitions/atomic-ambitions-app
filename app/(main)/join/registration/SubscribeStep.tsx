@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { StepProps } from "./types";
+import { MembershipLevel, StepProps } from "./types";
 
 const SubscribeStep: React.FC<StepProps> = ({
   formData,
@@ -34,7 +34,10 @@ const SubscribeStep: React.FC<StepProps> = ({
               : "hover:shadow-lg"
           }`}
           onClick={() =>
-            setFormData({ ...formData, membershipLevel: "supporter" })
+            setFormData({
+              ...formData,
+              membershipLevel: MembershipLevel.Supporter,
+            })
           }>
           <div className="text-center mb-6">
             <h3 className="text-2xl font-bold text-primary mb-2">Supporter</h3>
@@ -74,7 +77,10 @@ const SubscribeStep: React.FC<StepProps> = ({
               value="supporter"
               checked={formData.membershipLevel === "supporter"}
               onChange={() =>
-                setFormData({ ...formData, membershipLevel: "supporter" })
+                setFormData({
+                  ...formData,
+                  membershipLevel: MembershipLevel.Supporter,
+                })
               }
               className="w-5 h-5"
             />
@@ -89,7 +95,10 @@ const SubscribeStep: React.FC<StepProps> = ({
               : "hover:shadow-lg"
           }`}
           onClick={() =>
-            setFormData({ ...formData, membershipLevel: "charter" })
+            setFormData({
+              ...formData,
+              membershipLevel: MembershipLevel.Charter,
+            })
           }>
           <div className="text-center mb-6">
             <h3 className="text-2xl font-bold text-primary mb-2">Charter</h3>
@@ -136,7 +145,10 @@ const SubscribeStep: React.FC<StepProps> = ({
               value="charter"
               checked={formData.membershipLevel === "charter"}
               onChange={() =>
-                setFormData({ ...formData, membershipLevel: "charter" })
+                setFormData({
+                  ...formData,
+                  membershipLevel: MembershipLevel.Charter,
+                })
               }
               className="w-5 h-5"
             />
