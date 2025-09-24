@@ -43,7 +43,6 @@ export interface RegistrationData {
   alias?: string;
   email?: string;
   termsAcceptedAt?: Date;
-  turnstileToken?: string;
   joinedAt?: Date;
   membershipLevel?: MembershipLevel;
   subscriptionStatus?: SubscriptionStatus;
