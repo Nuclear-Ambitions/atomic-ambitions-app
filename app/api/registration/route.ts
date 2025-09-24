@@ -43,13 +43,12 @@ export async function POST(request: NextRequest) {
     const body = await request.json() as {
       alias?: string;
       email?: string;
-      turnstileToken?: string;
     } | Partial<RegistrationData>;
 
     // Check if this is a new user registration (has alias and email)
     if ('alias' in body && 'email' in body && body.alias && body.email) {
       // Handle new user registration (from /api/register)
-      const { alias, email, turnstileToken } = body;
+      const { alias, email } = body;
 
       // Validate required fields
       if (!alias || !email) {
