@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
+import Turnstile from "react-turnstile";
 import { z } from "zod";
 
 // Zod schema for email validation
@@ -9,10 +10,12 @@ const emailSchema = z.object({
   email: z
     .email("Please enter a valid email address")
     .min(1, "Email is required"),
+  turnstileToken: z.string().min(1, "We are trying to verify your humanity"),
 });
 
 export default function MagicLinkSignIn() {
   const [email, setEmail] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -23,9 +26,23 @@ export default function MagicLinkSignIn() {
     setIsLoading(true);
 
     try {
-      // Validate email address with Zod
-      const validatedData = emailSchema.parse({ email });
+      // Validate email address and turnstile token with Zod
+      const validatedData = emailSchema.parse({ email, turnstileToken });
 
+      // Verify Turnstile token
+      const response = await fetch("/api/auth/turnstile", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token: validatedData.turnstileToken }),
+      });
+
+      if (!response.ok) {
+        setError("We are sorry, no bots allowed.");
+        setIsLoading(false);
+        return;
+      }
       // Attempt to sign in with magic link
       const result = await signIn("resend", {
         email: validatedData.email,
@@ -92,9 +109,18 @@ export default function MagicLinkSignIn() {
           {error && <p className="text-error text-sm mt-1">{error}</p>}
         </div>
 
+        <div className="flex justify-center">
+          <Turnstile
+            sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ""}
+            onSuccess={(token) => setTurnstileToken(token)}
+            onError={() => setTurnstileToken("")}
+            onExpire={() => setTurnstileToken("")}
+          />
+        </div>
+
         <button
           type="submit"
-          disabled={isLoading || !email.trim()}
+          disabled={isLoading || !email.trim() || !turnstileToken}
           className="btn btn-primary w-full">
           {isLoading ? "Sending..." : "Send Magic Link"}
         </button>

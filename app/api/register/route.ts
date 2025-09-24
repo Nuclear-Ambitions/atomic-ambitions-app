@@ -1,18 +1,32 @@
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
+import { RegistrationData, MembershipLevel, SubscriptionStatus } from "@/(main)/join/registration/types";
 
-// This would typically be replaced with actual Turnstile verification
-async function verifyTurnstile(token: string): Promise<boolean> {
-  // For now, we'll just return true
-  // In production, you would verify the token with Cloudflare
-  // const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-  //   method: 'POST',
-  //   headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-  //   body: `secret=${process.env.TURNSTILE_SECRET}&response=${token}`
-  // });
-  // const result = await response.json();
-  // return result.success;
-  return true;
+export async function GET(request: NextRequest) {
+  try {
+    // For now, return dummy registration data
+    // Later this will be fetched from the database based on user session/cookie
+    const dummyRegistrationData: RegistrationData = {
+      accountId: "dummy-account-id-123",
+      identityVerified: true,
+      alias: "TestUser",
+      email: "test@example.com",
+      termsAcceptedAt: new Date("2024-01-15T10:30:00Z"),
+      turnstileToken: "",
+      joinedAt: new Date("2024-01-15T10:30:00Z"),
+      membershipLevel: MembershipLevel.Explorer,
+      subscriptionStatus: SubscriptionStatus.Active,
+      subscriptionExpiresAt: new Date("2024-12-31T23:59:59Z"),
+    };
+
+    return NextResponse.json(dummyRegistrationData, { status: 200 });
+  } catch (error) {
+    console.error("Error fetching registration data:", error);
+    return NextResponse.json(
+      { message: "Internal server error" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function POST(request: NextRequest) {
@@ -25,18 +39,9 @@ export async function POST(request: NextRequest) {
     const { alias, email, turnstileToken } = body;
 
     // Validate required fields
-    if (!alias || !email || !turnstileToken) {
+    if (!alias || !email) {
       return NextResponse.json(
         { message: "Missing required fields" },
-        { status: 400 }
-      );
-    }
-
-    // Verify Turnstile token
-    const isValidToken = await verifyTurnstile(turnstileToken);
-    if (!isValidToken) {
-      return NextResponse.json(
-        { message: "Invalid verification token" },
         { status: 400 }
       );
     }

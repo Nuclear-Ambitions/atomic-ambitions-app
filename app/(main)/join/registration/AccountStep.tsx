@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Turnstile from "react-turnstile";
 import { MembershipLevel, StepProps } from "./types";
 
 const AccountStep: React.FC<StepProps> = ({
@@ -30,10 +29,6 @@ const AccountStep: React.FC<StepProps> = ({
       newErrors.terms = "You must accept the Terms of Use to get an account";
     }
 
-    if (!formData?.turnstileToken) {
-      newErrors.turnstile = "Having trouble verifying your humanity";
-    }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -57,7 +52,6 @@ const AccountStep: React.FC<StepProps> = ({
         body: JSON.stringify({
           alias: formData.alias,
           email: formData.email,
-          turnstileToken: formData.turnstileToken,
         }),
       });
 
@@ -161,22 +155,6 @@ const AccountStep: React.FC<StepProps> = ({
           </div>
           {errors.terms && (
             <p className="text-red-500 text-sm">{errors.terms}</p>
-          )}
-
-          <div className="flex justify-center">
-            <Turnstile
-              sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ""}
-              onSuccess={(token) =>
-                setFormData({ ...formData, turnstileToken: token })
-              }
-              onError={() => setFormData({ ...formData, turnstileToken: "" })}
-              onExpire={() => setFormData({ ...formData, turnstileToken: "" })}
-            />
-          </div>
-          {errors.turnstile && (
-            <p className="text-red-500 text-sm text-center">
-              {errors.turnstile}
-            </p>
           )}
 
           {errors.submit && (
