@@ -18,7 +18,12 @@ import { useAuthStore } from "@/lib/stores/auth-store";
 
 const RegistrationContent = () => {
   const searchParams = useSearchParams();
-  const { isSignedIn, user } = useAuthStore();
+  const {
+    isSignedIn,
+    user,
+    checkAuthStatus,
+    isLoading: authLoading,
+  } = useAuthStore();
   const [isInitializing, setIsInitializing] = useState(true);
 
   // Step configuration with canSkip functions
@@ -79,12 +84,13 @@ const RegistrationContent = () => {
     subscriptionStatus: undefined,
   });
 
-  // Determine initial step based on loaded registration state
+  // Determine initial step based on loaded registration state and auth status
   const getInitialStep = (
-    loadedFormData: RegistrationData
+    loadedFormData: RegistrationData,
+    isUserSignedIn: boolean
   ): RegistrationStep => {
-    // Always start with Identity verification first
-    if (loadedFormData.identityVerified) {
+    // If user is signed in, they've already verified their identity
+    if (isUserSignedIn || loadedFormData.identityVerified) {
       // User has verified identity, check if they have an account
       if (loadedFormData.accountId) {
         // User has account, can go to subscription selection
@@ -111,14 +117,25 @@ const RegistrationContent = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  // Load registration state on mount
+  // Load registration state and check auth status on mount
   useEffect(() => {
+    let isMounted = true;
+
     const loadRegistrationState = async () => {
       try {
-        // Try to load existing registration state from backend
-        const response = await fetch("/api/registration/state", {
-          method: "GET",
-          credentials: "include",
+        // First, check authentication status
+        await checkAuthStatus();
+
+        if (!isMounted) return;
+
+        // Get the current auth state after the check
+        const currentAuthState = useAuthStore.getState();
+        const currentIsSignedIn = currentAuthState.isSignedIn;
+        const currentUser = currentAuthState.user;
+
+        console.log("Auth state after check:", {
+          isSignedIn: currentIsSignedIn,
+          user: currentUser,
         });
 
         let loadedData: RegistrationData = {
@@ -132,11 +149,25 @@ const RegistrationContent = () => {
           subscriptionStatus: undefined,
         };
 
-        if (response.ok) {
-          const stateData =
-            (await response.json()) as Partial<RegistrationData>;
-          loadedData = { ...loadedData, ...stateData };
+        // If user is signed in, try to load their registration state
+        if (currentIsSignedIn) {
+          try {
+            const response = await fetch("/api/registration/state", {
+              method: "GET",
+              credentials: "include",
+            });
+
+            if (response.ok) {
+              const stateData =
+                (await response.json()) as Partial<RegistrationData>;
+              loadedData = { ...loadedData, ...stateData };
+            }
+          } catch (error) {
+            console.error("Failed to load registration state:", error);
+          }
         }
+
+        if (!isMounted) return;
 
         // Prepopulate alias from query parameter if not already set
         const requestedAlias = searchParams.get("requested-alias");
@@ -144,11 +175,29 @@ const RegistrationContent = () => {
           loadedData.alias = requestedAlias;
         }
 
+        // If user is signed in, mark identity as verified and populate from auth data
+        if (currentIsSignedIn && currentUser) {
+          loadedData.identityVerified = true;
+          if (!loadedData.alias && currentUser.name) {
+            loadedData.alias = currentUser.name;
+          }
+          if (!loadedData.email && currentUser.email) {
+            loadedData.email = currentUser.email;
+          }
+        }
+
+        if (!isMounted) return;
+
+        console.log("Final loaded data:", loadedData);
+        console.log("Current isSignedIn:", currentIsSignedIn);
+
         // Update form data with loaded state
         setFormData(loadedData);
 
         // Determine and set the appropriate initial step
-        const initialStep = getInitialStep(loadedData);
+        const initialStep = getInitialStep(loadedData, currentIsSignedIn);
+        console.log("Initial step determined:", initialStep);
+
         setStepFlow((prev) => ({
           ...prev,
           currentStep: initialStep,
@@ -156,17 +205,25 @@ const RegistrationContent = () => {
       } catch (error) {
         console.error("Failed to load registration state:", error);
         // Fall back to default state if loading fails
-        const requestedAlias = searchParams.get("requested-alias");
-        if (requestedAlias) {
-          setFormData((prev) => ({ ...prev, alias: requestedAlias }));
+        if (isMounted) {
+          const requestedAlias = searchParams.get("requested-alias");
+          if (requestedAlias) {
+            setFormData((prev) => ({ ...prev, alias: requestedAlias }));
+          }
         }
       } finally {
-        setIsInitializing(false);
+        if (isMounted) {
+          setIsInitializing(false);
+        }
       }
     };
 
     loadRegistrationState();
-  }, [searchParams]);
+
+    return () => {
+      isMounted = false;
+    };
+  }, []); // Empty dependency array - only run once on mount
 
   // Save registration state to backend
   const saveRegistrationState = async (data: RegistrationData) => {
@@ -244,8 +301,8 @@ const RegistrationContent = () => {
     ConfirmSubscriptionStep: ConfirmSubscriptionStep,
   };
 
-  // Show loading state while initializing
-  if (isInitializing) {
+  // Show loading state while initializing or checking auth
+  if (isInitializing || authLoading) {
     return (
       <div className="min-h-screen bg-background py-12">
         <div className="container mx-auto px-6">
@@ -254,7 +311,9 @@ const RegistrationContent = () => {
               <div className="text-center">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
                 <p className="text-muted-foreground">
-                  Loading registration state...
+                  {authLoading
+                    ? "Checking authentication..."
+                    : "Loading registration state..."}
                 </p>
               </div>
             </div>
