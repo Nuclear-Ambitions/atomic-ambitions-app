@@ -44,7 +44,7 @@ const AccountStep: React.FC<StepProps> = ({
 
     try {
       // Send data to backend API to create account
-      const response = await fetch("/api/register", {
+      const response = await fetch("/api/registration", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -83,10 +83,31 @@ const AccountStep: React.FC<StepProps> = ({
           Create Your Account
         </h2>
         <p className="text-muted-foreground mb-6 text-center">
-          Let's get you started with a free Explorer account.
+          You will start with a free Explorer membership.
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label
+              htmlFor="givenName"
+              className="block text-sm font-medium text-foreground mb-2">
+              Your Name
+            </label>
+            <input
+              type="text"
+              id="givenName"
+              value={formData.givenName}
+              onChange={(e) =>
+                setFormData({ ...formData, givenName: e.target.value })
+              }
+              placeholder="Enter your alias"
+              className="input w-full"
+            />
+            {errors.alias && (
+              <p className="text-red-500 text-sm mt-1">{errors.alias}</p>
+            )}
+          </div>
+
           <div>
             <label
               htmlFor="alias"
