@@ -9,7 +9,7 @@ import {
   StepFlow,
   StepConfig,
 } from "./types";
-import AccountStep from "./AccountStep";
+import MembershipStep from "./MembershipStep";
 import IdentityStep from "./IdentityStep";
 import ConfirmMembershipStep from "./ConfirmMembershipStep";
 import SubscribeStep from "./SubscribeStep";
@@ -35,12 +35,12 @@ const RegistrationContent = () => {
       canSkip: (formData) => {
         return !!formData.identityVerified;
       },
-      nextStep: "AccountStep",
+      nextStep: "MembershipStep",
     },
-    AccountStep: {
-      name: "AccountStep",
-      title: "Create Account",
-      description: "Set up your free Explorer account",
+    MembershipStep: {
+      name: "MembershipStep",
+      title: "Create Membership",
+      description: "Set up your free Explorer membership",
       canSkip: (formData) => !!formData.joinedAt,
       nextStep: "ConfirmMembershipStep",
       previousStep: "IdentityStep",
@@ -50,7 +50,7 @@ const RegistrationContent = () => {
       title: "Welcome Explorer",
       description: "Your free account is ready",
       canSkip: (formData) => false, // Always required - shows welcome and benefits
-      previousStep: "AccountStep",
+      previousStep: "MembershipStep",
     },
   };
 
@@ -79,6 +79,7 @@ const RegistrationContent = () => {
     alias: "",
     email: "",
     termsAcceptedAt: undefined,
+    privacyPolicyAcceptedAt: undefined,
     membershipLevel: undefined,
     accountId: undefined,
     identityVerified: false,
@@ -98,7 +99,7 @@ const RegistrationContent = () => {
         return "ConfirmMembershipStep";
       }
       // User has identity but no account yet
-      return "AccountStep";
+      return "MembershipStep";
     }
     // Start with identity verification
     return "IdentityStep";
@@ -109,7 +110,7 @@ const RegistrationContent = () => {
     completedSteps: [],
     availableSteps: [
       "IdentityStep",
-      "AccountStep",
+      "MembershipStep",
       "ConfirmMembershipStep",
       // "SubscribeStep",
       // "ConfirmSubscriptionStep",
@@ -143,6 +144,7 @@ const RegistrationContent = () => {
           alias: "",
           email: "",
           termsAcceptedAt: undefined,
+          privacyPolicyAcceptedAt: undefined,
           membershipLevel: undefined,
           accountId: undefined,
           identityVerified: false,
@@ -223,6 +225,7 @@ const RegistrationContent = () => {
     return () => {
       isMounted = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Empty dependency array - only run once on mount
 
   // Save registration state to backend
@@ -294,7 +297,7 @@ const RegistrationContent = () => {
 
   // Get step components mapping
   const stepComponents = {
-    AccountStep: AccountStep,
+    MembershipStep: MembershipStep,
     IdentityStep: IdentityStep,
     ConfirmMembershipStep: ConfirmMembershipStep,
     SubscribeStep: SubscribeStep,

@@ -39,7 +39,7 @@ const ConfirmSubscriptionStep: React.FC<StepProps> = ({
               Payment Processing
             </h2>
             <p className="text-muted-foreground text-lg mb-6">
-              Your payment is being processed. You'll receive a confirmation
+              Your payment is being processed. You will receive a confirmation
               email shortly.
             </p>
           </>

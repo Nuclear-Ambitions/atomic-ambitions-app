@@ -42,7 +42,24 @@ CREATE TABLE users
   email VARCHAR(255),
   "emailVerified" TIMESTAMPTZ,
   image TEXT,
+  alias VARCHAR(255),
  
   PRIMARY KEY (id)
+);
+
+CREATE TABLE memberships
+(
+  id SERIAL,
+  "userId" INTEGER NOT NULL,
+  level VARCHAR(50) NOT NULL DEFAULT 'explorer',
+  status VARCHAR(50) NOT NULL DEFAULT 'active',
+  "joinedAt" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  "termsAcceptedAt" TIMESTAMPTZ,
+  "privacyPolicyAcceptedAt" TIMESTAMPTZ,
+  "createdAt" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  "updatedAt" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+ 
+  PRIMARY KEY (id),
+  FOREIGN KEY ("userId") REFERENCES users(id) ON DELETE CASCADE
 );
  

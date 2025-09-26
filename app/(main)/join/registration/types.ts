@@ -43,6 +43,7 @@ export interface RegistrationData {
   alias?: string;
   email?: string;
   termsAcceptedAt?: Date;
+  privacyPolicyAcceptedAt?: Date;
   joinedAt?: Date;
   membershipLevel?: MembershipLevel;
   subscriptionStatus?: SubscriptionStatus;
@@ -50,7 +51,7 @@ export interface RegistrationData {
 }
 
 export type RegistrationStep =
-  | "AccountStep"
+  | "MembershipStep"
   | "IdentityStep"
   | "ConfirmMembershipStep";
 // | "SubscribeStep"

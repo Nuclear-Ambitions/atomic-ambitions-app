@@ -3,7 +3,7 @@
 import React from "react";
 import { MembershipLevel, StepProps } from "./types";
 
-const AccountStep: React.FC<StepProps> = ({
+const MembershipStep: React.FC<StepProps> = ({
   formData,
   setFormData,
   errors,
@@ -12,21 +12,21 @@ const AccountStep: React.FC<StepProps> = ({
   setIsSubmitting,
   onNext,
 }) => {
-  const validateAccountStep = () => {
+  const validateMembershipStep = () => {
     const newErrors: Record<string, string> = {};
 
     if (!formData?.alias?.trim()) {
       newErrors.alias = "Please enter an alias";
     }
 
-    if (!formData?.email?.trim()) {
-      newErrors.email = "Please enter your email address";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address";
+    if (!formData?.termsAcceptedAt) {
+      newErrors.terms =
+        "You must accept the Terms of Use to create a membership";
     }
 
-    if (!formData?.termsAcceptedAt) {
-      newErrors.terms = "You must accept the Terms of Use to get an account";
+    if (!formData?.privacyPolicyAcceptedAt) {
+      newErrors.privacy =
+        "You must acknowledge the Privacy Policy to create a membership";
     }
 
     setErrors(newErrors);
@@ -36,14 +36,14 @@ const AccountStep: React.FC<StepProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!validateAccountStep()) {
+    if (!validateMembershipStep()) {
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      // Send data to backend API to create account
+      // Send data to backend API to create membership
       const response = await fetch("/api/registration", {
         method: "POST",
         headers: {
@@ -51,25 +51,29 @@ const AccountStep: React.FC<StepProps> = ({
         },
         body: JSON.stringify({
           alias: formData.alias,
-          email: formData.email,
+          termsAcceptedAt: formData.termsAcceptedAt,
+          privacyPolicyAcceptedAt: formData.privacyPolicyAcceptedAt,
         }),
       });
 
       if (response.ok) {
-        const result = (await response.json()) as { accountId: string };
-        // Update form data with account ID
+        const result = (await response.json()) as { membershipId: string };
+        // Update form data with membership details
         setFormData((prev) => ({
           ...prev,
-          accountId: result.accountId,
+          accountId: result.membershipId,
           membershipLevel: MembershipLevel.Explorer,
+          joinedAt: new Date(),
         }));
         onNext();
       } else {
         const errorData = (await response.json()) as { message?: string };
-        setErrors({ submit: errorData.message || "Account creation failed" });
+        setErrors({
+          submit: errorData.message || "Membership creation failed",
+        });
       }
     } catch (error) {
-      console.error("Account creation error:", error);
+      console.error("Membership creation error:", error);
       setErrors({ submit: "Network error. Please try again." });
     } finally {
       setIsSubmitting(false);
@@ -80,34 +84,13 @@ const AccountStep: React.FC<StepProps> = ({
     <div className="max-w-md mx-auto">
       <div className="card">
         <h2 className="text-2xl font-bold text-primary mb-6 text-center">
-          Create Your Account
+          Create Your Membership
         </h2>
         <p className="text-muted-foreground mb-6 text-center">
           You will start with a free Explorer membership.
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label
-              htmlFor="givenName"
-              className="block text-sm font-medium text-foreground mb-2">
-              Your Name
-            </label>
-            <input
-              type="text"
-              id="givenName"
-              value={formData.givenName}
-              onChange={(e) =>
-                setFormData({ ...formData, givenName: e.target.value })
-              }
-              placeholder="Enter your alias"
-              className="input w-full"
-            />
-            {errors.alias && (
-              <p className="text-red-500 text-sm mt-1">{errors.alias}</p>
-            )}
-          </div>
-
           <div>
             <label
               htmlFor="alias"
@@ -117,7 +100,7 @@ const AccountStep: React.FC<StepProps> = ({
             <input
               type="text"
               id="alias"
-              value={formData.alias}
+              value={formData.alias || ""}
               onChange={(e) =>
                 setFormData({ ...formData, alias: e.target.value })
               }
@@ -126,27 +109,6 @@ const AccountStep: React.FC<StepProps> = ({
             />
             {errors.alias && (
               <p className="text-red-500 text-sm mt-1">{errors.alias}</p>
-            )}
-          </div>
-
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-foreground mb-2">
-              Email Address
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
-              placeholder="Enter your email"
-              className="input w-full"
-            />
-            {errors.email && (
-              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
             )}
           </div>
 
@@ -167,15 +129,37 @@ const AccountStep: React.FC<StepProps> = ({
               I agree to the{" "}
               <a href="/terms" className="text-primary hover:underline">
                 Terms of Use
-              </a>{" "}
-              and{" "}
-              <a href="/privacy" className="text-primary hover:underline">
-                Privacy Policy
               </a>
             </label>
           </div>
           {errors.terms && (
             <p className="text-red-500 text-sm">{errors.terms}</p>
+          )}
+
+          <div className="flex items-start space-x-3">
+            <input
+              type="checkbox"
+              id="privacy"
+              checked={!!formData.privacyPolicyAcceptedAt}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  privacyPolicyAcceptedAt: e.target.checked
+                    ? new Date()
+                    : undefined,
+                })
+              }
+              className="mt-1"
+            />
+            <label htmlFor="privacy" className="text-sm text-muted-foreground">
+              I am aware of the{" "}
+              <a href="/privacy" className="text-primary hover:underline">
+                Privacy Policy
+              </a>
+            </label>
+          </div>
+          {errors.privacy && (
+            <p className="text-red-500 text-sm">{errors.privacy}</p>
           )}
 
           {errors.submit && (
@@ -186,7 +170,7 @@ const AccountStep: React.FC<StepProps> = ({
             type="submit"
             disabled={isSubmitting}
             className="btn btn-primary w-full">
-            {isSubmitting ? "Creating Account..." : "Create Account"}
+            {isSubmitting ? "Creating Membership..." : "Create Membership"}
           </button>
         </form>
       </div>
@@ -194,4 +178,4 @@ const AccountStep: React.FC<StepProps> = ({
   );
 };
 
-export default AccountStep;
+export default MembershipStep;
