@@ -10,52 +10,46 @@ export enum AccountStatus {
   Active = "active",
   Suspended = "suspended",
   Cancelled = "cancelled",
+  Terminated = "terminated",
 }
 
 export enum SubscriptionStatus {
   Pending = "pending",
   Active = "active",
-  Cancelled = "cancelled",
+  Cancelled = "cancelled",  // user initiated
+  Terminated = "terminated",  // service initiated
 }
 
 export enum Role {
-  User = "user",
-  Admin = "admin",
+  Member = "member",
+  Contributor = "contributor",
   Moderator = "moderator",
   Editor = "editor",
-  Contributor = "contributor",
-}
-
-export interface AccountData {
-  id: string;
-  alias: string;
-  email: string;
-  membershipLevel: MembershipLevel;
-  roles: Role[];
-  status: AccountStatus;
-  createdAt: Date;
-  updatedAt: Date;
+  Admin = "admin",
 }
 
 export interface RegistrationData {
-  accountId?: string;
-  identityVerified?: boolean;
-  alias?: string;
-  email?: string;
-  termsAcceptedAt?: Date;
-  privacyPolicyAcceptedAt?: Date;
-  joinedAt?: Date;
-  membershipLevel?: MembershipLevel;
-  subscriptionStatus?: SubscriptionStatus;
-  subscriptionExpiresAt?: Date;
+  userId?: string | null;
+  email?: string | null;
+  emailVerified?: Date | null;
+  alias?: string | null;
+  membershipId?: number | null;
+  agreedToTerms?: Date | null;
+  privacyPolicyOk?: Date | null;
+  status?: string | null;
+  level?: string | null;
+  joinedAt?: Date | null;
 }
 
 export type RegistrationStep =
-  | "MembershipStep"
   | "IdentityStep"
+  | "MembershipStep"
   | "ConfirmMembershipStep";
-// | "SubscribeStep"
-// | "ConfirmSubscriptionStep";
+
+// TODO: keep these steps for later
+export type SubscriptionStep =
+  | "SubscriptionStep"
+  | "ConfirmSubscriptionStep";
 
 export interface StepFlow {
   currentStep: RegistrationStep;

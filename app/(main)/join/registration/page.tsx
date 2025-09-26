@@ -33,7 +33,7 @@ const RegistrationContent = () => {
       title: "Verify Identity",
       description: "Confirm your identity",
       canSkip: (formData) => {
-        return !!formData.identityVerified;
+        return !!formData.userId;
       },
       nextStep: "MembershipStep",
     },
@@ -92,13 +92,13 @@ const RegistrationContent = () => {
     isUserSignedIn: boolean
   ): RegistrationStep => {
     // If user is signed in, they've already verified their identity
-    if (isUserSignedIn || loadedFormData.identityVerified) {
+    if (isUserSignedIn || loadedFormData.userId) {
       // User has verified identity, check if they have an account
-      if (loadedFormData.accountId) {
-        // User has account, can go to subscription selection
+      if (loadedFormData.joinedAt) {
+        // User has membership
         return "ConfirmMembershipStep";
       }
-      // User has identity but no account yet
+      // Identity is known, but still needs to join
       return "MembershipStep";
     }
     // Start with identity verification
@@ -140,13 +140,15 @@ const RegistrationContent = () => {
           user: currentUser,
         });
 
+        // FIXME: get this from database and stash locally
+
         let loadedData: RegistrationData = {
           alias: "",
           email: "",
-          termsAcceptedAt: undefined,
-          privacyPolicyAcceptedAt: undefined,
-          membershipLevel: undefined,
-          accountId: undefined,
+          agreedToTerms: undefined,
+          privacyPolicyOk: undefined,
+          level: undefined,
+          membershipId: undefined,
           identityVerified: false,
           subscriptionStatus: undefined,
         };
@@ -161,7 +163,7 @@ const RegistrationContent = () => {
 
             if (response.ok) {
               const stateData =
-                (await response.json()) as Partial<RegistrationData>;
+                (await response.json()) as Partial<MembershipData>;
               loadedData = { ...loadedData, ...stateData };
             }
           } catch (error) {
@@ -229,7 +231,7 @@ const RegistrationContent = () => {
   }, []); // Empty dependency array - only run once on mount
 
   // Save registration state to backend
-  const saveRegistrationState = async (data: RegistrationData) => {
+  const saveRegistrationState = async (data: MembershipData) => {
     try {
       await fetch("/api/registration/state", {
         method: "POST",

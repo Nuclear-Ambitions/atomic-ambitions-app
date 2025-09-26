@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { MembershipLevel, StepProps } from "./types";
 
 const MembershipStep: React.FC<StepProps> = ({
@@ -127,9 +128,12 @@ const MembershipStep: React.FC<StepProps> = ({
             />
             <label htmlFor="terms" className="text-sm text-muted-foreground">
               I agree to the{" "}
-              <a href="/terms" className="text-primary hover:underline">
+              <Link
+                target="_blank"
+                href="https://nuclearambitions.com/legal/terms-of-use.html"
+                className="text-primary hover:underline">
                 Terms of Use
-              </a>
+              </Link>
             </label>
           </div>
           {errors.terms && (
@@ -153,9 +157,12 @@ const MembershipStep: React.FC<StepProps> = ({
             />
             <label htmlFor="privacy" className="text-sm text-muted-foreground">
               I am aware of the{" "}
-              <a href="/privacy" className="text-primary hover:underline">
+              <Link
+                target="_parent"
+                href="https://nuclearambitions.com/legal/privacy-policy.html"
+                className="text-primary hover:underline">
                 Privacy Policy
-              </a>
+              </Link>
             </label>
           </div>
           {errors.privacy && (

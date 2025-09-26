@@ -1,34 +1,50 @@
 import { NextRequest, NextResponse } from "next/server";
-import { v4 as uuidv4 } from "uuid";
 import { auth } from "@/auth";
-import { RegistrationData, MembershipLevel, SubscriptionStatus } from "@/(main)/join/registration/types";
+import { RegistrationData } from "@/(main)/join/registration/types";
+import { db } from "@/lib/db/Database";
 
 export async function GET(request: NextRequest) {
   try {
     const session = await auth();
 
-    if (!session?.user) {
+    if (!session?.user?.id) {
       return NextResponse.json(
         { message: "Authentication required" },
         { status: 401 }
       );
     }
 
-    // For now, return dummy registration data based on the authenticated user
-    // Later this will be fetched from the database
-    const registrationData: RegistrationData = {
-      accountId: session.user.id || session.user.email || undefined,
-      identityVerified: true, // If they're signed in, identity is verified
-      alias: undefined,
-      email: undefined,
-      termsAcceptedAt: undefined,
-      joinedAt: undefined,
-      membershipLevel: undefined,
-      subscriptionStatus: undefined,
-      subscriptionExpiresAt: undefined,
-    };
+    // Fetch registration data from the database based on the authenticated user
+    const userId = session.user.id;
 
-    return NextResponse.json(registrationData, { status: 200 });
+    const user = await db.selectFrom('users').selectAll().executeTakeFirst()
+    if (!user) {
+      return NextResponse.json(
+        { message: "Sign in to register" },
+        { status: 401 }
+      )
+    }
+
+    const membership = await db
+      .selectFrom('memberships')
+      .selectAll()
+      .where('user_id', '=', user.id)
+      .executeTakeFirst();
+
+    const registration: RegistrationData = {
+      userId: user.id,
+      email: user.email,
+      emailVerified: user.emailVerified,
+      alias: user.alias,
+      membershipId: membership?.id,
+      agreedToTerms: membership?.agreed_to_terms,
+      privacyPolicyOk: membership?.privacy_policy_ok,
+      status: membership?.status,
+      level: membership?.level,
+      joinedAt: membership?.joined_at
+    }
+
+    return NextResponse.json(registration, { status: 200 });
   } catch (error) {
     console.error("Error fetching registration state:", error);
     return NextResponse.json(
@@ -70,53 +86,48 @@ export async function POST(request: NextRequest) {
 
       const userId = session.user.id;
 
-      // In a real application, you would:
-      // 1. Update users table with alias
-      // 2. Insert membership record
+      // Update users table with alias
+      await db
+        .updateTable('users')
+        .set({ alias })
+        .where('id', '=', userId)
+        .execute();
 
-      // For now, we'll just log the membership creation
-      console.log("Membership creation:", {
+      // Insert membership record
+      const membership = await db
+        .insertInto('memberships')
+        .values({
+          user_id: userId,
+          level: 'explorer',
+          status: 'active',
+          joined_at: new Date(),
+          agreed_to_terms: termsAcceptedAt,
+          privacy_policy_ok: privacyPolicyAcceptedAt,
+        })
+        .returning('id')
+        .executeTakeFirst();
+
+      if (!membership) {
+        return NextResponse.json(
+          { message: "Failed to create membership" },
+          { status: 500 }
+        );
+      }
+
+      console.log("Membership created successfully:", {
         userId,
+        membershipId: membership.id,
         alias,
-        termsAcceptedAt,
-        privacyPolicyAcceptedAt,
-        level: "Explorer",
+        level: "explorer",
         status: "active",
-        joinedAt: new Date().toISOString(),
         timestamp: new Date().toISOString(),
       });
-
-      // Generate membership ID (in real app, this would be the database ID)
-      const membershipId = uuidv4();
 
       return NextResponse.json(
         {
           message: "Membership created successfully",
-          membershipId,
+          membershipId: membership.id,
         },
-        { status: 200 }
-      );
-    } else {
-      // Handle registration state update (from original /api/registration)
-      const session = await auth();
-
-      if (!session?.user) {
-        return NextResponse.json(
-          { message: "Authentication required" },
-          { status: 401 }
-        );
-      }
-
-      // In a real application, you would save this to the database
-      // For now, we'll just log the update
-      console.log("Registration state update:", {
-        userId: session.user.id || session.user.email,
-        data: body,
-        timestamp: new Date().toISOString(),
-      });
-
-      return NextResponse.json(
-        { message: "Registration state updated successfully" },
         { status: 200 }
       );
     }
