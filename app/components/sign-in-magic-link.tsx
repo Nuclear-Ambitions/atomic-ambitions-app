@@ -72,7 +72,7 @@ export default function MagicLinkSignIn() {
           <div className="text-success text-2xl mb-4">✓</div>
           <h3 className="text-lg font-semibold mb-2">Check your email</h3>
           <p className="text-muted-foreground">
-            We've sent a magic link to <strong>{email}</strong>
+            We have sent a magic link to <strong>{email}</strong>
           </p>
           <p className="text-sm text-muted-foreground mt-2">
             Click the link in your email to sign in.

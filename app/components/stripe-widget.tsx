@@ -20,7 +20,7 @@ const ProductDisplay = () => (
   </section>
 );
 
-const SuccessDisplay = ({ sessionId }) => {
+const SuccessDisplay = ({ sessionId }: { sessionId: string }) => {
   return (
     <section>
       <div className="product Box-root">
@@ -44,16 +44,16 @@ const SuccessDisplay = ({ sessionId }) => {
   );
 };
 
-const Message = ({ message }) => (
+const Message = ({ message }: { message: string }) => (
   <section>
     <p>{message}</p>
   </section>
 );
 
 export default function App() {
-  let [message, setMessage] = useState("");
-  let [success, setSuccess] = useState(false);
-  let [sessionId, setSessionId] = useState("");
+  const [message, setMessage] = useState("");
+  const [success, setSuccess] = useState(false);
+  const [sessionId, setSessionId] = useState("");
 
   useEffect(() => {
     // Check to see if this is a redirect back from Checkout
@@ -61,7 +61,7 @@ export default function App() {
 
     if (query.get("success")) {
       setSuccess(true);
-      setSessionId(query.get("session_id"));
+      setSessionId(query.get("session_id") || "");
     }
 
     if (query.get("canceled")) {
