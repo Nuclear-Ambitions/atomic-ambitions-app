@@ -50,27 +50,29 @@ const RegistrationContent = () => {
       title: "Welcome Explorer",
       description: "Your free account is ready",
       canSkip: (formData) => false, // Always required - shows welcome and benefits
-      nextStep: "SubscribeStep",
       previousStep: "AccountStep",
     },
-    SubscribeStep: {
-      name: "SubscribeStep",
-      title: "Level Up",
-      description: "Choose a paid subscription",
-      canSkip: (formData) =>
-        formData.membershipLevel === "explorer" ||
-        !!formData.subscriptionStatus,
-      nextStep: "ConfirmSubscriptionStep",
-      previousStep: "ConfirmMembershipStep",
-    },
-    ConfirmSubscriptionStep: {
-      name: "ConfirmSubscriptionStep",
-      title: "Complete",
-      description: "Finish your registration",
-      canSkip: (formData) => formData.membershipLevel === "explorer", // Skip if staying as Explorer
-      previousStep: "SubscribeStep",
-    },
   };
+
+  // const subscriptionStepConfigs: Record<RegistrationStep, StepConfig> = {
+  //   SubscribeStep: {
+  //     name: "SubscribeStep",
+  //     title: "Level Up",
+  //     description: "Choose a paid subscription",
+  //     canSkip: (formData) =>
+  //       formData.membershipLevel === "explorer" ||
+  //       !!formData.subscriptionStatus,
+  //     nextStep: "ConfirmSubscriptionStep",
+  //     previousStep: "ConfirmMembershipStep",
+  //   },
+  //   ConfirmSubscriptionStep: {
+  //     name: "ConfirmSubscriptionStep",
+  //     title: "Complete",
+  //     description: "Finish your registration",
+  //     canSkip: (formData) => formData.membershipLevel === "explorer", // Skip if staying as Explorer
+  //     previousStep: "SubscribeStep",
+  //   },
+  // };
 
   // Initialize form data state
   const [formData, setFormData] = useState<RegistrationData>({
@@ -93,7 +95,7 @@ const RegistrationContent = () => {
       // User has verified identity, check if they have an account
       if (loadedFormData.accountId) {
         // User has account, can go to subscription selection
-        return "SubscribeStep";
+        return "ConfirmMembershipStep";
       }
       // User has identity but no account yet
       return "AccountStep";
@@ -109,8 +111,8 @@ const RegistrationContent = () => {
       "IdentityStep",
       "AccountStep",
       "ConfirmMembershipStep",
-      "SubscribeStep",
-      "ConfirmSubscriptionStep",
+      // "SubscribeStep",
+      // "ConfirmSubscriptionStep",
     ],
   });
   const [isSubmitting, setIsSubmitting] = useState(false);

@@ -2,8 +2,8 @@ import Link from "next/link";
 
 export default function JoinCta({
   title = "Join Us",
-  encouragement = "To get started, click the button. We will take you through a few simple steps.",
-  buttonText = "Yes, sign me up!",
+  encouragement = "To get started, click the button. We will help sign in and create your free account.",
+  buttonText = "Sign me in, please.",
   className = "",
 }: {
   title?: string;
@@ -15,7 +15,7 @@ export default function JoinCta({
     <div className={`card max-w-md mx-auto text-center ${className}`}>
       <h3 className="text-xl font-semibold text-primary mb-4">{title}</h3>
       <p className="text-foreground my-6">{encouragement}</p>
-      <Link href="/join" className="btn btn-primary m-4">
+      <Link href="/join/registration" className="btn btn-primary m-4">
         {buttonText}
       </Link>
     </div>

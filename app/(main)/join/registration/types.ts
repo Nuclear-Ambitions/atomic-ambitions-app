@@ -52,9 +52,9 @@ export interface RegistrationData {
 export type RegistrationStep =
   | "AccountStep"
   | "IdentityStep"
-  | "ConfirmMembershipStep"
-  | "SubscribeStep"
-  | "ConfirmSubscriptionStep";
+  | "ConfirmMembershipStep";
+// | "SubscribeStep"
+// | "ConfirmSubscriptionStep";
 
 export interface StepFlow {
   currentStep: RegistrationStep;

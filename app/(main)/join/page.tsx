@@ -1,4 +1,4 @@
-import JoinForm from "@/components/join-form";
+import JoinCta from "@/components/join-cta";
 import Image from "next/image";
 
 const faq = [
@@ -38,7 +38,7 @@ export default function JoinPage() {
           <div className="container mx-auto px-6">
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div className="order-2 md:order-1">
-                <JoinForm title="Welcome!" />
+                <JoinCta title="Welcome!" />
               </div>
               <div className="order-1 md:order-2">
                 <h2 className="text-4xl font-bold text-highlight mb-6">
@@ -93,20 +93,19 @@ export default function JoinPage() {
                 </h2>
                 <div className="space-y-6">
                   <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    When you present a case for doing something, always lead
+                    with the strongest argument. In the case of atomic energy,
+                    it is all about efficiency. How the tiniest particles
+                    unleash enormous amounts of energy.
                   </p>
                   <p>
-                    We are especially grateful to anyone who chooses a paid
-                    subscription. That supports our mission and expansion plans
-                    by covering the costs of running the service.
+                    In the case of joining Atomic Ambitions, it is all about
+                    having a place to explore the science and engineering, as
+                    well as the history and future, of atomic energy.
                   </p>
                   <p>
-                    Curabitur pretium tincidunt lacus. Nulla gravida orci a
-                    odio. Nullam varius, turpis et commodo pharetra, est eros
-                    bibendum elit, nec luctus magna felis sollicitudin mauris.
+                    Many of the biggest challenges are emotional. Find balance
+                    by hanging out with people who are calm and rational.
                   </p>
                 </div>
               </div>
@@ -118,6 +117,11 @@ export default function JoinPage() {
                   alt="Peaceful river scene"
                 />
               </div>
+            </div>
+            <div className="my-12">
+              <a href="#join" className="btn btn-primary">
+                Okay, sign me up!
+              </a>
             </div>
           </div>
         </section>
@@ -131,21 +135,23 @@ export default function JoinPage() {
               </h2>
               <div className="space-y-6 text-muted-foreground leading-relaxed">
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat.
+                  If you are curious about atomic energy. If you want to
+                  understand how this abundant source of power works. If you
+                  want to discuss concerns about the side effects of using
+                  atomic energy. If you are skeptical but open minded. You are
+                  welcome here.
                 </p>
                 <p>
-                  Duis aute irure dolor in reprehenderit in voluptate velit esse
-                  cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                  occaecat cupidatat non proident, sunt in culpa qui officia
-                  deserunt mollit anim id est laborum.
+                  If you already understand the wonder of atomic energy. If you
+                  want to share what you know with others. If you want to
+                  discuss matters that are controversial or think creatively
+                  about problems that still need to be solved. You are welcome
+                  here.
                 </p>
               </div>
               <div className="my-12">
                 <a href="#join" className="btn btn-primary">
-                  Join Now
+                  Ready to join?
                 </a>
               </div>
             </div>

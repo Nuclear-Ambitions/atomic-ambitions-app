@@ -35,16 +35,16 @@ const baseNavigationItems: NavigationItem[] = [
   //   description: "Learn about atomic energy",
   // },
   {
+    href: "/join",
+    label: "Join",
+    icon: "ph-handshake-duotone",
+    description: "Benefits of membership",
+  },
+  {
     href: "/whos-who",
     label: "Atomic Who",
     description: "Meet the community",
     icon: "ph:user-rectangle-duotone",
-  },
-  {
-    href: "/join/reasons",
-    label: "Why Join",
-    icon: "ph-sign-in-duotone",
-    description: "Benefits of membership",
   },
   {
     href: "/a-neutron-tale",
