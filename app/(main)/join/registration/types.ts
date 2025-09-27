@@ -67,6 +67,7 @@ export interface StepProps {
   onNext: () => void;
   onPrevious?: () => void;
   onSkip?: () => void;
+  refreshRegistrationData?: () => Promise<RegistrationData | null>;
 }
 
 export interface StepConfig {

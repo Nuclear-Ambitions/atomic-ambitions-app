@@ -76,14 +76,16 @@ const RegistrationContent = () => {
 
   // Initialize form data state
   const [formData, setFormData] = useState<RegistrationData>({
-    alias: "",
-    email: "",
-    termsAcceptedAt: undefined,
-    privacyPolicyAcceptedAt: undefined,
-    membershipLevel: undefined,
-    accountId: undefined,
-    identityVerified: false,
-    subscriptionStatus: undefined,
+    userId: null,
+    email: null,
+    emailVerified: null,
+    alias: null,
+    membershipId: null,
+    agreedToTerms: null,
+    privacyPolicyOk: null,
+    status: null,
+    level: null,
+    joinedAt: null,
   });
 
   // Determine initial step based on loaded registration state and auth status
@@ -140,30 +142,30 @@ const RegistrationContent = () => {
           user: currentUser,
         });
 
-        // FIXME: get this from database and stash locally
-
+        // Load registration data from the database
         let loadedData: RegistrationData = {
-          alias: "",
-          email: "",
-          agreedToTerms: undefined,
-          privacyPolicyOk: undefined,
-          level: undefined,
-          membershipId: undefined,
-          identityVerified: false,
-          subscriptionStatus: undefined,
+          userId: null,
+          email: null,
+          emailVerified: null,
+          alias: null,
+          membershipId: null,
+          agreedToTerms: null,
+          privacyPolicyOk: null,
+          status: null,
+          level: null,
+          joinedAt: null,
         };
 
         // If user is signed in, try to load their registration state
         if (currentIsSignedIn) {
           try {
-            const response = await fetch("/api/registration/state", {
+            const response = await fetch("/api/registration", {
               method: "GET",
               credentials: "include",
             });
 
             if (response.ok) {
-              const stateData =
-                (await response.json()) as Partial<MembershipData>;
+              const stateData = (await response.json()) as RegistrationData;
               loadedData = { ...loadedData, ...stateData };
             }
           } catch (error) {
@@ -179,9 +181,8 @@ const RegistrationContent = () => {
           loadedData.alias = requestedAlias;
         }
 
-        // If user is signed in, mark identity as verified and populate from auth data
+        // If user is signed in, populate from auth data if not already set from database
         if (currentIsSignedIn && currentUser) {
-          loadedData.identityVerified = true;
           if (!loadedData.alias && currentUser.name) {
             loadedData.alias = currentUser.name;
           }
@@ -230,29 +231,28 @@ const RegistrationContent = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Empty dependency array - only run once on mount
 
-  // Save registration state to backend
-  const saveRegistrationState = async (data: MembershipData) => {
+  // Refresh registration data from backend
+  const refreshRegistrationData = async () => {
     try {
-      await fetch("/api/registration/state", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+      const response = await fetch("/api/registration", {
+        method: "GET",
         credentials: "include",
-        body: JSON.stringify(data),
       });
+
+      if (response.ok) {
+        const stateData = (await response.json()) as RegistrationData;
+        setFormData(stateData);
+        return stateData;
+      }
     } catch (error) {
-      console.error("Failed to save registration state:", error);
-      // Don't throw - this shouldn't block the user flow
+      console.error("Failed to refresh registration data:", error);
     }
+    return null;
   };
 
   const handleNext = () => {
     const currentConfig = stepConfigs[stepFlow.currentStep];
     if (currentConfig.nextStep) {
-      // Save current state before moving to next step
-      saveRegistrationState(formData);
-
       setStepFlow((prev) => ({
         ...prev,
         currentStep: currentConfig.nextStep!,
@@ -274,9 +274,6 @@ const RegistrationContent = () => {
   const handleSkip = () => {
     const currentConfig = stepConfigs[stepFlow.currentStep];
     if (currentConfig.canSkip(formData) && currentConfig.nextStep) {
-      // Save current state before skipping
-      saveRegistrationState(formData);
-
       setStepFlow((prev) => ({
         ...prev,
         currentStep: currentConfig.nextStep!,
@@ -295,6 +292,7 @@ const RegistrationContent = () => {
     onNext: handleNext,
     onPrevious: handlePrevious,
     onSkip: handleSkip,
+    refreshRegistrationData,
   };
 
   // Get step components mapping

@@ -12,6 +12,7 @@ const MembershipStep: React.FC<StepProps> = ({
   isSubmitting,
   setIsSubmitting,
   onNext,
+  refreshRegistrationData,
 }) => {
   const validateMembershipStep = () => {
     const newErrors: Record<string, string> = {};
@@ -20,12 +21,12 @@ const MembershipStep: React.FC<StepProps> = ({
       newErrors.alias = "Please enter an alias";
     }
 
-    if (!formData?.termsAcceptedAt) {
+    if (!formData?.agreedToTerms) {
       newErrors.terms =
         "You must accept the Terms of Use to create a membership";
     }
 
-    if (!formData?.privacyPolicyAcceptedAt) {
+    if (!formData?.privacyPolicyOk) {
       newErrors.privacy =
         "You must acknowledge the Privacy Policy to create a membership";
     }
@@ -52,20 +53,16 @@ const MembershipStep: React.FC<StepProps> = ({
         },
         body: JSON.stringify({
           alias: formData.alias,
-          termsAcceptedAt: formData.termsAcceptedAt,
-          privacyPolicyAcceptedAt: formData.privacyPolicyAcceptedAt,
+          termsAcceptedAt: formData.agreedToTerms,
+          privacyPolicyAcceptedAt: formData.privacyPolicyOk,
         }),
       });
 
       if (response.ok) {
-        const result = (await response.json()) as { membershipId: string };
-        // Update form data with membership details
-        setFormData((prev) => ({
-          ...prev,
-          accountId: result.membershipId,
-          membershipLevel: MembershipLevel.Explorer,
-          joinedAt: new Date(),
-        }));
+        // Refresh registration data from the database
+        if (refreshRegistrationData) {
+          await refreshRegistrationData();
+        }
         onNext();
       } else {
         const errorData = (await response.json()) as { message?: string };
@@ -117,11 +114,11 @@ const MembershipStep: React.FC<StepProps> = ({
             <input
               type="checkbox"
               id="terms"
-              checked={!!formData.termsAcceptedAt}
+              checked={!!formData.agreedToTerms}
               onChange={(e) =>
                 setFormData({
                   ...formData,
-                  termsAcceptedAt: e.target.checked ? new Date() : undefined,
+                  agreedToTerms: e.target.checked ? new Date() : null,
                 })
               }
               className="mt-1"
@@ -144,13 +141,11 @@ const MembershipStep: React.FC<StepProps> = ({
             <input
               type="checkbox"
               id="privacy"
-              checked={!!formData.privacyPolicyAcceptedAt}
+              checked={!!formData.privacyPolicyOk}
               onChange={(e) =>
                 setFormData({
                   ...formData,
-                  privacyPolicyAcceptedAt: e.target.checked
-                    ? new Date()
-                    : undefined,
+                  privacyPolicyOk: e.target.checked ? new Date() : null,
                 })
               }
               className="mt-1"
