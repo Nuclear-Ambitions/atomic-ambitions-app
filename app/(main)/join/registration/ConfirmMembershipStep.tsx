@@ -30,7 +30,7 @@ const ConfirmMembershipStep: React.FC<StepProps> = ({ formData, onNext }) => {
           <p className="text-foreground mt-2">
             <strong>Membership Level:</strong> Explorer (Free)
           </p>
-          {formData.identityVerified && (
+          {formData.userId && (
             <p className="text-green-600 mt-2">
               <strong>✓ Identity Verified</strong>
             </p>
@@ -125,18 +125,18 @@ const ConfirmMembershipStep: React.FC<StepProps> = ({ formData, onNext }) => {
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4 justify-center">
-        <button onClick={handleContinue} className="btn btn-outline px-8">
-          Continue as Explorer
-        </button>
         <button onClick={handleContinue} className="btn btn-primary px-8">
           Level Up to Supporter
+        </button>
+        <button onClick={handleContinue} className="btn btn-outline px-8">
+          Create Your Profile
         </button>
       </div>
 
       <div className="text-center mt-6">
         <p className="text-sm text-muted-foreground">
-          You can upgrade to Supporter membership anytime to unlock premium
-          features!
+          You can upgrade to Supporter membership anytime you want to show us
+          how much you love Atomic Ambitions.
         </p>
       </div>
     </div>

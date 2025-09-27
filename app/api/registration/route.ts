@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
     // Fetch registration data from the database based on the authenticated user
     const userId = session.user.id;
 
-    const user = await db.selectFrom('users').selectAll().executeTakeFirst()
+    const user = await db.selectFrom('users').selectAll().where('id', '=', userId).executeTakeFirst()
     if (!user) {
       return NextResponse.json(
         { message: "Sign in to register" },

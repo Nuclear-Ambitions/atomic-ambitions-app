@@ -48,7 +48,7 @@ const RegistrationContent = () => {
     ConfirmMembershipStep: {
       name: "ConfirmMembershipStep",
       title: "Welcome Explorer",
-      description: "Your free account is ready",
+      description: "Your account is ready",
       canSkip: (formData) => false, // Always required - shows welcome and benefits
       previousStep: "MembershipStep",
     },
@@ -88,23 +88,26 @@ const RegistrationContent = () => {
     joinedAt: null,
   });
 
-  // Determine initial step based on loaded registration state and auth status
-  const getInitialStep = (
+  // Determine initial step and completed steps based on loaded registration state and auth status
+  const getInitialStepAndCompletedSteps = (
     loadedFormData: RegistrationData,
     isUserSignedIn: boolean
-  ): RegistrationStep => {
+  ): { step: RegistrationStep; completedSteps: RegistrationStep[] } => {
     // If user is signed in, they've already verified their identity
     if (isUserSignedIn || loadedFormData.userId) {
+      const completedSteps: RegistrationStep[] = ["IdentityStep"];
+
       // User has verified identity, check if they have an account
       if (loadedFormData.joinedAt) {
-        // User has membership
-        return "ConfirmMembershipStep";
+        // User has membership - also completed MembershipStep
+        completedSteps.push("MembershipStep");
+        return { step: "ConfirmMembershipStep", completedSteps };
       }
       // Identity is known, but still needs to join
-      return "MembershipStep";
+      return { step: "MembershipStep", completedSteps };
     }
     // Start with identity verification
-    return "IdentityStep";
+    return { step: "IdentityStep", completedSteps: [] };
   };
 
   const [stepFlow, setStepFlow] = useState<StepFlow>({
@@ -175,12 +178,6 @@ const RegistrationContent = () => {
 
         if (!isMounted) return;
 
-        // Prepopulate alias from query parameter if not already set
-        const requestedAlias = searchParams.get("requested-alias");
-        if (requestedAlias && !loadedData.alias) {
-          loadedData.alias = requestedAlias;
-        }
-
         // If user is signed in, populate from auth data if not already set from database
         if (currentIsSignedIn && currentUser) {
           if (!loadedData.alias && currentUser.name) {
@@ -199,13 +196,16 @@ const RegistrationContent = () => {
         // Update form data with loaded state
         setFormData(loadedData);
 
-        // Determine and set the appropriate initial step
-        const initialStep = getInitialStep(loadedData, currentIsSignedIn);
+        // Determine and set the appropriate initial step and completed steps
+        const { step: initialStep, completedSteps } =
+          getInitialStepAndCompletedSteps(loadedData, currentIsSignedIn);
         console.log("Initial step determined:", initialStep);
+        console.log("Completed steps:", completedSteps);
 
         setStepFlow((prev) => ({
           ...prev,
           currentStep: initialStep,
+          completedSteps,
         }));
       } catch (error) {
         console.error("Failed to load registration state:", error);
