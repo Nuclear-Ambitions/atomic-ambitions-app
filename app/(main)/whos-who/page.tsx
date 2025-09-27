@@ -70,7 +70,9 @@ export default function WhosWhoPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-foreground mb-4">Who's Who</h1>
+          <h1 className="text-4xl font-bold text-foreground mb-4">
+            Atomic Who
+          </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Meet the brilliant minds driving the future of nuclear energy. Our
             community of engineers, scientists, and advocates working together
