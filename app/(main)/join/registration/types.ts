@@ -37,6 +37,7 @@ export interface RegistrationData {
   agreedToTerms?: Date | null;
   privacyPolicyOk?: Date | null;
   status?: string | null;
+  subscriptionStatus?: string | null;
   level?: string | null;
   joinedAt?: Date | null;
 }

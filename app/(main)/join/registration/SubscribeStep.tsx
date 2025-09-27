@@ -29,14 +29,14 @@ const SubscribeStep: React.FC<StepProps> = ({
         {/* Supporter Membership */}
         <div
           className={`card cursor-pointer transition-all ${
-            formData.membershipLevel === "supporter"
+            formData.level === "supporter"
               ? "ring-2 ring-primary bg-primary/5"
               : "hover:shadow-lg"
           }`}
           onClick={() =>
             setFormData({
               ...formData,
-              membershipLevel: MembershipLevel.Supporter,
+              level: MembershipLevel.Supporter,
             })
           }>
           <div className="text-center mb-6">
@@ -75,11 +75,11 @@ const SubscribeStep: React.FC<StepProps> = ({
               type="radio"
               name="membership"
               value="supporter"
-              checked={formData.membershipLevel === "supporter"}
+              checked={formData.level === "supporter"}
               onChange={() =>
                 setFormData({
                   ...formData,
-                  membershipLevel: MembershipLevel.Supporter,
+                  level: MembershipLevel.Supporter,
                 })
               }
               className="w-5 h-5"
@@ -90,14 +90,14 @@ const SubscribeStep: React.FC<StepProps> = ({
         {/* Charter Membership */}
         <div
           className={`card cursor-pointer transition-all ${
-            formData.membershipLevel === "charter"
+            formData.level === "charter"
               ? "ring-2 ring-primary bg-primary/5"
               : "hover:shadow-lg"
           }`}
           onClick={() =>
             setFormData({
               ...formData,
-              membershipLevel: MembershipLevel.Charter,
+              level: MembershipLevel.Charter,
             })
           }>
           <div className="text-center mb-6">
@@ -143,11 +143,11 @@ const SubscribeStep: React.FC<StepProps> = ({
               type="radio"
               name="membership"
               value="charter"
-              checked={formData.membershipLevel === "charter"}
+              checked={formData.level === "charter"}
               onChange={() =>
                 setFormData({
                   ...formData,
-                  membershipLevel: MembershipLevel.Charter,
+                  level: MembershipLevel.Charter,
                 })
               }
               className="w-5 h-5"
@@ -157,7 +157,7 @@ const SubscribeStep: React.FC<StepProps> = ({
       </div>
 
       {/* Payment Method Preview */}
-      {formData.membershipLevel !== "explorer" && (
+      {formData.level !== "explorer" && (
         <div className="card mb-8">
           <h3 className="text-xl font-bold text-primary mb-4">
             Payment Summary
@@ -165,25 +165,21 @@ const SubscribeStep: React.FC<StepProps> = ({
           <div className="space-y-4">
             <div className="flex justify-between">
               <span>
-                {formData.membershipLevel === "supporter"
+                {formData.level === "supporter"
                   ? "Supporter Membership"
                   : "Charter Membership"}
               </span>
               <span className="font-bold">
-                {formData.membershipLevel === "supporter"
-                  ? "$11/month"
-                  : "$111/year"}
+                {formData.level === "supporter" ? "$11/month" : "$111/year"}
               </span>
             </div>
             <div className="flex justify-between">
               <span>Billing cycle</span>
               <span>
-                {formData.membershipLevel === "supporter"
-                  ? "Monthly"
-                  : "Annual"}
+                {formData.level === "supporter" ? "Monthly" : "Annual"}
               </span>
             </div>
-            {formData.membershipLevel === "charter" && (
+            {formData.level === "charter" && (
               <div className="flex justify-between text-green-600">
                 <span>Annual discount</span>
                 <span>-15%</span>
@@ -193,7 +189,7 @@ const SubscribeStep: React.FC<StepProps> = ({
             <div className="flex justify-between text-lg font-bold">
               <span>Total</span>
               <span>
-                {formData.membershipLevel === "supporter"
+                {formData.level === "supporter"
                   ? "$11.00/month"
                   : "$111.00/year"}
               </span>
@@ -211,8 +207,8 @@ const SubscribeStep: React.FC<StepProps> = ({
         <button
           onClick={handleSubmit}
           className="btn btn-primary px-8"
-          disabled={formData.membershipLevel === "explorer"}>
-          {formData.membershipLevel === "explorer"
+          disabled={formData.level === "explorer"}>
+          {formData.level === "explorer"
             ? "Select a Membership Level"
             : "Continue to Payment"}
         </button>

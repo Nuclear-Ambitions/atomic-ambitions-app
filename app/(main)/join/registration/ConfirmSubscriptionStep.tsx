@@ -59,9 +59,7 @@ const ConfirmSubscriptionStep: React.FC<StepProps> = ({
             </h2>
             <p className="text-muted-foreground text-lg mb-6">
               Welcome to{" "}
-              {formData.membershipLevel === "supporter"
-                ? "Supporter"
-                : "Charter"}{" "}
+              {formData.level === "supporter" ? "Supporter" : "Charter"}{" "}
               membership!
             </p>
           </>
@@ -75,9 +73,7 @@ const ConfirmSubscriptionStep: React.FC<StepProps> = ({
         <div className="space-y-4">
           <div className="flex justify-between">
             <span>Membership Level</span>
-            <span className="font-bold capitalize">
-              {formData.membershipLevel}
-            </span>
+            <span className="font-bold capitalize">{formData.level}</span>
           </div>
           <div className="flex justify-between">
             <span>Account</span>
@@ -88,9 +84,7 @@ const ConfirmSubscriptionStep: React.FC<StepProps> = ({
           <div className="flex justify-between">
             <span>Billing</span>
             <span>
-              {formData.membershipLevel === "supporter"
-                ? "$11/month"
-                : "$111/year"}
+              {formData.level === "supporter" ? "$11/month" : "$111/year"}
             </span>
           </div>
           <div className="flex justify-between">
@@ -116,8 +110,8 @@ const ConfirmSubscriptionStep: React.FC<StepProps> = ({
       {!isPaymentCancelled && (
         <div className="card mb-8">
           <h3 className="text-xl font-bold text-primary mb-4">
-            {formData.membershipLevel === "supporter" ? "Supporter" : "Charter"}{" "}
-            Benefits Unlocked
+            {formData.level === "supporter" ? "Supporter" : "Charter"} Benefits
+            Unlocked
           </h3>
           <div className="space-y-3">
             <div className="flex items-center space-x-3">
@@ -136,7 +130,7 @@ const ConfirmSubscriptionStep: React.FC<StepProps> = ({
               <span className="text-green-500 font-bold">✓</span>
               <span className="text-foreground">Priority support</span>
             </div>
-            {formData.membershipLevel === "charter" && (
+            {formData.level === "charter" && (
               <>
                 <div className="flex items-center space-x-3">
                   <span className="text-green-500 font-bold">✓</span>
@@ -157,7 +151,7 @@ const ConfirmSubscriptionStep: React.FC<StepProps> = ({
       )}
 
       {/* Payment Processing Section */}
-      {formData.membershipLevel !== "explorer" && (
+      {formData.level !== "explorer" && (
         <div className="card mb-8">
           <h3 className="text-xl font-bold text-primary mb-4">
             Payment Method
