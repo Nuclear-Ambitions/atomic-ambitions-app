@@ -28,7 +28,7 @@
         "AUTH_TRUST_HOST": "true",
         "EMAIL_SERVER": "support.worldofnuclear.com",
         "EMAIL_FROM": "(prod) Atomic Ambitions <magiclink@support.worldofnuclear.com>"
-      }
+      },"name": "atomic-ambitions-app"
     }
   },
   "vars": {
