@@ -20,20 +20,25 @@
       "vars": {
         "AUTH_TRUST_HOST": "true",
         "EMAIL_SERVER": "support.worldofnuclear.com",
-        "EMAIL_FROM": "(dev) Atomic Ambitions <magiclink@support.worldofnuclear.com>"
-      }
+        "EMAIL_FROM": "(dev) Atomic Ambitions <magiclink@support.worldofnuclear.com>",
+        "NEXTAUTH_DEBUG": "true"
+      },
+      "name": "atomic-ambitions-app-staging"
     },
     "production": {
       "vars": {
         "AUTH_TRUST_HOST": "true",
         "EMAIL_SERVER": "support.worldofnuclear.com",
-        "EMAIL_FROM": "(prod) Atomic Ambitions <magiclink@support.worldofnuclear.com>"
-      },"name": "atomic-ambitions-app"
+        "EMAIL_FROM": "(prod) Atomic Ambitions <magiclink@support.worldofnuclear.com>",
+        "NEXTAUTH_DEBUG": "true"
+      },
+      "name": "atomic-ambitions-app"
     }
   },
   "vars": {
     "AUTH_TRUST_HOST": "true",
     "EMAIL_SERVER": "support.worldofnuclear.com",
-    "EMAIL_FROM": "(def) Atomic Ambitions <magiclink@support.worldofnuclear.com>"
+    "EMAIL_FROM": "(def) Atomic Ambitions <magiclink@support.worldofnuclear.com>",
+    "NEXTAUTH_DEBUG": "true"
   }
 }

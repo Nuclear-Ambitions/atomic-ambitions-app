@@ -28,14 +28,35 @@ export default function MagicLinkSignIn() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("🔐 [MAGIC LINK COMPONENT DEBUG] Form submission started");
+    console.log("🔐 [MAGIC LINK COMPONENT DEBUG] Email:", email);
+    console.log(
+      "🔐 [MAGIC LINK COMPONENT DEBUG] Has turnstile token:",
+      !!turnstileToken
+    );
+    console.log(
+      "🔐 [MAGIC LINK COMPONENT DEBUG] Turnstile token length:",
+      turnstileToken?.length || 0
+    );
+
     setError("");
     setIsLoading(true);
 
     try {
       // Validate email address and turnstile token with Zod
+      console.log(
+        "🔐 [MAGIC LINK COMPONENT DEBUG] Validating form data with Zod..."
+      );
       const validatedData = emailSchema.parse({ email, turnstileToken });
+      console.log("🔐 [MAGIC LINK COMPONENT DEBUG] Validation successful:", {
+        email: validatedData.email,
+        hasToken: !!validatedData.turnstileToken,
+      });
 
       // Verify Turnstile token
+      console.log(
+        "🔐 [MAGIC LINK COMPONENT DEBUG] Verifying Turnstile token..."
+      );
       const response = await fetch("/api/auth/turnstile", {
         method: "POST",
         headers: {
@@ -44,29 +65,77 @@ export default function MagicLinkSignIn() {
         body: JSON.stringify({ token: validatedData.turnstileToken }),
       });
 
+      console.log(
+        "🔐 [MAGIC LINK COMPONENT DEBUG] Turnstile response status:",
+        response.status
+      );
+      console.log(
+        "🔐 [MAGIC LINK COMPONENT DEBUG] Turnstile response ok:",
+        response.ok
+      );
+
       if (!response.ok) {
+        const errorData = await response.json();
+        console.error(
+          "🔐 [MAGIC LINK COMPONENT DEBUG] Turnstile verification failed:",
+          errorData
+        );
         setError("We are sorry, no bots allowed.");
         setIsLoading(false);
         return;
       }
+
+      const turnstileResult = await response.json();
+      console.log(
+        "🔐 [MAGIC LINK COMPONENT DEBUG] Turnstile verification result:",
+        turnstileResult
+      );
+
       // Attempt to sign in with magic link
+      console.log(
+        "🔐 [MAGIC LINK COMPONENT DEBUG] Attempting to sign in with magic link..."
+      );
       const result = await signIn("resend", {
         email: validatedData.email,
         redirect: false,
       });
 
+      console.log("🔐 [MAGIC LINK COMPONENT DEBUG] SignIn result:", result);
+
       if (result?.error) {
+        console.error(
+          "🔐 [MAGIC LINK COMPONENT DEBUG] SignIn error:",
+          result.error
+        );
         setError("Failed to send magic link. Please try again.");
       } else {
+        console.log(
+          "🔐 [MAGIC LINK COMPONENT DEBUG] Magic link sent successfully"
+        );
         setIsSubmitted(true);
       }
     } catch (err) {
+      console.error(
+        "🔐 [MAGIC LINK COMPONENT DEBUG] Error in handleSubmit:",
+        err
+      );
+      console.error("🔐 [MAGIC LINK COMPONENT DEBUG] Error type:", typeof err);
+      console.error(
+        "🔐 [MAGIC LINK COMPONENT DEBUG] Error message:",
+        err instanceof Error ? err.message : "Unknown error"
+      );
+
       if (err instanceof z.ZodError) {
+        console.error(
+          "🔐 [MAGIC LINK COMPONENT DEBUG] Zod validation error:",
+          err.issues
+        );
         setError(err.issues[0]?.message || "Invalid email address");
       } else {
         setError("An unexpected error occurred. Please try again.");
       }
     } finally {
+      console.log("🔐 [MAGIC LINK COMPONENT DEBUG] Form submission completed");
       setIsLoading(false);
     }
   };
