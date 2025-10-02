@@ -4,6 +4,11 @@ Keep track of next steps to build out the platform.
 
 ## Features
 
+Registration:
+
 - [ ] Make sure Neon DB is working in production (on Cloudflare)
-- [ ] Add membership upgrade step with Stripe integration
-- [ ] Add a new feature
+- [ ] Try simple query to Neon; make sure DB connection works in production
+
+Subscription:
+
+- [ ] Add subscription step with Stripe integration

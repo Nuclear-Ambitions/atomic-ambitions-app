@@ -1,4 +1,4 @@
-import { Kysely, PostgresDialect, CamelCasePlugin } from 'kysely'
+import { Kysely, PostgresDialect } from 'kysely'
 import { Pool } from 'pg'
 import { DB } from './types'
 
