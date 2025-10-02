@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import Turnstile from "react-turnstile";
+import { Turnstile } from "@marsidev/react-turnstile";
+import TurnstileWidget from "./turnstile-widget";
 import { z } from "zod";
 
 // Zod schema for email validation
@@ -21,6 +22,10 @@ export default function MagicLinkSignIn() {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+
+  const handleTurnstileSuccess = (token: string) => {
+    setTurnstileToken(token);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -114,13 +119,14 @@ export default function MagicLinkSignIn() {
         <div className="flex justify-center">
           {turnstileSiteKey ? (
             <Turnstile
-              sitekey={turnstileSiteKey}
-              onSuccess={(token) => setTurnstileToken(token)}
-              onError={() => setTurnstileToken("")}
-              onExpire={() => setTurnstileToken("")}
+              siteKey={turnstileSiteKey}
+              options={{
+                size: "flexible",
+              }}
+              onSuccess={handleTurnstileSuccess}
             />
           ) : (
-            <p className="text-error text-sm mt-1">Unable to check for bots</p>
+            <div>Cannot check for bots</div>
           )}
         </div>
 
