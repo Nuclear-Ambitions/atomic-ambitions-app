@@ -20,6 +20,8 @@ export default function MagicLinkSignIn() {
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -110,12 +112,16 @@ export default function MagicLinkSignIn() {
         </div>
 
         <div className="flex justify-center">
-          <Turnstile
-            sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ""}
-            onSuccess={(token) => setTurnstileToken(token)}
-            onError={() => setTurnstileToken("")}
-            onExpire={() => setTurnstileToken("")}
-          />
+          {turnstileSiteKey ? (
+            <Turnstile
+              sitekey={turnstileSiteKey}
+              onSuccess={(token) => setTurnstileToken(token)}
+              onError={() => setTurnstileToken("")}
+              onExpire={() => setTurnstileToken("")}
+            />
+          ) : (
+            <p className="text-error text-sm mt-1">Unable to check for bots</p>
+          )}
         </div>
 
         <button
