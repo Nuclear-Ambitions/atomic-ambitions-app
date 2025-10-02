@@ -78,8 +78,8 @@ export default function Home() {
                 <Image
                   src="/nuclear-power-plant.jpg"
                   alt="Nuclear Power Plant"
-                  width={600}
-                  height={400}
+                  width={800}
+                  height={841}
                   className="rounded-lg shadow-lg"
                 />
               </Attribution>
@@ -123,7 +123,7 @@ export default function Home() {
       <section className="py-16 bg-muted/30">
         <div className="container mx-auto px-6 space-y-12">
           <div className="text-center mb-12 space-y-6">
-            <h2 className="text-highlight">Key Features</h2>
+            <h2 className="text-highlight">Choose a Way to Learn</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Learning happens in a variety of ways. Atomic Ambitions offers a
               variety of features for exploring ideas about and related to
