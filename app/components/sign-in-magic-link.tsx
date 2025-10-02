@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { Turnstile } from "@marsidev/react-turnstile";
-import TurnstileWidget from "./turnstile-widget";
 import { z } from "zod";
 
 // Zod schema for email validation

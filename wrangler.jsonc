@@ -3,12 +3,37 @@
   "name": "atomic-ambitions-app",
   "main": ".open-next/worker.js",
   "compatibility_date": "2025-03-01",
-  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "compatibility_flags": [
+    "nodejs_compat",
+    "global_fetch_strictly_public",
+    "nodejs_compat_populate_process_env"
+  ],
   "assets": {
     "binding": "ASSETS",
     "directory": ".open-next/assets"
   },
   "observability": {
     "enabled": true
+  },
+  "env": {
+    "staging": {
+      "vars": {
+        "AUTH_TRUST_HOST": "true",
+        "EMAIL_SERVER": "support.worldofnuclear.com",
+        "EMAIL_FROM": "(dev) Atomic Ambitions <magiclink@support.worldofnuclear.com>"
+      }
+    },
+    "production": {
+      "vars": {
+        "AUTH_TRUST_HOST": "true",
+        "EMAIL_SERVER": "support.worldofnuclear.com",
+        "EMAIL_FROM": "(prod) Atomic Ambitions <magiclink@support.worldofnuclear.com>"
+      }
+    }
+  },
+  "vars": {
+    "AUTH_TRUST_HOST": "true",
+    "EMAIL_SERVER": "support.worldofnuclear.com",
+    "EMAIL_FROM": "(def) Atomic Ambitions <magiclink@support.worldofnuclear.com>"
   }
 }
