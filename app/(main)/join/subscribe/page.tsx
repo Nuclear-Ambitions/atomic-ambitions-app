@@ -54,7 +54,6 @@ const SubscriptionContent = () => {
           productCode: 'charter-member',
           interval: selectedInterval,
           userId: user.id,
-          email: user.email,
         }),
       })
 
