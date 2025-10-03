@@ -1,6 +1,6 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { Profile } from '../data/sample';
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
+import { Profile } from '../data/sample'
 
 export interface User {
   id: string;
@@ -36,26 +36,26 @@ export const useAuthStore = create<AuthState>()(
       isLoading: false,
 
       signIn: (user: User) => {
-        set({ user, isSignedIn: true, isLoading: false });
+        set({ user, isSignedIn: true, isLoading: false })
       },
 
       signOut: () => {
-        set({ user: null, isSignedIn: false, isLoading: false });
+        set({ user: null, isSignedIn: false, isLoading: false })
       },
 
       setLoading: (loading: boolean) => {
-        set({ isLoading: loading });
+        set({ isLoading: loading })
       },
 
       checkAuthStatus: async () => {
-        const currentState = get();
-        if (currentState.isLoading) return; // Prevent multiple simultaneous checks
+        const currentState = get()
+        if (currentState.isLoading) return // Prevent multiple simultaneous checks
 
-        set({ isLoading: true });
+        set({ isLoading: true })
         try {
           const response = await fetch('/api/auth/status', {
             credentials: 'include',
-          });
+          })
 
           if (response.ok) {
             const data = await response.json() as {
@@ -66,7 +66,7 @@ export const useAuthStore = create<AuthState>()(
                 name?: string;
                 image?: string;
               };
-            };
+            }
             if (data.isSignedIn && data.user) {
               set({
                 user: {
@@ -79,37 +79,37 @@ export const useAuthStore = create<AuthState>()(
                 },
                 isSignedIn: true,
                 isLoading: false,
-              });
+              })
             } else {
-              set({ user: null, isSignedIn: false, isLoading: false });
+              set({ user: null, isSignedIn: false, isLoading: false })
             }
           } else {
-            set({ user: null, isSignedIn: false, isLoading: false });
+            set({ user: null, isSignedIn: false, isLoading: false })
           }
         } catch (error) {
-          console.error('Failed to check auth status:', error);
-          set({ user: null, isSignedIn: false, isLoading: false });
+          console.error('Failed to check auth status:', error)
+          set({ user: null, isSignedIn: false, isLoading: false })
         }
       },
 
       hasRole: (role: string) => {
-        const { user } = get();
-        return user?.roles.includes(role) ?? false;
+        const { user } = get()
+        return user?.roles.includes(role) ?? false
       },
 
       hasPermission: (permission: string) => {
-        const { user } = get();
-        return user?.permissions.includes(permission) ?? false;
+        const { user } = get()
+        return user?.permissions.includes(permission) ?? false
       },
 
       hasAnyRole: (roles: string[]) => {
-        const { user } = get();
-        return user?.roles.some(role => roles.includes(role)) ?? false;
+        const { user } = get()
+        return user?.roles.some(role => roles.includes(role)) ?? false
       },
 
       hasAnyPermission: (permissions: string[]) => {
-        const { user } = get();
-        return user?.permissions.some(permission => permissions.includes(permission)) ?? false;
+        const { user } = get()
+        return user?.permissions.some(permission => permissions.includes(permission)) ?? false
       },
     }),
     {
@@ -120,4 +120,4 @@ export const useAuthStore = create<AuthState>()(
       }),
     }
   )
-);
+)
