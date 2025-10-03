@@ -52,26 +52,6 @@ const RegistrationContent = () => {
     },
   }
 
-  // const subscriptionStepConfigs: Record<RegistrationStep, StepConfig> = {
-  //   SubscribeStep: {
-  //     name: "SubscribeStep",
-  //     title: "Level Up",
-  //     description: "Choose a paid subscription",
-  //     canSkip: (formData) =>
-  //       formData.membershipLevel === "explorer" ||
-  //       !!formData.subscriptionStatus,
-  //     nextStep: "ConfirmSubscriptionStep",
-  //     previousStep: "ConfirmMembershipStep",
-  //   },
-  //   ConfirmSubscriptionStep: {
-  //     name: "ConfirmSubscriptionStep",
-  //     title: "Complete",
-  //     description: "Finish your registration",
-  //     canSkip: (formData) => formData.membershipLevel === "explorer", // Skip if staying as Explorer
-  //     previousStep: "SubscribeStep",
-  //   },
-  // };
-
   // Initialize form data state
   const [formData, setFormData] = useState<RegistrationData>({
     userId: null,
@@ -335,11 +315,13 @@ const RegistrationContent = () => {
                   <div
                     className={`flex items-center ${
                       isActive ? 'text-primary' : 'text-muted-foreground'
-                    }`}>
+                    }`}
+                  >
                     <div
                       className={`w-8 h-8 rounded-full flex items-center justify-center ${
                         isActive ? 'bg-primary text-white' : 'bg-muted'
-                      }`}>
+                      }`}
+                    >
                       {isCompleted ? '✓' : index + 1}
                     </div>
                     <span className='ml-2 font-medium hidden sm:block'>
@@ -350,7 +332,8 @@ const RegistrationContent = () => {
                     <div
                       className={`flex-1 h-1 mx-4 ${
                         isCompleted ? 'bg-primary' : 'bg-muted'
-                      }`}></div>
+                      }`}
+                    ></div>
                   )}
                 </React.Fragment>
               )
@@ -382,7 +365,8 @@ const RegistrationPage = () => {
             </div>
           </div>
         </div>
-      }>
+      }
+    >
       <RegistrationContent />
     </Suspense>
   )
