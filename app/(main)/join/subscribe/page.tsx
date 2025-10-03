@@ -3,19 +3,10 @@
 import React, { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
-import { RegistrationData, MembershipLevel } from '../registration/types'
-import SubscribeStep from './SubscribeStep'
-import ConfirmSubscriptionStep from './ConfirmSubscriptionStep'
 import { useAuthStore } from '@/lib/stores/auth-store'
 import Link from 'next/link'
 
-type SubscriptionStep = 'SubscribeStep' | 'ConfirmSubscriptionStep';
-
-interface SubscriptionFlow {
-  currentStep: SubscriptionStep;
-  completedSteps: SubscriptionStep[];
-  availableSteps: SubscriptionStep[];
-}
+type PaymentInterval = 'monthly' | 'annual'
 
 const SubscriptionContent = () => {
   const searchParams = useSearchParams()
@@ -26,110 +17,26 @@ const SubscriptionContent = () => {
     isLoading: authLoading,
   } = useAuthStore()
   const [isInitializing, setIsInitializing] = useState(true)
-
-  // Initialize form data state
-  const [formData, setFormData] = useState<RegistrationData>({
-    userId: null,
-    email: null,
-    emailVerified: null,
-    alias: null,
-    membershipId: null,
-    agreedToTerms: null,
-    privacyPolicyOk: null,
-    status: null,
-    level: null,
-    joinedAt: null,
-    subscriptionStatus: null,
-  })
-
-  // Initialize step flow
-  const [stepFlow, setStepFlow] = useState<SubscriptionFlow>({
-    currentStep: 'SubscribeStep',
-    completedSteps: [],
-    availableSteps: ['SubscribeStep', 'ConfirmSubscriptionStep'],
-  })
-
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [selectedInterval, setSelectedInterval] =
+    useState<PaymentInterval>('monthly')
   const [errors, setErrors] = useState<Record<string, string>>({})
 
-  // Load user data and check auth status on mount
+  // Check for payment status from Stripe redirect
+  const paymentStatus = searchParams.get('payment_status')
+  const subscriptionStatus = searchParams.get('subscription_status')
+
   useEffect(() => {
-    let isMounted = true
-
-    const loadUserData = async () => {
-      try {
-        // First, check authentication status
-        await checkAuthStatus()
-
-        if (!isMounted) return
-
-        // Get the current auth state after the check
-        const currentAuthState = useAuthStore.getState()
-        const currentIsSignedIn = currentAuthState.isSignedIn
-        const currentUser = currentAuthState.user
-
-        // If user is signed in, populate form data
-        if (currentIsSignedIn && currentUser) {
-          setFormData((prev) => ({
-            ...prev,
-            userId: currentUser.id,
-            email: currentUser.email,
-            alias: currentUser.name,
-            emailVerified: new Date(), // Assume verified if user is signed in
-          }))
-        }
-
-        // Check if we're returning from Stripe payment
-        const paymentStatus = searchParams.get('payment_status')
-        const subscriptionStatus = searchParams.get('subscription_status')
-
-        if (paymentStatus === 'success' || subscriptionStatus === 'active') {
-          setFormData((prev) => ({
-            ...prev,
-            subscriptionStatus: subscriptionStatus || 'active',
-          }))
-          setStepFlow((prev) => ({
-            ...prev,
-            currentStep: 'ConfirmSubscriptionStep',
-            completedSteps: ['SubscribeStep'],
-          }))
-        } else if (paymentStatus === 'cancelled') {
-          setFormData((prev) => ({
-            ...prev,
-            subscriptionStatus: 'cancelled',
-          }))
-          setStepFlow((prev) => ({
-            ...prev,
-            currentStep: 'ConfirmSubscriptionStep',
-            completedSteps: ['SubscribeStep'],
-          }))
-        }
-      } catch (error) {
-        console.error('Failed to load user data:', error)
-      } finally {
-        if (isMounted) {
-          setIsInitializing(false)
-        }
-      }
+    const initializeAuth = async () => {
+      await checkAuthStatus()
+      setIsInitializing(false)
     }
+    initializeAuth()
+  }, [checkAuthStatus])
 
-    loadUserData()
-
-    return () => {
-      isMounted = false
-    }
-  }, [searchParams, checkAuthStatus])
-
-  const handleNext = () => {
-    if (stepFlow.currentStep === 'SubscribeStep') {
-      // Handle Stripe payment redirect
-      handleStripePayment()
-    }
-  }
-
-  const handleStripePayment = async () => {
-    if (!formData.level || formData.level === 'explorer') {
-      setErrors({ level: 'Please select a membership level' })
+  const handlePayment = async () => {
+    if (!isSignedIn || !user) {
+      setErrors({ auth: 'Please sign in to continue' })
       return
     }
 
@@ -144,9 +51,10 @@ const SubscriptionContent = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          membershipLevel: formData.level,
-          userId: formData.userId,
-          email: formData.email,
+          productCode: 'charter-member',
+          interval: selectedInterval,
+          userId: user.id,
+          email: user.email,
         }),
       })
 
@@ -166,30 +74,6 @@ const SubscriptionContent = () => {
     }
   }
 
-  const handlePrevious = () => {
-    setStepFlow((prev) => ({
-      ...prev,
-      currentStep: 'SubscribeStep',
-    }))
-  }
-
-  const stepProps = {
-    formData,
-    setFormData,
-    errors,
-    setErrors,
-    isSubmitting,
-    setIsSubmitting,
-    onNext: handleNext,
-    onPrevious: handlePrevious,
-  }
-
-  // Get step components mapping
-  const stepComponents = {
-    SubscribeStep: SubscribeStep,
-    ConfirmSubscriptionStep: ConfirmSubscriptionStep,
-  }
-
   // Show loading state while initializing or checking auth
   if (isInitializing || authLoading) {
     return (
@@ -200,9 +84,7 @@ const SubscriptionContent = () => {
               <div className='text-center'>
                 <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4'></div>
                 <p className='text-muted-foreground'>
-                  {authLoading
-                    ? 'Checking authentication...'
-                    : 'Loading subscription options...'}
+                  {authLoading ? 'Checking authentication...' : 'Loading...'}
                 </p>
               </div>
             </div>
@@ -212,7 +94,88 @@ const SubscriptionContent = () => {
     )
   }
 
-  const CurrentStepComponent = stepComponents[stepFlow.currentStep]
+  // Show confirmation page if user just completed payment
+  if (paymentStatus === 'success' && subscriptionStatus === 'active') {
+    return (
+      <div className='min-h-screen bg-background py-12'>
+        <div className='container mx-auto px-6'>
+          <div className='max-w-2xl mx-auto'>
+            <div className='text-center mb-8'>
+              <div className='w-24 h-24 mx-auto mb-6 bg-primary/10 rounded-full flex items-center justify-center'>
+                <span className='text-4xl'>🎉</span>
+              </div>
+              <h1 className='text-4xl font-bold text-primary mb-4'>
+                Welcome, Charter Member!
+              </h1>
+              <p className='text-xl text-muted-foreground'>
+                Thank you for supporting the Atomic Ambitions platform. Your
+                subscription is now active.
+              </p>
+            </div>
+
+            <div className='card mb-8'>
+              <h2 className='text-2xl font-bold text-primary mb-4'>
+                Your Charter Member Benefits
+              </h2>
+              <div className='space-y-3'>
+                <div className='flex items-center space-x-3'>
+                  <span className='text-green-500 font-bold'>✓</span>
+                  <span className='text-foreground'>
+                    Our gratitude for your support
+                  </span>
+                </div>
+                <div className='flex items-center space-x-3'>
+                  <span className='text-green-500 font-bold'>✓</span>
+                  <span className='text-foreground'>
+                    Access to premium content
+                  </span>
+                </div>
+                <div className='flex items-center space-x-3'>
+                  <span className='text-green-500 font-bold'>✓</span>
+                  <span className='text-foreground'>Cancel anytime</span>
+                </div>
+              </div>
+            </div>
+
+            <div className='text-center'>
+              <Link href='/clubroom' className='btn btn-primary'>
+                Go to Clubroom
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Show cancellation message if user cancelled payment
+  if (paymentStatus === 'cancelled') {
+    return (
+      <div className='min-h-screen bg-background py-12'>
+        <div className='container mx-auto px-6'>
+          <div className='max-w-2xl mx-auto'>
+            <div className='text-center mb-8'>
+              <div className='w-24 h-24 mx-auto mb-6 bg-primary/10 rounded-full flex items-center justify-center'>
+                <span className='text-4xl'>💳</span>
+              </div>
+              <h1 className='text-4xl font-bold text-primary mb-4'>
+                Payment Cancelled
+              </h1>
+              <p className='text-xl text-muted-foreground'>
+                No worries! You can complete your subscription anytime.
+              </p>
+            </div>
+
+            <div className='text-center'>
+              <Link href='/join/subscribe' className='btn btn-primary'>
+                Try Again
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className='min-h-screen bg-background py-12'>
@@ -221,12 +184,10 @@ const SubscriptionContent = () => {
         <div className='max-w-4xl mx-auto mb-12'>
           <div className='text-center'>
             <h1 className='text-4xl font-bold text-primary mb-4'>
-              Upgrade Your Membership
+              Thank You for Supporting Atomic Ambitions
             </h1>
             <p className='text-xl text-muted-foreground max-w-2xl mx-auto'>
-              Unlock premium features and support the Atomic Ambitions community
-              with a paid membership. Choose the plan that works best for you
-              and join our growing community of supporters.
+              Your support helps us power the platform that empowers the people.
             </p>
           </div>
         </div>
@@ -240,15 +201,10 @@ const SubscriptionContent = () => {
                   Sign In Required
                 </h2>
                 <p className='text-muted-foreground mb-6'>
-                  You need to be signed in to upgrade your membership. If
-                  you&apos;re not already a member, you can join our free
-                  Explorer membership first.
+                  You need to be signed in to become a Charter Member.
                 </p>
                 <div className='flex gap-4 justify-center'>
-                  <Link href='/join' className='btn btn-primary'>
-                    Join as Explorer (Free)
-                  </Link>
-                  <Link href='/_sign-in' className='btn btn-outline'>
+                  <Link href='/_sign-in' className='btn btn-primary'>
                     Sign In
                   </Link>
                 </div>
@@ -257,50 +213,122 @@ const SubscriptionContent = () => {
           </div>
         )}
 
-        {/* Subscription Flow */}
+        {/* Charter Member Product */}
         {isSignedIn && (
-          <>
-            {/* Progress indicator */}
-            <div className='max-w-4xl mx-auto mb-12'>
-              <div className='flex items-center justify-center'>
-                {stepFlow.availableSteps.map((stepName, index) => {
-                  const isCompleted =
-                    stepFlow.completedSteps.includes(stepName)
-                  const isCurrent = stepFlow.currentStep === stepName
-                  const isActive = isCurrent || isCompleted
+          <div className='max-w-2xl mx-auto'>
+            <div className='card mb-8'>
+              <div className='text-center mb-8'>
+                <h2 className='text-3xl font-bold text-primary mb-4'>
+                  Charter Member
+                </h2>
+                <p className='text-muted-foreground text-lg'>
+                  Support the platform and unlock premium content
+                </p>
+              </div>
 
-                  return (
-                    <React.Fragment key={stepName}>
-                      <div
-                        className={`flex items-center ${
-                          isActive ? 'text-primary' : 'text-muted-foreground'
-                        }`}>
-                        <div
-                          className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                            isActive ? 'bg-primary text-white' : 'bg-muted'
-                          }`}>
-                          {isCompleted ? '✓' : index + 1}
-                        </div>
-                        <span className='ml-2 font-medium hidden sm:block'>
-                          {stepName === 'SubscribeStep'
-                            ? 'Choose Plan'
-                            : 'Confirm'}
-                        </span>
+              {/* Benefits */}
+              <div className='space-y-4 mb-8'>
+                <div className='flex items-center space-x-3'>
+                  <span className='text-green-500 font-bold'>✓</span>
+                  <span className='text-foreground'>
+                    Our gratitude for your support
+                  </span>
+                </div>
+                <div className='flex items-center space-x-3'>
+                  <span className='text-green-500 font-bold'>✓</span>
+                  <span className='text-foreground'>
+                    Access to premium content
+                  </span>
+                </div>
+                <div className='flex items-center space-x-3'>
+                  <span className='text-green-500 font-bold'>✓</span>
+                  <span className='text-foreground'>Cancel anytime</span>
+                </div>
+              </div>
+
+              {/* Payment Options */}
+              <div className='space-y-4 mb-8'>
+                <h3 className='text-xl font-bold text-primary text-center'>
+                  Choose Your Payment Plan
+                </h3>
+
+                <div className='grid grid-cols-2 gap-4'>
+                  {/* Monthly Option */}
+                  <div
+                    className={`card cursor-pointer transition-all ${
+                      selectedInterval === 'monthly'
+                        ? 'ring-2 ring-primary bg-primary/5'
+                        : 'hover:shadow-lg'
+                    }`}
+                    onClick={() => setSelectedInterval('monthly')}
+                  >
+                    <div className='text-center'>
+                      <h4 className='text-lg font-bold text-primary mb-2'>
+                        Monthly
+                      </h4>
+                      <div className='text-3xl font-bold text-primary mb-1'>
+                        $11
                       </div>
-                      {index < stepFlow.availableSteps.length - 1 && (
-                        <div
-                          className={`flex-1 h-1 mx-4 ${
-                            isCompleted ? 'bg-primary' : 'bg-muted'
-                          }`}></div>
-                      )}
-                    </React.Fragment>
-                  )
-                })}
+                      <p className='text-muted-foreground text-sm'>per month</p>
+                    </div>
+                  </div>
+
+                  {/* Annual Option */}
+                  <div
+                    className={`card cursor-pointer transition-all ${
+                      selectedInterval === 'annual'
+                        ? 'ring-2 ring-primary bg-primary/5'
+                        : 'hover:shadow-lg'
+                    }`}
+                    onClick={() => setSelectedInterval('annual')}
+                  >
+                    <div className='text-center'>
+                      <h4 className='text-lg font-bold text-primary mb-2'>
+                        Annual
+                      </h4>
+                      <div className='text-3xl font-bold text-primary mb-1'>
+                        $111
+                      </div>
+                      <p className='text-muted-foreground text-sm'>per year</p>
+                      <div className='text-xs text-green-600 font-semibold mt-1'>
+                        Save 15%
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Error Messages */}
+              {errors.payment && (
+                <div className='bg-red-50 border border-red-200 rounded-lg p-4 mb-6'>
+                  <p className='text-red-600'>{errors.payment}</p>
+                </div>
+              )}
+
+              {errors.auth && (
+                <div className='bg-red-50 border border-red-200 rounded-lg p-4 mb-6'>
+                  <p className='text-red-600'>{errors.auth}</p>
+                </div>
+              )}
+
+              {/* Payment Button */}
+              <div className='text-center'>
+                <button
+                  onClick={handlePayment}
+                  className='btn btn-primary px-8 py-3 text-lg'
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Processing...' : 'Pay with Stripe'}
+                </button>
+              </div>
+
+              <div className='text-center mt-4'>
+                <p className='text-sm text-muted-foreground'>
+                  Secure payment powered by Stripe • Cancel anytime
+                </p>
               </div>
             </div>
-
-            <CurrentStepComponent {...stepProps} />
-          </>
+          </div>
         )}
       </div>
     </div>
@@ -317,15 +345,14 @@ const SubscriptionPage = () => {
               <div className='card'>
                 <div className='text-center'>
                   <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4'></div>
-                  <p className='text-muted-foreground'>
-                    Loading subscription page...
-                  </p>
+                  <p className='text-muted-foreground'>Loading...</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      }>
+      }
+    >
       <SubscriptionContent />
     </Suspense>
   )
