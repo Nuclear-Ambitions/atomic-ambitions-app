@@ -12,8 +12,6 @@ import {
 import MembershipStep from "./MembershipStep";
 import IdentityStep from "./IdentityStep";
 import ConfirmMembershipStep from "./ConfirmMembershipStep";
-import SubscribeStep from "./SubscribeStep";
-import ConfirmSubscriptionStep from "./ConfirmSubscriptionStep";
 import { useAuthStore } from "@/lib/stores/auth-store";
 
 const RegistrationContent = () => {
@@ -113,13 +111,7 @@ const RegistrationContent = () => {
   const [stepFlow, setStepFlow] = useState<StepFlow>({
     currentStep: "IdentityStep", // Default, will be updated after loading
     completedSteps: [],
-    availableSteps: [
-      "IdentityStep",
-      "MembershipStep",
-      "ConfirmMembershipStep",
-      // "SubscribeStep",
-      // "ConfirmSubscriptionStep",
-    ],
+    availableSteps: ["IdentityStep", "MembershipStep", "ConfirmMembershipStep"],
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -300,8 +292,6 @@ const RegistrationContent = () => {
     MembershipStep: MembershipStep,
     IdentityStep: IdentityStep,
     ConfirmMembershipStep: ConfirmMembershipStep,
-    SubscribeStep: SubscribeStep,
-    ConfirmSubscriptionStep: ConfirmSubscriptionStep,
   };
 
   // Show loading state while initializing or checking auth

@@ -16,6 +16,12 @@ const eslintConfig = [
       "@typescript-eslint/no-unused-vars": "off",
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-esline/no-unescaped-entities": "off",
+      // Quote preferences
+      "quotes": ["error", "single", { "avoidEscape": true }],
+      "jsx-quotes": ["error", "prefer-single"],
+      // Semicolon preferences
+      "semi": ["error", "never"],
+      "@typescript-eslint/semi": ["error", "never"],
     },
     ignores: [
       "node_modules/**",

@@ -1,7 +1,19 @@
 "use client";
 
 import React from "react";
-import { MembershipLevel, StepProps } from "./types";
+import { MembershipLevel } from "../registration/types";
+import { RegistrationData } from "../registration/types";
+
+interface StepProps {
+  formData: RegistrationData;
+  setFormData: React.Dispatch<React.SetStateAction<RegistrationData>>;
+  errors: Record<string, string>;
+  setErrors: React.Dispatch<React.SetStateAction<Record<string, string>>>;
+  isSubmitting: boolean;
+  setIsSubmitting: React.Dispatch<React.SetStateAction<boolean>>;
+  onNext: () => void;
+  onPrevious?: () => void;
+}
 
 const SubscribeStep: React.FC<StepProps> = ({
   formData,
@@ -17,11 +29,11 @@ const SubscribeStep: React.FC<StepProps> = ({
     <div className="max-w-4xl mx-auto">
       <div className="text-center mb-8">
         <h2 className="text-3xl font-bold text-primary mb-4">
-          Level Up Your Membership
+          Choose Your Membership Plan
         </h2>
         <p className="text-muted-foreground text-lg">
-          Choose a paid subscription to unlock premium features and support the
-          community
+          Upgrade from your free Explorer membership to unlock premium features
+          and support the community
         </p>
       </div>
 
@@ -207,9 +219,13 @@ const SubscribeStep: React.FC<StepProps> = ({
         <button
           onClick={handleSubmit}
           className="btn btn-primary px-8"
-          disabled={formData.level === "explorer"}>
-          {formData.level === "explorer"
+          disabled={
+            !formData.level || formData.level === "explorer" || isSubmitting
+          }>
+          {!formData.level || formData.level === "explorer"
             ? "Select a Membership Level"
+            : isSubmitting
+            ? "Processing..."
             : "Continue to Payment"}
         </button>
       </div>
