@@ -96,10 +96,16 @@ const getConditionalNavigationItems = (
 
   if (isSignedIn) {
     items.push({
-      href: "/style-review",
+      href: "/scratch/style-review",
       label: "Style Review",
       icon: "ph:palette-duotone",
       description: "UI theme test pattern",
+    });
+    items.push({
+      href: "/scratch/style-review",
+      label: "Data Access Testing",
+      icon: "ph:database-duotone",
+      description: "Data access tests",
     });
   }
 

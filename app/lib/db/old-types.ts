@@ -41,17 +41,11 @@ export interface Memberships {
 
 export interface Payments {
   amount: number | null;
-  created_at: Generated<Timestamp>;
+  created_at: Timestamp | null;
   currency: string | null;
   id: string;
   stripe_payment_intent_id: string | null;
   subscription_id: string | null;
-}
-
-export interface PlayingWithNeon {
-  id: Generated<number>;
-  name: string;
-  value: number | null;
 }
 
 export interface Products {
@@ -73,20 +67,20 @@ export interface Sessions {
 
 export interface Subscriptions {
   cancel_at: Timestamp | null;
-  created_at: Generated<Timestamp>;
+  created_at: Timestamp | null;
   current_period_end: Timestamp | null;
   current_period_start: Timestamp | null;
   id: string;
   product_id: string | null;
   status: string | null;
   stripe_subscription_id: string | null;
-  updated_at: Generated<Timestamp>;
+  updated_at: Timestamp | null;
   user_id: string | null;
 }
 
 export interface Users {
   alias: string | null;
-  created_at: Generated<Timestamp>;
+  created_at: Timestamp | null;
   email: string;
   emailVerified: Timestamp | null;
   full_name: string | null;
@@ -95,7 +89,7 @@ export interface Users {
   image: string | null;
   name: string | null;
   stripe_customer_id: string | null;
-  updated_at: Generated<Timestamp>;
+  updated_at: Timestamp | null;
 }
 
 export interface VerificationToken {
@@ -108,7 +102,6 @@ export interface DB {
   accounts: Accounts;
   memberships: Memberships;
   payments: Payments;
-  playing_with_neon: PlayingWithNeon;
   products: Products;
   sessions: Sessions;
   subscriptions: Subscriptions;
