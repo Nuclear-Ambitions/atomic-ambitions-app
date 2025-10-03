@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import Link from 'next/link'
 import FeatureCard from '@/components/feature-card'
 import { StepProps } from './types'
 
@@ -125,12 +126,14 @@ const ConfirmMembershipStep: React.FC<StepProps> = ({ formData, onNext }) => {
       </div>
 
       <div className='flex flex-col sm:flex-row gap-4 justify-center'>
-        <button onClick={handleContinue} className='btn btn-primary px-8'>
-          Level Up to Supporter
-        </button>
-        <button onClick={handleContinue} className='btn btn-outline px-8'>
-          Create Your Profile
-        </button>
+        <Link href='/join/subscribe'>
+          <button className='btn btn-primary px-8'>
+            Level Up Your Membership
+          </button>
+        </Link>
+        <Link href='/clubroom/profile'>
+          <button className='btn btn-outline px-8'>Build Your Profile</button>
+        </Link>
       </div>
 
       <div className='text-center mt-6'>
