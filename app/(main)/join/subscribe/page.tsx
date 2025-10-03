@@ -19,7 +19,7 @@ const SubscriptionContent = () => {
   const [isInitializing, setIsInitializing] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [selectedInterval, setSelectedInterval] =
-    useState<PaymentInterval>('monthly')
+    useState<PaymentInterval>('annual')
   const [errors, setErrors] = useState<Record<string, string>>({})
 
   // Check for payment status from Stripe redirect
@@ -184,10 +184,11 @@ const SubscriptionContent = () => {
         <div className='max-w-4xl mx-auto mb-12'>
           <div className='text-center'>
             <h1 className='text-4xl font-bold text-primary mb-4'>
-              Thank You for Supporting Atomic Ambitions
+              Level Up Your Membership
             </h1>
             <p className='text-xl text-muted-foreground max-w-2xl mx-auto'>
-              Your support helps us power the platform that empowers the people.
+              Your support makes a difference. It helps us power the platform
+              that empowers the people. Thank you!
             </p>
           </div>
         </div>
@@ -222,34 +223,40 @@ const SubscriptionContent = () => {
                   Charter Member
                 </h2>
                 <p className='text-muted-foreground text-lg'>
-                  Support the platform and unlock premium content
+                  Support the platform and unlock premium content. You get:
                 </p>
               </div>
 
               {/* Benefits */}
               <div className='space-y-4 mb-8'>
-                <div className='flex items-center space-x-3'>
+                <div className='flex items-center justify-center space-x-3'>
                   <span className='text-green-500 font-bold'>✓</span>
                   <span className='text-foreground'>
-                    Our gratitude for your support
+                    A snazzy Charter Member badge
                   </span>
                 </div>
-                <div className='flex items-center space-x-3'>
+                <div className='flex items-center justify-center space-x-3'>
                   <span className='text-green-500 font-bold'>✓</span>
                   <span className='text-foreground'>
                     Access to premium content
                   </span>
                 </div>
-                <div className='flex items-center space-x-3'>
+                <div className='flex items-center justify-center space-x-3'>
                   <span className='text-green-500 font-bold'>✓</span>
-                  <span className='text-foreground'>Cancel anytime</span>
+                  <span className='text-foreground'>Extra karma points</span>
+                </div>
+                <div className='flex items-center justify-center space-x-3'>
+                  <span className='text-green-500 font-bold'>✓</span>
+                  <span className='text-foreground'>
+                    A regular dose of gratitude
+                  </span>
                 </div>
               </div>
 
               {/* Payment Options */}
               <div className='space-y-4 mb-8'>
                 <h3 className='text-xl font-bold text-primary text-center'>
-                  Choose Your Payment Plan
+                  Choose Your Plan
                 </h3>
 
                 <div className='grid grid-cols-2 gap-4'>
@@ -318,7 +325,7 @@ const SubscriptionContent = () => {
                   className='btn btn-primary px-8 py-3 text-lg'
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? 'Processing...' : 'Pay with Stripe'}
+                  {isSubmitting ? 'Processing...' : 'Level Up'}
                 </button>
               </div>
 
