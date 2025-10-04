@@ -29,6 +29,9 @@ importers:
       '@phosphor-icons/react':
         specifier: ^2.1.10
         version: 2.1.10(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@stripe/stripe-js':
+        specifier: ^8.0.0
+        version: 8.0.0
       '@tailwindcss/forms':
         specifier: ^0.5.10
         version: 0.5.10(tailwindcss@4.1.14)
@@ -60,8 +63,8 @@ importers:
         specifier: 19.2.0
         version: 19.2.0(react@19.2.0)
       stripe:
-        specifier: ^19.0.0
-        version: 19.0.0(@types/node@24.6.2)
+        specifier: ^19.1.0
+        version: 19.1.0(@types/node@24.6.2)
       uuid:
         specifier: ^13.0.0
         version: 13.0.0
@@ -449,6 +452,10 @@ packages:
 
   '@rushstack/eslint-patch@1.12.0':
     resolution: {integrity: sha512-5EwMtOqvJMMa3HbmxLlF74e+3/HhwBTMcvt3nqVJgGCozO6hzIPOBlwm8mGVNR9SN2IJpxSnlxczyDjcn7qIyw==}
+
+  '@stripe/stripe-js@8.0.0':
+    resolution: {integrity: sha512-dLvD55KT1cBmrqzgYRgY42qNcw6zW4HS5oRZs0xRvHw9gBWig5yDnWNop/E+/t2JK+OZO30zsnupVBN2MqW2mg==}
+    engines: {node: '>=12.16'}
 
   '@swc/helpers@0.5.15':
     resolution: {integrity: sha512-JQ5TuMi45Owi4/BIMAJBoSQoOJu12oOk/gADqlcUL9JEdHB8vyjUSsxqeNXnmXHjYKMi2WcYtezGEEhqUI/E2g==}
@@ -1902,8 +1909,8 @@ packages:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
     engines: {node: '>=8'}
 
-  stripe@19.0.0:
-    resolution: {integrity: sha512-4HG17r7mui4Awic75DVSFVmH4EIXqNvoo3T2cYrVhcwovQz3gzQIPUiqzLzGcgxdUd9CB8zCntKzm0o63tUBgw==}
+  stripe@19.1.0:
+    resolution: {integrity: sha512-FjgIiE98dMMTNssfdjMvFdD4eZyEzdWAOwPYqzhPRNZeg9ggFWlPXmX1iJKD5pPIwZBaPlC3SayQQkwsPo6/YQ==}
     engines: {node: '>=16'}
     peerDependencies:
       '@types/node': '>=16'
@@ -2355,6 +2362,8 @@ snapshots:
   '@rtsao/scc@1.1.0': {}
 
   '@rushstack/eslint-patch@1.12.0': {}
+
+  '@stripe/stripe-js@8.0.0': {}
 
   '@swc/helpers@0.5.15':
     dependencies:
@@ -4001,7 +4010,7 @@ snapshots:
 
   strip-json-comments@3.1.1: {}
 
-  stripe@19.0.0(@types/node@24.6.2):
+  stripe@19.1.0(@types/node@24.6.2):
     dependencies:
       qs: 6.14.0
     optionalDependencies:

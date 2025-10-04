@@ -54,11 +54,12 @@ const SubscriptionContent = () => {
           productCode: 'charter-member',
           interval: selectedInterval,
           userId: user.id,
+          email: user.email,
         }),
       })
 
       if (!response.ok) {
-        throw new Error('Failed to create checkout session')
+        throw new Error(`Failed to create checkout session ${response}`)
       }
 
       const { url } = await response.json()

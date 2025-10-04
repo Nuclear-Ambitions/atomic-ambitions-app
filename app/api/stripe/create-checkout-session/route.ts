@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-09-30.clover',
-})
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 const productPrices = {
   "monthly": process.env.STRIPE_CHARTER_MEMBER_MONTHLY_PRICE_ID!,
@@ -12,9 +10,9 @@ const productPrices = {
 
 export async function POST(request: NextRequest) {
   try {
-    const { productCode, interval, userId } = await request.json()
+    const { productCode, interval, userId, email } = await request.json()
 
-    if (!productCode || !interval || !userId) {
+    if (!productCode || !interval || !userId || !email) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -36,6 +34,13 @@ export async function POST(request: NextRequest) {
           quantity: 1,
         },
       ],
+      mode: 'subscription',
+      customer_email: email,
+      metadata: {
+        user_id: userId,
+        product_code: productCode,
+        interval: interval,
+      },
       success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/join/subscribe?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/join/subscribe`,
     })
