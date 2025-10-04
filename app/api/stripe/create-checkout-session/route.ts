@@ -4,13 +4,17 @@ import Stripe from 'stripe'
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 const productPrices = {
-  "monthly": process.env.STRIPE_CHARTER_MEMBER_MONTHLY_PRICE_ID!,
-  "annual": process.env.STRIPE_CHARTER_MEMBER_ANNUAL_PRICE_ID!,
+  "monthly": process.env.STRIPE_PRICE_MONTHLY!,
+  "annual": process.env.STRIPE_PRICE_ANNUAL!,
 }
 
 export async function POST(request: NextRequest) {
   try {
     const { productCode, interval, userId, email } = await request.json()
+
+    console.log('🔐 [STRIPE CREATE CHECKOUT SESSION] Request received:', { productCode, interval, userId, email })
+
+    console.log(productPrices)
 
     if (!productCode || !interval || !userId || !email) {
       return NextResponse.json(
@@ -20,6 +24,7 @@ export async function POST(request: NextRequest) {
     }
 
     const priceId = productPrices[interval as keyof typeof productPrices]
+    console.log('🔐 [STRIPE CREATE CHECKOUT SESSION] Price ID:', priceId)
 
     if (!priceId) {
       return NextResponse.json({ error: 'Invalid payment interval' }, { status: 400 })
@@ -44,10 +49,9 @@ export async function POST(request: NextRequest) {
       success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/join/subscribe?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/join/subscribe`,
     })
-
     return NextResponse.json({ url: session.url })
   } catch (error) {
-    console.error('Stripe checkout session creation failed:', error)
+    console.log('Stripe checkout session creation failed:', error)
     return NextResponse.json(
       { error: 'Failed to create checkout session' },
       { status: 500 }
