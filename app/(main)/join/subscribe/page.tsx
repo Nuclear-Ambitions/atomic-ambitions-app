@@ -21,10 +21,11 @@ const SubscriptionContent = () => {
   const [selectedInterval, setSelectedInterval] =
     useState<PaymentInterval>('annual')
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const [transactionData, setTransactionData] = useState<any>(null)
+  const [isLookingUpSession, setIsLookingUpSession] = useState(false)
 
-  // Check for payment status from Stripe redirect
-  const paymentStatus = searchParams.get('payment_status')
-  const subscriptionStatus = searchParams.get('subscription_status')
+  // Check for session_id from Stripe redirect
+  const sessionId = searchParams.get('session_id')
 
   useEffect(() => {
     const initializeAuth = async () => {
@@ -33,6 +34,34 @@ const SubscriptionContent = () => {
     }
     initializeAuth()
   }, [checkAuthStatus])
+
+  // Lookup session data if session_id is present
+  useEffect(() => {
+    const lookupSession = async () => {
+      if (!sessionId) return
+
+      setIsLookingUpSession(true)
+      try {
+        const response = await fetch(
+          `/api/stripe/session-lookup?session_id=${sessionId}`
+        )
+        if (response.ok) {
+          const data = await response.json()
+          setTransactionData(data.transaction)
+        } else {
+          console.error('Failed to lookup session:', response.statusText)
+          setErrors({ session: 'Failed to retrieve transaction information' })
+        }
+      } catch (error) {
+        console.error('Session lookup error:', error)
+        setErrors({ session: 'Failed to retrieve transaction information' })
+      } finally {
+        setIsLookingUpSession(false)
+      }
+    }
+
+    lookupSession()
+  }, [sessionId])
 
   const handlePayment = async () => {
     if (!isSignedIn || !user) {
@@ -74,8 +103,8 @@ const SubscriptionContent = () => {
     }
   }
 
-  // Show loading state while initializing or checking auth
-  if (isInitializing || authLoading) {
+  // Show loading state while initializing, checking auth, or looking up session
+  if (isInitializing || authLoading || isLookingUpSession) {
     return (
       <div className='min-h-screen bg-background py-12'>
         <div className='container mx-auto px-6'>
@@ -84,7 +113,11 @@ const SubscriptionContent = () => {
               <div className='text-center'>
                 <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4'></div>
                 <p className='text-muted-foreground'>
-                  {authLoading ? 'Checking authentication...' : 'Loading...'}
+                  {isLookingUpSession
+                    ? 'Retrieving transaction information...'
+                    : authLoading
+                    ? 'Checking authentication...'
+                    : 'Loading...'}
                 </p>
               </div>
             </div>
@@ -95,7 +128,7 @@ const SubscriptionContent = () => {
   }
 
   // Show confirmation page if user just completed payment
-  if (paymentStatus === 'success' && subscriptionStatus === 'active') {
+  if (transactionData && transactionData.payment_status === 'paid') {
     return (
       <div className='min-h-screen bg-background py-12'>
         <div className='container mx-auto px-6'>
@@ -149,7 +182,13 @@ const SubscriptionContent = () => {
   }
 
   // Show cancellation message if user cancelled payment
-  if (paymentStatus === 'cancelled') {
+  // This happens when user returns from Stripe without a session_id
+  if (
+    searchParams.get('canceled') === 'true' ||
+    (sessionId &&
+      transactionData &&
+      transactionData.payment_status === 'unpaid')
+  ) {
     return (
       <div className='min-h-screen bg-background py-12'>
         <div className='container mx-auto px-6'>
@@ -315,6 +354,12 @@ const SubscriptionContent = () => {
               {errors.auth && (
                 <div className='bg-red-50 border border-red-200 rounded-lg p-4 mb-6'>
                   <p className='text-red-600'>{errors.auth}</p>
+                </div>
+              )}
+
+              {errors.session && (
+                <div className='bg-red-50 border border-red-200 rounded-lg p-4 mb-6'>
+                  <p className='text-red-600'>{errors.session}</p>
                 </div>
               )}
 

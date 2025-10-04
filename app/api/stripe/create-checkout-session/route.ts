@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
         interval: interval,
       },
       success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/join/subscribe?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/join/subscribe`,
+      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/join/subscribe?canceled=true`,
     })
     return NextResponse.json({ url: session.url })
   } catch (error) {
