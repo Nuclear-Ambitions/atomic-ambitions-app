@@ -2,6 +2,7 @@
 
 import PickAndPay from './PickAndPay'
 import Confirmation from './Confirmation'
+import { useAuthStore } from '@/lib/stores/auth-store'
 
 function SignInMsg() {
   return (
@@ -13,7 +14,13 @@ function SignInMsg() {
 }
 
 export default function LevelUpPage() {
-  const isSignedIn = true
+  const {
+    isSignedIn,
+    user,
+    checkAuthStatus,
+    isLoading: authLoading,
+  } = useAuthStore()
+
   const hasActiveSubscription = false
 
   return (
