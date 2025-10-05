@@ -3,7 +3,7 @@ import Stripe from 'stripe'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
-const productPrices = {
+const intervalPrices = {
   "monthly": process.env.STRIPE_PRICE_MONTHLY!,
   "annual": process.env.STRIPE_PRICE_ANNUAL!,
 }
@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
 
     console.log('🔐 [STRIPE CREATE CHECKOUT SESSION] Request received:', { productCode, interval, userId, email })
 
-    console.log(productPrices)
+    console.log(intervalPrices)
 
     if (!productCode || !interval || !userId || !email) {
       return NextResponse.json(
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const priceId = productPrices[interval as keyof typeof productPrices]
+    const priceId = intervalPrices[interval as keyof typeof intervalPrices]
     console.log('🔐 [STRIPE CREATE CHECKOUT SESSION] Price ID:', priceId)
 
     if (!priceId) {
@@ -32,6 +32,7 @@ export async function POST(request: NextRequest) {
 
     // Create Stripe checkout session
     const session = await stripe.checkout.sessions.create({
+      ui_mode: "custom",
       payment_method_types: ['card'],
       line_items: [
         {
