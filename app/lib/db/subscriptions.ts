@@ -1,5 +1,23 @@
 import { db } from './Database'
 
+export interface SubscriptionData {
+  id: string;
+  stripeCustomerId: string;
+  userId: string;
+  customerEmail: string | null;
+  totalAmount: number | null;
+  currency: string | null;
+  priceId: string;
+  productId: string;
+  amount: number | null;
+  interval: string;
+  paymentStatus: string | null;
+  status: string | null;
+  currentPeriodStart: Date;
+  currentPeriodEnd: Date;
+  subscription_id?: string;
+}
+
 export const SubscriptionDataAccess = {
 
   async updateUserStripeCustomerId(userId: string, stripeCustomerId: string) {
@@ -10,82 +28,39 @@ export const SubscriptionDataAccess = {
       .execute()
   },
 
-  async insertPayment(payment: {
-    id: string
-    stripe_payment_intent_id: string | null
-    amount: number
-    currency: string
-    subscription_id: string | null
-  }) {
-    return await db
-      .insertInto('payments')
-      .values(payment)
-      .onConflict((oc) => oc.column('id').doNothing())
-      .execute()
-  },
-
-  async insertSubscription(subscription: {
-    id: string
-    stripe_subscription_id: string
-    user_id: string
-    status: string
-    current_period_start: Date
-    current_period_end: Date
-    product_id: string
-  }) {
-    return await db
-      .insertInto('subscriptions')
+  async insertSubscription(subData: SubscriptionData) {
+    await db
+      .insertInto('stripe_subscriptions')
       .values({
-        id: subscription.id,
-        stripe_subscription_id: subscription.stripe_subscription_id,
-        user_id: subscription.user_id,
-        status: subscription.status,
-        current_period_start: subscription.current_period_start,
-        current_period_end: subscription.current_period_end,
-        product_id: subscription.product_id
+        id: subData.id,
+        stripe_customer_id: subData.stripeCustomerId,
+        user_id: subData.userId,
+        customer_email: subData.customerEmail,
+        total_amount: subData.totalAmount,
+        currency: subData.currency,
+        price_id: subData.priceId,
+        product_id: subData.productId,
+        amount: subData.amount,
+        interval: subData.interval,
+        payment_status: subData.paymentStatus,
+        status: subData.status,
+        current_period_start: subData.currentPeriodStart,
+        current_period_end: subData.currentPeriodEnd,
       })
       .onConflict((oc) => oc.column('id').doNothing())
       .execute()
+
   },
 
-  async updateMembershipStatus(userId: string, level: string, status: string) {
-    return await db
-      .insertInto('memberships')
-      .values({
-        user_id: userId,
-        level: level,
-        status: status,
-        joined_at: new Date()
+  async setMembershipLevel(userId: string, level: string) {
+    await db
+      .updateTable('memberships')
+      .set({
+        level,
+        updated_at: new Date()
       })
-      .onConflict((oc) => oc.column('user_id').doUpdateSet({
-        level: level,
-        status: status,
-        joined_at: new Date()
-      }))
+      .where('user_id', '=', userId)
       .execute()
-  },
-
-  async getUserById(userId: string) {
-    return await db
-      .selectFrom('users')
-      .selectAll()
-      .where('id', '=', userId)
-      .executeTakeFirst()
-  },
-
-  async getMembershipByUserId(userId: string) {
-    return await db
-      .selectFrom('memberships')
-      .selectAll()
-      .where('user_id', '=', userId)
-      .executeTakeFirst()
-  },
-
-  async getSubscriptionByUserId(userId: string) {
-    return await db
-      .selectFrom('subscriptions')
-      .selectAll()
-      .where('user_id', '=', userId)
-      .executeTakeFirst()
+    return
   },
 }
