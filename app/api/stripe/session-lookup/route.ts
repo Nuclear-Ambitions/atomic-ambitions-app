@@ -26,54 +26,58 @@ export async function GET(request: NextRequest) {
       expand: ['customer', 'subscription', 'payment_intent', 'line_items']
     })
 
-    console.log('🔍 [STRIPE SESSION LOOKUP] Session retrieved:', {
-      id: session.id,
-      payment_status: session.payment_status,
-      customer: session.customer,
-      subscription: session.subscription,
-      mode: session.mode
-    })
+    console.log(session)
+    // console.log('🔍 [STRIPE SESSION LOOKUP] Session retrieved:', {
+    //   id: session.id,
+    //   payment_status: session.payment_status,
+    //   customer: session.customer,
+    //   subscription: session.subscription,
+    //   mode: session.mode
+    // })
 
     // Extract transaction information
-    const transactionInfo = {
-      session_id: session.id,
-      payment_status: session.payment_status,
-      customer_id: typeof session.customer === 'string' ? session.customer : session.customer?.id,
-      subscription_id: typeof session.subscription === 'string' ? session.subscription : session.subscription?.id,
-      payment_intent_id: typeof session.payment_intent === 'string' ? session.payment_intent : session.payment_intent?.id,
-      amount_total: session.amount_total,
-      currency: session.currency,
-      mode: session.mode,
-      metadata: session.metadata,
-      line_items: session.line_items?.data || [],
-      created: new Date(session.created * 1000),
-    }
+    // const transactionInfo = {
+    //   session_id: session.id,
+    //   payment_status: session.payment_status,
+    //   customer_id: typeof session.customer === 'string' ? session.customer : session.customer?.id,
+    //   subscription_id: typeof session.subscription === 'string' ? session.subscription : session.subscription?.id,
+    //   payment_intent_id: typeof session.payment_intent === 'string' ? session.payment_intent : session.payment_intent?.id,
+    //   amount_total: session.amount_total,
+    //   currency: session.currency,
+    //   mode: session.mode,
+    //   metadata: session.metadata,
+    //   line_items: session.line_items?.data || [],
+    //   created: new Date(session.created * 1000),
+    // }
 
     // Store transaction information in database
-    await storeTransactionInfo(transactionInfo)
+    // await storeTransactionInfo(transactionInfo)
 
     // Return the transaction information
     return NextResponse.json({
       success: true,
       transaction: {
-        session_id: transactionInfo.session_id,
-        payment_status: transactionInfo.payment_status,
-        customer_id: transactionInfo.customer_id,
-        subscription_id: transactionInfo.subscription_id,
-        payment_intent_id: transactionInfo.payment_intent_id,
-        amount_total: transactionInfo.amount_total,
-        currency: transactionInfo.currency,
-        mode: transactionInfo.mode,
-        metadata: transactionInfo.metadata,
-        line_items: transactionInfo.line_items.map(item => ({
-          price_id: item.price?.id,
-          product_id: item.price?.product,
-          amount: item.amount_total,
-          quantity: item.quantity,
-          description: item.description
-        })),
-        created: transactionInfo.created
+        session
       }
+      // transaction: {
+      //   session_id: transactionInfo.session_id,
+      //   payment_status: transactionInfo.payment_status,
+      //   customer_id: transactionInfo.customer_id,
+      //   subscription_id: transactionInfo.subscription_id,
+      //   payment_intent_id: transactionInfo.payment_intent_id,
+      //   amount_total: transactionInfo.amount_total,
+      //   currency: transactionInfo.currency,
+      //   mode: transactionInfo.mode,
+      //   metadata: transactionInfo.metadata,
+      //   line_items: transactionInfo.line_items.map(item => ({
+      //     price_id: item.price?.id,
+      //     product_id: item.price?.product,
+      //     amount: item.amount_total,
+      //     quantity: item.quantity,
+      //     description: item.description
+      //   })),
+      //   created: transactionInfo.created
+      // }
     })
 
   } catch (error) {

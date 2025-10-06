@@ -40,6 +40,10 @@ const SubscriptionContent = () => {
     const lookupSession = async () => {
       if (!sessionId) return
 
+      console.log(
+        '🔍 [STRIPE SESSION LOOKUP] Looking up Stripe session:',
+        sessionId
+      )
       setIsLookingUpSession(true)
       try {
         const response = await fetch(
@@ -47,6 +51,7 @@ const SubscriptionContent = () => {
         )
         if (response.ok) {
           const data = await response.json()
+          console.log(data)
           setTransactionData(data.transaction)
         } else {
           console.error('Failed to lookup session:', response.statusText)
