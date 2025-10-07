@@ -18,14 +18,25 @@ export interface SubscriptionData {
   subscription_id?: string;
 }
 
+export interface SubscriptionSummary {
+  id: string;
+  total_amount: number | null;
+  currency: string | null;
+  interval: string | null;
+  payment_status: string | null;
+  status: string | null;
+  current_period_start: Date | null;
+  current_period_end: Date | null;
+}
+
 export const SubscriptionDataAccess = {
 
-  async getSubscription(subscriptionId: string) {
+  async getSubscription(subscriptionId: string): Promise<SubscriptionSummary | undefined> {
     return await db
       .selectFrom('stripe_subscriptions')
       .select(['id', 'total_amount', 'currency', 'interval', 'payment_status', 'status', 'current_period_start', 'current_period_end'])
       .where('id', '=', subscriptionId)
-      .execute()
+      .executeTakeFirst()
   },
 
   async subscriptionExists(subscriptionId: string): Promise<boolean> {
@@ -79,5 +90,18 @@ export const SubscriptionDataAccess = {
       .where('user_id', '=', userId)
       .execute()
     return
+  },
+
+  async insertStripeSession(session: any): Promise<string> {
+    return await db
+      .insertInto('stripe_sessions')
+      .values({
+        id: session.id,
+        payload: session
+      })
+      .onConflict((oc) => oc.column('id').doNothing())
+      .returning('id')
+      .execute()
+      .then(result => result[0].id)
   },
 }

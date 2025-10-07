@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { SubscriptionDataAccess as subscriptionDA } from '@/lib/db/subscriptions'
-import { SubscriptionData } from '@/lib/db/subscriptions'
+import { SubscriptionData, SubscriptionSummary } from '@/lib/db/subscriptions'
 
 export async function GET(request: NextRequest) {
   try {
@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      subscription: subscription[0]
+      subscription: subscription
     })
 
   } catch (error) {

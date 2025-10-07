@@ -64,6 +64,27 @@ const SubscriptionContent = () => {
           throw new Error('No subscription found in session')
         }
 
+        const storeSessionResponse = await fetch(
+          '/api/registration/stripe-session',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(session),
+          }
+        )
+
+        if (storeSessionResponse.ok) {
+          const storeSessionData = await storeSessionResponse.json()
+          console.log(
+            '💾 [STRIPE SESSION STORAGE] Successfully stored session:',
+            storeSessionData.sessionId
+          )
+        } else {
+          throw new Error('Failed to store session in the database')
+        }
+
         // Check if subscription record already exists in our database
         const existingSubResponse = await fetch(
           `/api/registration/subscription?subscription_id=${subscriptionId}`
@@ -72,6 +93,10 @@ const SubscriptionContent = () => {
         if (existingSubResponse.ok) {
           // Subscription already exists, get the data
           const existingData = await existingSubResponse.json()
+          console.log(
+            '📝 [SUBSCRIPTION] Existing subscription data:',
+            existingData.subscription
+          )
           setSubscriptionData(existingData.subscription)
         } else if (existingSubResponse.status === 404) {
           // Subscription doesn't exist, create it via POST
@@ -89,6 +114,10 @@ const SubscriptionContent = () => {
           }
 
           const createData = await createResponse.json()
+          console.log(
+            '📝 [SUBSCRIPTION] Created subscription data:',
+            createData.subscription
+          )
           setSubscriptionData(createData.subscription)
         } else {
           throw new Error('Failed to check subscription status')
@@ -169,7 +198,18 @@ const SubscriptionContent = () => {
   }
 
   // Show confirmation page if user just completed payment
-  if (subscriptionData && subscriptionData.payment_status === 'paid') {
+  console.log('🔍 [CONFIRMATION CHECK] subscriptionData:', subscriptionData)
+  console.log(
+    '🔍 [CONFIRMATION CHECK] payment_status:',
+    subscriptionData?.payment_status
+  )
+  console.log('🔍 [CONFIRMATION CHECK] status:', subscriptionData?.status)
+
+  if (
+    subscriptionData &&
+    (subscriptionData.payment_status === 'paid' ||
+      subscriptionData.status === 'complete')
+  ) {
     return (
       <div className='min-h-screen bg-background py-12'>
         <div className='container mx-auto px-6'>
