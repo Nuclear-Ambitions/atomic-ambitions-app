@@ -4,11 +4,13 @@ import PickAndPay from './PickAndPay'
 import Confirmation from './Confirmation'
 import { useAuthStore } from '@/lib/stores/auth-store'
 
+// NOTE: this page is an alternative to the subscribe page. Since subscribe page is working, just keeping this as an option for later.
+
 function SignInMsg() {
   return (
     <div className='min-h-screen max-w-4xl mx-auto bg-background py-12'>
       <h1 className='mb-6'>Level Up Your Membership</h1>
-      <p>Let's get you signed in first.</p>
+      <p>First, you need to sign in.</p>
     </div>
   )
 }

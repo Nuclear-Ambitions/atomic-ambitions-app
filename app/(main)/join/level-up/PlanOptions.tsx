@@ -27,6 +27,7 @@ export default function PlanOptions({
 
   const planItems = plans.map((plan) => (
     <div
+      key={plan.key}
       className={`card cursor-pointer transition-all ${
         renewalFrequency === plan.key
           ? 'ring-2 ring-primary bg-primary/5'
