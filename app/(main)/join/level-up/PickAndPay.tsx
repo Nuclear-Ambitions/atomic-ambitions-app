@@ -2,8 +2,6 @@ import { useState } from 'react'
 import Benefits from './Benefits'
 import PlanOptions from './PlanOptions'
 
-type RenewalInterval = 'monthly' | 'annual'
-
 function PickAndPay() {
   const [prodOption, setProdOption] = useState('')
 

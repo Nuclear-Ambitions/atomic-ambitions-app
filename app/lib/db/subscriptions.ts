@@ -20,6 +20,23 @@ export interface SubscriptionData {
 
 export const SubscriptionDataAccess = {
 
+  async getSubscription(subscriptionId: string) {
+    return await db
+      .selectFrom('stripe_subscriptions')
+      .select(['id', 'total_amount', 'currency', 'interval', 'payment_status', 'status', 'current_period_start', 'current_period_end'])
+      .where('id', '=', subscriptionId)
+      .execute()
+  },
+
+  async subscriptionExists(subscriptionId: string): Promise<boolean> {
+    const result = await db
+      .selectFrom('stripe_subscriptions')
+      .select(['id'])
+      .where('id', '=', subscriptionId)
+      .execute()
+    return result.length > 0
+  },
+
   async updateUserStripeCustomerId(userId: string, stripeCustomerId: string) {
     return await db
       .updateTable('users')
@@ -28,8 +45,8 @@ export const SubscriptionDataAccess = {
       .execute()
   },
 
-  async insertSubscription(subData: SubscriptionData) {
-    await db
+  async insertSubscription(subData: SubscriptionData): Promise<{ id: string }[]> {
+    return await db
       .insertInto('stripe_subscriptions')
       .values({
         id: subData.id,
@@ -48,8 +65,8 @@ export const SubscriptionDataAccess = {
         current_period_end: subData.currentPeriodEnd,
       })
       .onConflict((oc) => oc.column('id').doNothing())
+      .returning('id')
       .execute()
-
   },
 
   async setMembershipLevel(userId: string, level: string) {

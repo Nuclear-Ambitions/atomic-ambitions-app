@@ -6,7 +6,7 @@ import { Suspense } from 'react'
 import { useAuthStore } from '@/lib/stores/auth-store'
 import Link from 'next/link'
 
-type PaymentInterval = 'monthly' | 'annual'
+type PaymentInterval = 'month' | 'year'
 
 const SubscriptionContent = () => {
   const searchParams = useSearchParams()
@@ -19,9 +19,9 @@ const SubscriptionContent = () => {
   const [isInitializing, setIsInitializing] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [selectedInterval, setSelectedInterval] =
-    useState<PaymentInterval>('annual')
+    useState<PaymentInterval>('year')
   const [errors, setErrors] = useState<Record<string, string>>({})
-  const [transactionData, setTransactionData] = useState<any>(null)
+  const [subscriptionData, setSubscriptionData] = useState<any>(null)
   const [isLookingUpSession, setIsLookingUpSession] = useState(false)
 
   // Check for session_id from Stripe redirect
@@ -46,16 +46,52 @@ const SubscriptionContent = () => {
       )
       setIsLookingUpSession(true)
       try {
-        const response = await fetch(
+        // First, get the session from Stripe
+        const sessionResponse = await fetch(
           `/api/stripe/session-lookup?session_id=${sessionId}`
         )
-        if (response.ok) {
-          const data = await response.json()
-          console.log(data)
-          setTransactionData(data.transaction)
+        if (!sessionResponse.ok) {
+          throw new Error('Failed to retrieve session from Stripe')
+        }
+
+        const sessionData = await sessionResponse.json()
+        console.log('Session data:', sessionData)
+
+        const session = sessionData.session
+        const subscriptionId = session.subscription?.id
+
+        if (!subscriptionId) {
+          throw new Error('No subscription found in session')
+        }
+
+        // Check if subscription record already exists in our database
+        const existingSubResponse = await fetch(
+          `/api/registration/subscription?subscription_id=${subscriptionId}`
+        )
+
+        if (existingSubResponse.ok) {
+          // Subscription already exists, get the data
+          const existingData = await existingSubResponse.json()
+          setSubscriptionData(existingData.subscription)
+        } else if (existingSubResponse.status === 404) {
+          // Subscription doesn't exist, create it via POST
+          console.log('Creating new subscription record...')
+          const createResponse = await fetch('/api/registration/subscription', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(session),
+          })
+
+          if (!createResponse.ok) {
+            throw new Error('Failed to create subscription record')
+          }
+
+          const createData = await createResponse.json()
+          setSubscriptionData(createData.subscription)
         } else {
-          console.error('Failed to lookup session:', response.statusText)
-          setErrors({ session: 'Failed to retrieve transaction information' })
+          throw new Error('Failed to check subscription status')
         }
       } catch (error) {
         console.error('Session lookup error:', error)
@@ -133,7 +169,7 @@ const SubscriptionContent = () => {
   }
 
   // Show confirmation page if user just completed payment
-  if (transactionData && transactionData.payment_status === 'paid') {
+  if (subscriptionData && subscriptionData.payment_status === 'paid') {
     return (
       <div className='min-h-screen bg-background py-12'>
         <div className='container mx-auto px-6'>
@@ -191,8 +227,8 @@ const SubscriptionContent = () => {
   if (
     searchParams.get('canceled') === 'true' ||
     (sessionId &&
-      transactionData &&
-      transactionData.payment_status === 'unpaid')
+      subscriptionData &&
+      subscriptionData.payment_status === 'unpaid')
   ) {
     return (
       <div className='min-h-screen bg-background py-12'>
@@ -307,11 +343,11 @@ const SubscriptionContent = () => {
                   {/* Monthly Option */}
                   <div
                     className={`card cursor-pointer transition-all ${
-                      selectedInterval === 'monthly'
+                      selectedInterval === 'month'
                         ? 'ring-2 ring-primary bg-primary/5'
                         : 'hover:shadow-lg'
                     }`}
-                    onClick={() => setSelectedInterval('monthly')}
+                    onClick={() => setSelectedInterval('month')}
                   >
                     <div className='text-center'>
                       <h4 className='text-lg font-bold text-primary mb-2'>
@@ -327,11 +363,11 @@ const SubscriptionContent = () => {
                   {/* Annual Option */}
                   <div
                     className={`card cursor-pointer transition-all ${
-                      selectedInterval === 'annual'
+                      selectedInterval === 'year'
                         ? 'ring-2 ring-primary bg-primary/5'
                         : 'hover:shadow-lg'
                     }`}
-                    onClick={() => setSelectedInterval('annual')}
+                    onClick={() => setSelectedInterval('year')}
                   >
                     <div className='text-center'>
                       <h4 className='text-lg font-bold text-primary mb-2'>

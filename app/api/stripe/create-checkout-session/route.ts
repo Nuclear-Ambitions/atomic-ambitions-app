@@ -4,8 +4,8 @@ import Stripe from 'stripe'
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 const intervalPrices = {
-  "monthly": process.env.STRIPE_PRICE_MONTHLY!,
-  "annual": process.env.STRIPE_PRICE_ANNUAL!,
+  month: process.env.STRIPE_PRICE_MONTHLY!,
+  year: process.env.STRIPE_PRICE_ANNUAL!,
 }
 
 export async function POST(request: NextRequest) {

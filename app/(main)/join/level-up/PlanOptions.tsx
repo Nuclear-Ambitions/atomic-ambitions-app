@@ -6,18 +6,18 @@ export default function PlanOptions({
 }: {
   onSelect: (renewal: string) => void
 }) {
-  const [renewalFrequency, setRenewalFrequency] = useState('annual')
+  const [renewalFrequency, setRenewalFrequency] = useState('year')
 
   const plans = [
     {
-      key: 'monthly',
+      key: 'month',
       label: 'Monthly',
       amount: '$11',
       frequency: 'per month',
       discountLabel: null,
     },
     {
-      key: 'annual',
+      key: 'year',
       label: 'Annual',
       amount: '$111',
       frequency: 'per year',
