@@ -12,18 +12,18 @@ export default function Attribution({
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative inline-block">
+    <div className='relative inline-block'>
       {children}
-      <div className="mt-1 text-sm text-muted-">
-        Photo by{" "}
-        <a href={artistLink} className="underline">
+      <div className='mt-1 text-sm text-muted-'>
+        Photo by{' '}
+        <a href={artistLink} className='underline'>
           {artist}
-        </a>{" "}
-        on{" "}
-        <a href={sourceLink} className="underline">
+        </a>{' '}
+        on{' '}
+        <a href={sourceLink} className='underline'>
           {source}
         </a>
       </div>
     </div>
-  );
+  )
 }

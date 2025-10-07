@@ -1,4 +1,4 @@
-import { useAuthStore } from '@/lib/stores/auth-store';
+import { useAuthStore } from '@/lib/stores/auth-store'
 
 /**
  * Hook to manage authentication state and provide easy access to auth status
@@ -15,7 +15,7 @@ export const useAuth = () => {
     hasPermission,
     hasAnyRole,
     hasAnyPermission
-  } = useAuthStore();
+  } = useAuthStore()
 
   return {
     user,
@@ -27,5 +27,5 @@ export const useAuth = () => {
     hasPermission,
     hasAnyRole,
     hasAnyPermission,
-  };
-};
+  }
+}

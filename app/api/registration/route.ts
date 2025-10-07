@@ -1,26 +1,26 @@
-import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/auth";
-import { RegistrationData } from "@/(main)/join/registration/types";
-import { db } from "@/lib/db/Database";
+import { NextRequest, NextResponse } from 'next/server'
+import { auth } from '@/auth'
+import { RegistrationData } from '@/(main)/join/registration/types'
+import { db } from '@/lib/db/Database'
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await auth();
+    const session = await auth()
 
     if (!session?.user?.id) {
       return NextResponse.json(
-        { message: "Authentication required" },
+        { message: 'Authentication required' },
         { status: 401 }
-      );
+      )
     }
 
     // Fetch registration data from the database based on the authenticated user
-    const userId = session.user.id;
+    const userId = session.user.id
 
     const user = await db.selectFrom('users').selectAll().where('id', '=', userId).executeTakeFirst()
     if (!user) {
       return NextResponse.json(
-        { message: "Sign in to register" },
+        { message: 'Sign in to register' },
         { status: 401 }
       )
     }
@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
       .selectFrom('memberships')
       .selectAll()
       .where('user_id', '=', user.id)
-      .executeTakeFirst();
+      .executeTakeFirst()
 
     const registration: RegistrationData = {
       userId: user.id,
@@ -44,13 +44,13 @@ export async function GET(request: NextRequest) {
       joinedAt: membership?.joined_at
     }
 
-    return NextResponse.json(registration, { status: 200 });
+    return NextResponse.json(registration, { status: 200 })
   } catch (error) {
-    console.error("Error fetching registration state:", error);
+    console.error('Error fetching registration state:', error)
     return NextResponse.json(
-      { message: "Internal server error" },
+      { message: 'Internal server error' },
       { status: 500 }
-    );
+    )
   }
 }
 
@@ -60,43 +60,43 @@ export async function POST(request: NextRequest) {
       alias?: string;
       termsAcceptedAt?: Date;
       privacyPolicyAcceptedAt?: Date;
-    } | Partial<RegistrationData>;
+    } | Partial<RegistrationData>
 
     if (!('alias' in body && 'termsAcceptedAt' in body && 'privacyPolicyAcceptedAt' in body)) {
       return NextResponse.json(
-        { message: "Invalid request format" },
+        { message: 'Invalid request format' },
         { status: 400 }
-      );
+      )
     }
 
     // Handle membership creation
-    const { alias, termsAcceptedAt, privacyPolicyAcceptedAt } = body;
+    const { alias, termsAcceptedAt, privacyPolicyAcceptedAt } = body
 
     // Validate required fields
     if (!alias || !termsAcceptedAt || !privacyPolicyAcceptedAt) {
       return NextResponse.json(
-        { message: "Missing required fields" },
+        { message: 'Missing required fields' },
         { status: 400 }
-      );
+      )
     }
 
     // Get authenticated user
-    const session = await auth();
+    const session = await auth()
     if (!session?.user?.id) {
       return NextResponse.json(
-        { message: "Authentication required" },
+        { message: 'Authentication required' },
         { status: 401 }
-      );
+      )
     }
 
-    const userId = session.user.id;
+    const userId = session.user.id
 
     // Update users table with alias
     await db
       .updateTable('users')
       .set({ alias })
       .where('id', '=', userId)
-      .execute();
+      .execute()
 
     // Insert membership record
     const membership = await db
@@ -110,37 +110,37 @@ export async function POST(request: NextRequest) {
         privacy_policy_ok: privacyPolicyAcceptedAt,
       })
       .returning('id')
-      .executeTakeFirst();
+      .executeTakeFirst()
 
     if (!membership) {
       return NextResponse.json(
-        { message: "Failed to create membership" },
+        { message: 'Failed to create membership' },
         { status: 500 }
-      );
+      )
     }
 
-    console.log("Membership created successfully:", {
+    console.log('Membership created successfully:', {
       userId,
       membershipId: membership.id,
       alias,
-      level: "explorer",
-      status: "active",
+      level: 'explorer',
+      status: 'active',
       timestamp: new Date().toISOString(),
-    });
+    })
 
     return NextResponse.json(
       {
-        message: "Membership created successfully",
+        message: 'Membership created successfully',
         membershipId: membership.id,
       },
       { status: 200 }
-    );
+    )
 
   } catch (error) {
-    console.error("Registration error:", error);
+    console.error('Registration error:', error)
     return NextResponse.json(
-      { message: "Internal server error" },
+      { message: 'Internal server error' },
       { status: 500 }
-    );
+    )
   }
 }

@@ -1,31 +1,31 @@
 export enum MembershipLevel {
-  Explorer = "explorer",
-  Supporter = "supporter",
-  Charter = "charter",
-  LifetimeCharter = "lifetime_charter",
+  Explorer = 'explorer',
+  Supporter = 'supporter',
+  Charter = 'charter',
+  LifetimeCharter = 'lifetime_charter',
 }
 
 export enum AccountStatus {
-  Pending = "pending",
-  Active = "active",
-  Suspended = "suspended",
-  Cancelled = "cancelled",
-  Terminated = "terminated",
+  Pending = 'pending',
+  Active = 'active',
+  Suspended = 'suspended',
+  Cancelled = 'cancelled',
+  Terminated = 'terminated',
 }
 
 export enum SubscriptionStatus {
-  Pending = "pending",
-  Active = "active",
-  Cancelled = "cancelled",  // user initiated
-  Terminated = "terminated",  // service initiated
+  Pending = 'pending',
+  Active = 'active',
+  Cancelled = 'cancelled',  // user initiated
+  Terminated = 'terminated',  // service initiated
 }
 
 export enum Role {
-  Member = "member",
-  Contributor = "contributor",
-  Moderator = "moderator",
-  Editor = "editor",
-  Admin = "admin",
+  Member = 'member',
+  Contributor = 'contributor',
+  Moderator = 'moderator',
+  Editor = 'editor',
+  Admin = 'admin',
 }
 
 export interface RegistrationData {
@@ -43,14 +43,14 @@ export interface RegistrationData {
 }
 
 export type RegistrationStep =
-  | "IdentityStep"
-  | "MembershipStep"
-  | "ConfirmMembershipStep";
+  | 'IdentityStep'
+  | 'MembershipStep'
+  | 'ConfirmMembershipStep';
 
 // TODO: keep these steps for later
 export type SubscriptionStep =
-  | "SubscriptionStep"
-  | "ConfirmSubscriptionStep";
+  | 'SubscriptionStep'
+  | 'ConfirmSubscriptionStep';
 
 export interface StepFlow {
   currentStep: RegistrationStep;

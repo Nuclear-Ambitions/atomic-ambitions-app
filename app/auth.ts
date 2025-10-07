@@ -28,52 +28,52 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-      console.log("🔐 [AUTH DEBUG] signIn callback triggered");
-      console.log("🔐 [AUTH DEBUG] signIn params:", {
+      console.log('🔐 [AUTH DEBUG] signIn callback triggered')
+      console.log('🔐 [AUTH DEBUG] signIn params:', {
         user: user ? { id: user.id, email: user.email, name: user.name } : null,
         account: account ? { provider: account.provider, type: account.type } : null,
         profile: profile ? { email: profile.email, name: profile.name } : null,
         email,
         credentials: credentials ? Object.keys(credentials) : null
-      });
-      return true;
+      })
+      return true
     },
     async session({ session, token, user }) {
-      console.log("🔐 [AUTH DEBUG] session callback triggered");
-      console.log("🔐 [AUTH DEBUG] session params:", {
+      console.log('🔐 [AUTH DEBUG] session callback triggered')
+      console.log('🔐 [AUTH DEBUG] session params:', {
         session: session ? { user: session.user ? { email: session.user.email, name: session.user.name } : null } : null,
         token: token ? { email: token.email, name: token.name, sub: token.sub } : null,
         user: user ? { id: user.id, email: user.email, name: user.name } : null
-      });
-      return session;
+      })
+      return session
     },
     async jwt({ token, user, account, profile, trigger, session }) {
-      console.log("🔐 [AUTH DEBUG] jwt callback triggered");
-      console.log("🔐 [AUTH DEBUG] jwt params:", {
+      console.log('🔐 [AUTH DEBUG] jwt callback triggered')
+      console.log('🔐 [AUTH DEBUG] jwt params:', {
         token: token ? { email: token.email, name: token.name, sub: token.sub } : null,
         user: user ? { id: user.id, email: user.email, name: user.name } : null,
         account: account ? { provider: account.provider, type: account.type } : null,
         profile: profile ? { email: profile.email, name: profile.name } : null,
         trigger,
         session: session ? { user: session.user ? { email: session.user.email, name: session.user.name } : null } : null
-      });
-      return token;
+      })
+      return token
     }
   },
   events: {
     async signIn({ user, account, profile, isNewUser }) {
-      console.log("🔐 [AUTH DEBUG] signIn event triggered");
-      console.log("🔐 [AUTH DEBUG] signIn event params:", {
+      console.log('🔐 [AUTH DEBUG] signIn event triggered')
+      console.log('🔐 [AUTH DEBUG] signIn event params:', {
         user: user ? { id: user.id, email: user.email, name: user.name } : null,
         account: account ? { provider: account.provider, type: account.type } : null,
         profile: profile ? { email: profile.email, name: profile.name } : null,
         isNewUser
-      });
+      })
     },
     async signOut(message) {
-      console.log("🔐 [AUTH DEBUG] signOut event triggered");
-      console.log("🔐 [AUTH DEBUG] signOut event params:", message);
+      console.log('🔐 [AUTH DEBUG] signOut event triggered')
+      console.log('🔐 [AUTH DEBUG] signOut event params:', message)
     }
   },
-  debug: process.env.NODE_ENV === "development" || process.env.NEXTAUTH_DEBUG === "true",
+  debug: process.env.NODE_ENV === 'development' || process.env.NEXTAUTH_DEBUG === 'true',
 })

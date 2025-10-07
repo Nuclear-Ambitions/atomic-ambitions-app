@@ -9,4 +9,4 @@ export const db = new Kysely<DB>({
     }),
   }),
   // plugins: [new CamelCasePlugin()]
-});
+})
