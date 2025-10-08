@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Orbitron, Roboto, Courier_Prime } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from './theme-context'
+import { Analytics } from '@vercel/analytics/next'
 
 const orbitron = Orbitron({
   variable: '--font-orbitron',
@@ -29,13 +30,15 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <html lang='en'>
       <body
-        className={`${orbitron.variable} ${roboto.variable} ${courier_prime.variable} antialiased`}>
+        className={`${orbitron.variable} ${roboto.variable} ${courier_prime.variable} antialiased`}
+      >
         <ThemeProvider>{children}</ThemeProvider>
+        <Analytics />
       </body>
     </html>
   )
