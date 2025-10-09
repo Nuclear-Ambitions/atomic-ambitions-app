@@ -4,15 +4,13 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useAuthStore } from '../lib/stores/auth-store'
-// import Icon from "./icon";
-// import { UserRectangle, User, SignIn, Gear } from "react-icons/ph";
 import { Icon } from '@iconify/react'
 
 interface NavigationItem {
-  href: string;
-  label: string;
-  icon?: string;
-  description?: string;
+  href: string
+  label: string
+  icon?: string
+  description?: string
 }
 
 // Base navigation items that are always visible
@@ -138,7 +136,8 @@ export default function DynamicMenu() {
         onClick={toggleMenu}
         className='flex flex-col justify-center items-center w-8 h-8 space-y-1 focus:outline-none focus:ring-2 focus:ring-highlight focus:ring-offset-2 rounded-md'
         aria-label='Toggle navigation menu'
-        aria-expanded={isOpen}>
+        aria-expanded={isOpen}
+      >
         <span
           className={`block w-6 h-0.5 bg-foreground transition-all duration-300 ease-in-out ${
             isOpen ? 'rotate-45 translate-y-1.5' : ''
@@ -185,7 +184,8 @@ export default function DynamicMenu() {
                         isActive
                           ? 'bg-highlight text-highlight-background'
                           : 'text-popover-foreground hover:bg-muted hover:text-foreground'
-                      }`}>
+                      }`}
+                    >
                       <div className='flex items-start gap-3'>
                         {/* Icon column - fixed width for alignment */}
                         <div className='flex-shrink-0 w-6 h-6 flex items-center justify-center'>
@@ -213,7 +213,8 @@ export default function DynamicMenu() {
                                 isActive
                                   ? 'text-highlight-background/80'
                                   : 'text-muted-foreground group-hover:text-foreground/70'
-                              }`}>
+                              }`}
+                            >
                               {item.description}
                             </span>
                           )}

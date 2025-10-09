@@ -92,7 +92,8 @@ const MembershipStep: React.FC<StepProps> = ({
           <div>
             <label
               htmlFor='alias'
-              className='block text-sm font-medium text-foreground mb-2'>
+              className='block text-sm font-medium text-foreground mb-2'
+            >
               Choose Your Alias
             </label>
             <input
@@ -128,7 +129,8 @@ const MembershipStep: React.FC<StepProps> = ({
               <Link
                 target='_blank'
                 href='https://nuclearambitions.com/legal/terms-of-use.html'
-                className='text-primary hover:underline'>
+                className='text-primary hover:underline'
+              >
                 Terms of Use
               </Link>
             </label>
@@ -153,9 +155,10 @@ const MembershipStep: React.FC<StepProps> = ({
             <label htmlFor='privacy' className='text-sm text-muted-foreground'>
               I am aware of the{' '}
               <Link
-                target='_parent'
+                target='blank'
                 href='https://nuclearambitions.com/legal/privacy-policy.html'
-                className='text-primary hover:underline'>
+                className='text-primary hover:underline'
+              >
                 Privacy Policy
               </Link>
             </label>
@@ -171,7 +174,8 @@ const MembershipStep: React.FC<StepProps> = ({
           <button
             type='submit'
             disabled={isSubmitting}
-            className='btn btn-primary w-full'>
+            className='btn btn-primary w-full'
+          >
             {isSubmitting ? 'Creating Membership...' : 'Create Membership'}
           </button>
         </form>

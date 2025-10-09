@@ -72,7 +72,7 @@ const ConfirmMembershipStep: React.FC<StepProps> = ({ formData, onNext }) => {
             title='Alchemy Lab'
             description='Hands-on experiments and simulations'
             icon='🧪'
-            href='/lab'
+            href='/alchemy-lab'
           />
           <FeatureCard
             title='Atomic Who'
