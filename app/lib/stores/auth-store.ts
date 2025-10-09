@@ -57,13 +57,19 @@ export const useAuthStore = create<AuthState>()(
 
       checkAuthStatus: async () => {
         const currentState = get()
-        if (currentState.isLoading) return // Prevent multiple simultaneous checks
+        if (currentState.isLoading) {
+          console.log('🔐 [AUTH STORE] Already checking auth status, skipping...')
+          return // Prevent multiple simultaneous checks
+        }
 
+        console.log('🔐 [AUTH STORE] Checking auth status...')
         set({ isLoading: true })
         try {
           const response = await fetch('/api/auth/user-context', {
             credentials: 'include',
           })
+
+          console.log('🔐 [AUTH STORE] Response status:', response.status)
 
           if (response.ok) {
             const data = await response.json() as {
@@ -77,29 +83,46 @@ export const useAuthStore = create<AuthState>()(
                 membership?: Membership;
               };
             }
+
+            console.log('🔐 [AUTH STORE] Response data:', {
+              isSignedIn: data.isSignedIn,
+              hasUser: !!data.user,
+              userId: data.user?.id,
+              userName: data.user?.name,
+              userAlias: data.user?.alias,
+              membershipLevel: data.user?.membership?.level,
+              membershipStatus: data.user?.membership?.status,
+            })
+
             if (data.isSignedIn && data.user) {
+              const userData = {
+                id: data.user.id,
+                email: data.user.email,
+                name: data.user.name,
+                alias: data.user.alias,
+                image: data.user.image,
+                membership: data.user.membership,
+                roles: [], // Default roles, can be populated from user data
+                permissions: [], // Default permissions, can be populated from user data
+              }
+
+              console.log('🔐 [AUTH STORE] Setting user data in store:', userData)
+
               set({
-                user: {
-                  id: data.user.id,
-                  email: data.user.email,
-                  name: data.user.name,
-                  alias: data.user.alias,
-                  image: data.user.image,
-                  membership: data.user.membership,
-                  roles: [], // Default roles, can be populated from user data
-                  permissions: [], // Default permissions, can be populated from user data
-                },
+                user: userData,
                 isSignedIn: true,
                 isLoading: false,
               })
             } else {
+              console.log('🔐 [AUTH STORE] No user in response, clearing store')
               set({ user: null, isSignedIn: false, isLoading: false })
             }
           } else {
+            console.log('🔐 [AUTH STORE] Response not OK, clearing store')
             set({ user: null, isSignedIn: false, isLoading: false })
           }
         } catch (error) {
-          console.error('Failed to check auth status:', error)
+          console.error('🔐 [AUTH STORE] Failed to check auth status:', error)
           set({ user: null, isSignedIn: false, isLoading: false })
         }
       },

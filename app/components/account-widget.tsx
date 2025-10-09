@@ -24,8 +24,23 @@ export function AccountWidget({ className = '' }: AccountWidgetProps) {
 
   // Check auth status on mount
   useEffect(() => {
+    console.log('🔐 [ACCOUNT WIDGET] Mounted, checking auth status')
     checkAuthStatus()
   }, [checkAuthStatus])
+
+  // Log when user state changes
+  useEffect(() => {
+    console.log('🔐 [ACCOUNT WIDGET] User state changed:', {
+      isSignedIn,
+      hasUser: !!user,
+      userId: user?.id,
+      userName: user?.name,
+      userAlias: user?.alias,
+      userEmail: user?.email,
+      membershipLevel: user?.membership?.level,
+      membershipStatus: user?.membership?.status,
+    })
+  }, [isSignedIn, user])
 
   // Check auth status when page becomes visible (useful for magic link flow)
   useEffect(() => {
@@ -74,12 +89,18 @@ export function AccountWidget({ className = '' }: AccountWidgetProps) {
 
   // Generate initials from name
   const getInitials = (name: string) => {
+    if (!name) return 'U'
     return name
       .split(' ')
       .map((n) => n[0])
       .join('')
       .toUpperCase()
       .slice(0, 2)
+  }
+
+  // Get display name for initials
+  const getDisplayName = () => {
+    return user?.name || user?.alias || user?.email?.split('@')[0] || 'U'
   }
 
   if (!isSignedIn) {
@@ -118,16 +139,12 @@ export function AccountWidget({ className = '' }: AccountWidgetProps) {
             src={user.image}
             width={60}
             height={60}
-            alt={user.name || user.alias || 'Unknown'}
+            alt={user.name || user.alias || user.email || 'Unknown'}
             className='w-full h-full rounded-full object-cover'
           />
         ) : (
           <span className='text-sm font-bold'>
-            {user?.name
-              ? getInitials(user.name)
-              : user?.alias
-              ? getInitials(user.alias)
-              : 'U'}
+            {getInitials(getDisplayName())}
           </span>
         )}
       </button>
@@ -138,13 +155,20 @@ export function AccountWidget({ className = '' }: AccountWidgetProps) {
           {/* User Info Header */}
           <div className='px-4 py-3 border-b border-border'>
             <p className='text-sm font-medium text-popover-foreground'>
-              {user?.name || user?.alias || 'Unknown'}
+              {user?.name || user?.alias || user?.email || 'Unknown User'}
             </p>
-            {user?.membership && (
-              <p className='text-xs text-muted-foreground'>
-                {user.membership.level} • {user.membership.status}
+            {user?.email && !user?.name && !user?.alias && (
+              <p className='text-xs text-muted-foreground truncate'>
+                {user.email}
               </p>
             )}
+            {user?.membership &&
+              user.membership.level !== 'unknown' &&
+              user.membership.status !== 'unknown' && (
+                <p className='text-xs text-muted-foreground'>
+                  {user.membership.level} • {user.membership.status}
+                </p>
+              )}
           </div>
 
           {/* Menu Items */}

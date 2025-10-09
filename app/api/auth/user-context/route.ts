@@ -4,9 +4,18 @@ import { db } from '@/lib/db/Database'
 
 export async function GET(request: NextRequest) {
   try {
+    console.log('🔐 [USER CONTEXT] Fetching user context...')
     const session = await auth()
 
+    console.log('🔐 [USER CONTEXT] Session:', {
+      hasSession: !!session,
+      hasUser: !!session?.user,
+      userId: session?.user?.id,
+      userEmail: session?.user?.email,
+    })
+
     if (!session?.user?.id) {
+      console.log('🔐 [USER CONTEXT] No session or user ID found')
       return NextResponse.json(
         {
           isSignedIn: false,
@@ -15,6 +24,8 @@ export async function GET(request: NextRequest) {
         { status: 401 }
       )
     }
+
+    console.log('🔐 [USER CONTEXT] Querying database for user:', session.user.id)
 
     // Fetch user data with membership info
     const userData = await db
@@ -33,7 +44,19 @@ export async function GET(request: NextRequest) {
       .where('users.id', '=', session.user.id)
       .executeTakeFirst()
 
+    console.log('🔐 [USER CONTEXT] Database query result:', {
+      found: !!userData,
+      id: userData?.id,
+      email: userData?.email,
+      name: userData?.name,
+      alias: userData?.alias,
+      hasImage: !!userData?.image,
+      membershipLevel: userData?.level,
+      membershipStatus: userData?.status,
+    })
+
     if (!userData) {
+      console.log('🔐 [USER CONTEXT] User not found in database')
       return NextResponse.json(
         {
           isSignedIn: false,
@@ -44,7 +67,7 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    return NextResponse.json({
+    const responseData = {
       isSignedIn: true,
       user: {
         id: userData.id,
@@ -58,9 +81,12 @@ export async function GET(request: NextRequest) {
           joinedAt: userData.joined_at,
         },
       },
-    }, { status: 200 })
+    }
+
+    console.log('🔐 [USER CONTEXT] Returning user context:', responseData)
+    return NextResponse.json(responseData, { status: 200 })
   } catch (error) {
-    console.error('Failed to fetch user context:', error)
+    console.error('🔐 [USER CONTEXT] Error fetching user context:', error)
     return NextResponse.json(
       {
         isSignedIn: false,
