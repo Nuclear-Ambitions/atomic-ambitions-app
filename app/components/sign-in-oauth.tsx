@@ -1,15 +1,7 @@
 'use client'
 
 import { signIn } from 'next-auth/react'
-import {
-  XLogoIcon,
-  GoogleLogoIcon,
-  DiscordLogoIcon,
-  GithubLogoIcon,
-  SpotifyLogoIcon,
-  AppleLogoIcon,
-  LinkedinLogoIcon,
-} from '@phosphor-icons/react'
+import { Icon } from '@iconify/react'
 
 export default function SignIn() {
   const doSignIn = async (provider: string) => {
@@ -25,14 +17,14 @@ export default function SignIn() {
           className='btn btn-primary flex items-center gap-2'
           type='submit'
         >
-          <XLogoIcon className='w-4 h-4' />X
+          <Icon icon='ph:x-logo' width={16} />X
         </button>
         <button
           onClick={() => doSignIn('google')}
           className='btn btn-primary flex items-center gap-2'
           type='submit'
         >
-          <GoogleLogoIcon className='w-4 h-4' />
+          <Icon icon='ph:google-logo' width={16} />
           Google
         </button>
         <button
@@ -40,7 +32,7 @@ export default function SignIn() {
           className='btn btn-primary flex items-center gap-2'
           type='submit'
         >
-          <DiscordLogoIcon className='w-4 h-4' />
+          <Icon icon='ph:discord-logo' width={16} />
           Discord
         </button>
         <button
@@ -48,7 +40,7 @@ export default function SignIn() {
           className='btn btn-primary flex items-center gap-2'
           type='submit'
         >
-          <SpotifyLogoIcon className='w-4 h-4' />
+          <Icon icon='ph:spotify-logo' width={16} />
           Spotify
         </button>
         <button
@@ -56,7 +48,7 @@ export default function SignIn() {
           className='btn btn-primary flex items-center gap-2'
           type='submit'
         >
-          <AppleLogoIcon className='w-4 h-4' />
+          <Icon icon='ph:apple-logo' width={16} />
           Apple
         </button>
         <button
@@ -64,7 +56,7 @@ export default function SignIn() {
           className='btn btn-primary flex items-center gap-2'
           type='submit'
         >
-          <LinkedinLogoIcon className='w-4 h-4' />
+          <Icon icon='ph:linkedin-logo' width={16} />
           LinkedIn
         </button>
         <button
@@ -72,7 +64,7 @@ export default function SignIn() {
           className='btn btn-primary flex items-center gap-2'
           type='submit'
         >
-          <GithubLogoIcon className='w-4 h-4' />
+          <Icon icon='ph:github-logo' width={16} />
           GitHub
         </button>
       </div>

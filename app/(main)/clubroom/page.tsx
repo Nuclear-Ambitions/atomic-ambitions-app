@@ -2,16 +2,7 @@
 
 import { useAuthStore } from '../../lib/stores/auth-store'
 import JoinCta from '../../components/join-cta'
-import {
-  Star,
-  GraduationCap,
-  ChatCircle,
-  ChatText,
-  BookOpen,
-  Lightning,
-  Rocket,
-  Heart,
-} from '@phosphor-icons/react'
+import { Icon } from '@iconify/react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -143,9 +134,9 @@ function MemberDashboard() {
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8'>
           <div className='card p-6 text-center'>
             <div className='flex items-center justify-center w-12 h-12 bg-gradient-to-br from-cherenkov to-primary rounded-full mx-auto mb-4'>
-              <Star
-                size={24}
-                weight='duotone'
+              <Icon
+                icon='ph:star-duotone'
+                width={24}
                 className='text-primary-foreground'
               />
             </div>
@@ -157,9 +148,9 @@ function MemberDashboard() {
 
           <div className='card p-6 text-center'>
             <div className='flex items-center justify-center w-12 h-12 bg-gradient-to-br from-success to-success/80 rounded-full mx-auto mb-4'>
-              <GraduationCap
-                size={24}
-                weight='duotone'
+              <Icon
+                icon='ph:graduation-cap-duotone'
+                width={24}
                 className='text-white'
               />
             </div>
@@ -171,7 +162,11 @@ function MemberDashboard() {
 
           <div className='card p-6 text-center'>
             <div className='flex items-center justify-center w-12 h-12 bg-gradient-to-br from-warning to-warning/80 rounded-full mx-auto mb-4'>
-              <ChatCircle size={24} weight='duotone' className='text-white' />
+              <Icon
+                icon='ph:chat-circle-duotone'
+                width={24}
+                className='text-white'
+              />
             </div>
             <h3 className='text-2xl font-bold text-warning mb-2'>
               {mockStats.postsMade}
@@ -181,7 +176,11 @@ function MemberDashboard() {
 
           <div className='card p-6 text-center'>
             <div className='flex items-center justify-center w-12 h-12 bg-gradient-to-br from-info to-info/80 rounded-full mx-auto mb-4'>
-              <ChatText size={24} weight='duotone' className='text-white' />
+              <Icon
+                icon='ph:chat-text-duotone'
+                width={24}
+                className='text-white'
+              />
             </div>
             <h3 className='text-2xl font-bold text-info mb-2'>
               {mockStats.repliesGiven}
@@ -198,7 +197,11 @@ function MemberDashboard() {
           >
             <div className='flex items-center space-x-4'>
               <div className='flex items-center justify-center w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-lg group-hover:scale-110 transition-transform duration-200'>
-                <BookOpen size={24} weight='duotone' className='text-white' />
+                <Icon
+                  icon='ph:book-open-duotone'
+                  width={24}
+                  className='text-white'
+                />
               </div>
               <div>
                 <h3 className='text-lg font-semibold text-foreground'>
@@ -217,9 +220,9 @@ function MemberDashboard() {
           >
             <div className='flex items-center space-x-4'>
               <div className='flex items-center justify-center w-12 h-12 bg-gradient-to-br from-logo-background to-logo-background/80 rounded-lg group-hover:scale-110 transition-transform duration-200'>
-                <Lightning
-                  size={24}
-                  weight='duotone'
+                <Icon
+                  icon='ph:lightning-duotone'
+                  width={24}
                   className='text-highlight'
                 />
               </div>
@@ -240,7 +243,11 @@ function MemberDashboard() {
           >
             <div className='flex items-center space-x-4'>
               <div className='flex items-center justify-center w-12 h-12 bg-gradient-to-br from-accent to-accent/80 rounded-lg group-hover:scale-110 transition-transform duration-200'>
-                <Rocket size={24} weight='duotone' className='text-white' />
+                <Icon
+                  icon='ph:rocket-duotone'
+                  width={24}
+                  className='text-white'
+                />
               </div>
               <div>
                 <h3 className='text-lg font-semibold text-foreground'>
@@ -260,9 +267,9 @@ function MemberDashboard() {
           <div className='card p-6'>
             <div className='flex items-center justify-between mb-6'>
               <h2 className='text-xl font-semibold text-foreground flex items-center'>
-                <GraduationCap
-                  size={20}
-                  weight='duotone'
+                <Icon
+                  icon='ph:graduation-cap-duotone'
+                  width={20}
                   className='mr-2 text-primary'
                 />
                 Recent Lessons
@@ -311,9 +318,9 @@ function MemberDashboard() {
           <div className='card p-6'>
             <div className='flex items-center justify-between mb-6'>
               <h2 className='text-xl font-semibold text-foreground flex items-center'>
-                <Lightning
-                  size={20}
-                  weight='duotone'
+                <Icon
+                  icon='ph:lightning-duotone'
+                  width={20}
                   className='mr-2 text-secondary'
                 />
                 Recent Flux Posts
@@ -337,13 +344,17 @@ function MemberDashboard() {
                   <div className='flex items-center justify-between'>
                     <div className='flex items-center space-x-4 text-xs text-muted-foreground'>
                       <span className='flex items-center'>
-                        <Heart size={12} weight='duotone' className='mr-1' />
+                        <Icon
+                          icon='ph:heart-duotone'
+                          width={12}
+                          className='mr-1'
+                        />
                         {post.likes}
                       </span>
                       <span className='flex items-center'>
-                        <ChatCircle
-                          size={12}
-                          weight='duotone'
+                        <Icon
+                          icon='ph:chat-circle-duotone'
+                          width={12}
                           className='mr-1'
                         />
                         {post.replies}
@@ -393,9 +404,9 @@ function NonMemberLanding() {
           <div className='grid grid-cols-1 md:grid-cols-3 gap-8 mb-12'>
             <div className='card p-6 text-center'>
               <div className='flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary to-primary/80 rounded-full mx-auto mb-4'>
-                <GraduationCap
-                  size={32}
-                  weight='duotone'
+                <Icon
+                  icon='ph:graduation-cap-duotone'
+                  width={32}
                   className='text-white'
                 />
               </div>
@@ -410,7 +421,11 @@ function NonMemberLanding() {
 
             <div className='card p-6 text-center'>
               <div className='flex items-center justify-center w-16 h-16 bg-gradient-to-br from-secondary to-secondary/80 rounded-full mx-auto mb-4'>
-                <Lightning size={32} weight='duotone' className='text-white' />
+                <Icon
+                  icon='ph:lightning-duotone'
+                  width={32}
+                  className='text-white'
+                />
               </div>
               <h3 className='text-lg font-semibold text-foreground mb-2'>
                 Flux Community
@@ -422,7 +437,11 @@ function NonMemberLanding() {
 
             <div className='card p-6 text-center'>
               <div className='flex items-center justify-center w-16 h-16 bg-gradient-to-br from-accent to-accent/80 rounded-full mx-auto mb-4'>
-                <Rocket size={32} weight='duotone' className='text-white' />
+                <Icon
+                  icon='ph:rocket-duotone'
+                  width={32}
+                  className='text-white'
+                />
               </div>
               <h3 className='text-lg font-semibold text-foreground mb-2'>
                 Interactive Adventures

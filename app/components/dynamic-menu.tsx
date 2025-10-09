@@ -4,23 +4,12 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useAuthStore } from '../lib/stores/auth-store'
-import {
-  House,
-  Handshake,
-  UserRectangle,
-  Circle,
-  User,
-  SignIn,
-  GearSix,
-  Palette,
-  Database,
-  IconProps,
-} from '@phosphor-icons/react'
+import { Icon } from '@iconify/react'
 
 interface NavigationItem {
   href: string
   label: string
-  icon?: React.ComponentType<IconProps>
+  icon?: string
   description?: string
 }
 
@@ -29,7 +18,7 @@ const baseNavigationItems: NavigationItem[] = [
   {
     href: '/',
     label: 'Home',
-    icon: House,
+    icon: 'ph:house-duotone',
     description: 'Main page',
   },
   // {
@@ -46,19 +35,19 @@ const baseNavigationItems: NavigationItem[] = [
   {
     href: '/join',
     label: 'Join',
-    icon: Handshake,
+    icon: 'ph:handshake-duotone',
     description: 'Benefits of membership',
   },
   {
     href: '/whos-who',
     label: 'Atomic Who',
     description: 'Meet the community',
-    icon: UserRectangle,
+    icon: 'ph:user-rectangle-duotone',
   },
   {
     href: '/a-neutron-tale',
     label: "A Neutron's Tale",
-    icon: Circle,
+    icon: 'ph:circle-duotone',
     description: 'A quickie ',
   },
   // {
@@ -79,7 +68,7 @@ const getConditionalNavigationItems = (
     items.push({
       href: '/member-area',
       label: 'Member Area',
-      icon: User,
+      icon: 'ph:user-duotone',
       description: 'Your account and settings',
     })
   }
@@ -88,7 +77,7 @@ const getConditionalNavigationItems = (
     items.push({
       href: '/sign-in',
       label: 'Sign In',
-      icon: SignIn,
+      icon: 'ph:sign-in-duotone',
       description: 'Access your account',
     })
   }
@@ -98,7 +87,7 @@ const getConditionalNavigationItems = (
     items.push({
       href: '/admin-console',
       label: 'Atomic Admin',
-      icon: GearSix,
+      icon: 'ph:gear-six-duotone',
       description: 'For overlords only',
     })
   }
@@ -107,13 +96,13 @@ const getConditionalNavigationItems = (
     items.push({
       href: '/scratch/style-review',
       label: 'Style Review',
-      icon: Palette,
+      icon: 'ph:palette-duotone',
       description: 'UI theme test pattern',
     })
     items.push({
-      href: '/scratch/style-review',
+      href: '/scratch/data',
       label: 'Data Access Testing',
-      icon: Database,
+      icon: 'ph:database-duotone',
       description: 'Data access tests',
     })
   }
@@ -201,9 +190,9 @@ export default function DynamicMenu() {
                         {/* Icon column - fixed width for alignment */}
                         <div className='flex-shrink-0 w-6 h-6 flex items-center justify-center'>
                           {item.icon && (
-                            <item.icon
-                              size={20}
-                              weight='duotone'
+                            <Icon
+                              icon={item.icon}
+                              width={20}
                               className={`${
                                 isActive
                                   ? 'text-highlight-background'

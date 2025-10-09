@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useRouter } from 'next/navigation'
 import { statementSets } from '../../lib/data/statements'
-import { ArrowFatRightIcon } from '@phosphor-icons/react'
+import { Icon } from '@iconify/react'
 
 export default function NeutronTales() {
   const router = useRouter()
@@ -101,7 +101,8 @@ export default function NeutronTales() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 1 }}
-                exit={{ opacity: 0, transition: { duration: 1 } }}>
+                exit={{ opacity: 0, transition: { duration: 1 } }}
+              >
                 {statement}
               </motion.p>
             ))}
@@ -111,11 +112,13 @@ export default function NeutronTales() {
               className='flex flex-col items-center gap-2 mt-12 group'
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 1 }}>
+              transition={{ duration: 1 }}
+            >
               <motion.button
                 className='px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600'
-                onClick={handleContinue}>
-                <ArrowFatRightIcon weight='duotone' />
+                onClick={handleContinue}
+              >
+                <Icon icon='ph:arrow-fat-right-duotone' width={24} />
               </motion.button>
               <p className='text-sm text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity duration-200'>
                 Press → to continue

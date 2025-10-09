@@ -3,7 +3,7 @@
 import React from 'react'
 import SignIn from './sign-in-oauth'
 import MagicLinkSignIn from './sign-in-magic-link'
-import { X } from '@phosphor-icons/react'
+import { Icon } from '@iconify/react'
 
 interface SignInDialogProps {
   onClose?: () => void
@@ -20,7 +20,7 @@ export default function SignInDialog({ onClose }: SignInDialogProps) {
             className='absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors'
             aria-label='Close sign in dialog'
           >
-            <X size={24} weight='bold' />
+            <Icon icon='ph:x-bold' width={24} />
           </button>
         )}
 
