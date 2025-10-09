@@ -15,6 +15,37 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      // OAuth provider images
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com', // Google avatars
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com', // GitHub avatars
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.discordapp.com', // Discord avatars
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'platform-lookaside.fbsbx.com', // Facebook avatars
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'pbs.twimg.com', // Twitter avatars
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
   async headers() {

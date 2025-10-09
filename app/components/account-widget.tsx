@@ -28,7 +28,7 @@ export function AccountWidget({ className = '' }: AccountWidgetProps) {
     checkAuthStatus()
   }, [checkAuthStatus])
 
-  // Log when user state changes
+  // Log when user state changes and check for membership
   useEffect(() => {
     console.log('🔐 [ACCOUNT WIDGET] User state changed:', {
       isSignedIn,
@@ -40,6 +40,21 @@ export function AccountWidget({ className = '' }: AccountWidgetProps) {
       membershipLevel: user?.membership?.level,
       membershipStatus: user?.membership?.status,
     })
+
+    // If user is signed in but doesn't have a membership, redirect to registration
+    if (
+      isSignedIn &&
+      user &&
+      (!user.membership || user.membership.level === 'unknown')
+    ) {
+      console.log(
+        '🔐 [ACCOUNT WIDGET] User has no membership, redirecting to registration'
+      )
+      // Close the sign-in dialog if it's open
+      setShowSignInDialog(false)
+      // Redirect to registration
+      window.location.href = '/join/registration'
+    }
   }, [isSignedIn, user])
 
   // Check auth status when page becomes visible (useful for magic link flow)
@@ -134,19 +149,9 @@ export function AccountWidget({ className = '' }: AccountWidgetProps) {
         aria-label='Open account menu'
         aria-expanded={isDropdownOpen}
       >
-        {user?.image ? (
-          <Image
-            src={user.image}
-            width={60}
-            height={60}
-            alt={user.name || user.alias || user.email || 'Unknown'}
-            className='w-full h-full rounded-full object-cover'
-          />
-        ) : (
-          <span className='text-sm font-bold'>
-            {getInitials(getDisplayName())}
-          </span>
-        )}
+        <span className='text-sm font-bold'>
+          {getInitials(getDisplayName())}
+        </span>
       </button>
 
       {/* Dropdown Menu */}
