@@ -1,7 +1,7 @@
 'use client'
 
 import { useAuthStore } from '../../../lib/stores/auth-store'
-import { Icon } from '@iconify/react'
+import { UserCircle, GearSix } from '@phosphor-icons/react'
 import Image from 'next/image'
 
 export default function ProfilePage() {
@@ -34,9 +34,10 @@ export default function ProfilePage() {
             )}
             <div>
               <h1 className='text-3xl font-bold text-foreground flex items-center'>
-                <Icon
-                  icon='ph:user-circle-duotone'
-                  className='w-8 h-8 mr-3 text-primary'
+                <UserCircle
+                  size={32}
+                  weight='duotone'
+                  className='mr-3 text-primary'
                 />
                 Atomic Profile
               </h1>
@@ -50,9 +51,10 @@ export default function ProfilePage() {
         {/* Coming Soon Message */}
         <div className='card p-8 text-center'>
           <div className='flex items-center justify-center w-16 h-16 bg-gradient-to-br from-muted to-muted/50 rounded-full mx-auto mb-4'>
-            <Icon
-              icon='ph:gear-duotone'
-              className='w-8 h-8 text-muted-foreground'
+            <GearSix
+              size={32}
+              weight='duotone'
+              className='text-muted-foreground'
             />
           </div>
           <h2 className='text-xl font-semibold text-highlight mb-2'>

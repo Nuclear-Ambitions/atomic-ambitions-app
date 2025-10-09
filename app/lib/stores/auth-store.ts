@@ -2,12 +2,20 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { Profile } from '../data/sample'
 
+export interface Membership {
+  level: string;
+  status: string;
+  joinedAt?: Date | string | null;
+}
+
 export interface User {
   id: string;
   email?: string;
   name?: string; // Full name for display
+  alias?: string;
   image?: string;
   profile?: Profile;
+  membership?: Membership;
   roles: string[];
   permissions: string[];
 }
@@ -53,7 +61,7 @@ export const useAuthStore = create<AuthState>()(
 
         set({ isLoading: true })
         try {
-          const response = await fetch('/api/auth/status', {
+          const response = await fetch('/api/auth/user-context', {
             credentials: 'include',
           })
 
@@ -64,7 +72,9 @@ export const useAuthStore = create<AuthState>()(
                 id: string;
                 email?: string;
                 name?: string;
+                alias?: string;
                 image?: string;
+                membership?: Membership;
               };
             }
             if (data.isSignedIn && data.user) {
@@ -73,7 +83,9 @@ export const useAuthStore = create<AuthState>()(
                   id: data.user.id,
                   email: data.user.email,
                   name: data.user.name,
+                  alias: data.user.alias,
                   image: data.user.image,
+                  membership: data.user.membership,
                   roles: [], // Default roles, can be populated from user data
                   permissions: [], // Default permissions, can be populated from user data
                 },

@@ -1,37 +1,59 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
+import { signOut } from 'next-auth/react'
 import { useAuthStore } from '../lib/stores/auth-store'
-import { sampleUserZanzibar } from '../lib/data/sample'
-import { Icon } from '@iconify/react'
+import { User, GearSix, UserCircle, SignOut } from '@phosphor-icons/react'
 import Image from 'next/image'
+import SignInDialog from './sign-in-dialog'
 
 interface AccountWidgetProps {
-  className?: string;
-}
-
-// Mock sign in function for demonstration - replace with real auth
-const useMockAuth = () => {
-  const { signIn: authSignIn, signOut: authSignOut } = useAuthStore()
-
-  const signIn = () => {
-    // Mock user data - replace with real authentication
-    const mockUser = sampleUserZanzibar
-    authSignIn(mockUser)
-  }
-
-  const signOut = () => {
-    authSignOut()
-  }
-
-  return { signIn, signOut }
+  className?: string
 }
 
 export function AccountWidget({ className = '' }: AccountWidgetProps) {
-  const { isSignedIn, user } = useAuthStore()
-  const { signIn, signOut } = useMockAuth()
+  const {
+    isSignedIn,
+    user,
+    signOut: authSignOut,
+    checkAuthStatus,
+  } = useAuthStore()
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const [showSignInDialog, setShowSignInDialog] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
+
+  // Check auth status on mount
+  useEffect(() => {
+    checkAuthStatus()
+  }, [checkAuthStatus])
+
+  // Check auth status when page becomes visible (useful for magic link flow)
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        checkAuthStatus()
+      }
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+    }
+  }, [checkAuthStatus])
+
+  // Handle sign out
+  const handleSignOut = async () => {
+    try {
+      // Use NextAuth's signOut which properly clears the session cookie
+      await signOut({ redirect: false })
+
+      // Clear the auth store
+      authSignOut()
+      setIsDropdownOpen(false)
+    } catch (error) {
+      console.error('Error signing out:', error)
+    }
+  }
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -62,41 +84,49 @@ export function AccountWidget({ className = '' }: AccountWidgetProps) {
 
   if (!isSignedIn) {
     return (
-      <div className={`flex items-center ${className}`}>
-        <button
-          onClick={signIn}
-          className='btn btn-primary px-6 py-2 text-sm font-medium transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2'
-          aria-label='Sign in to your account'>
-          Sign In
-        </button>
-      </div>
+      <>
+        <div className={`flex items-center ${className}`}>
+          <button
+            onClick={() => setShowSignInDialog(true)}
+            className='btn btn-primary px-6 py-2 text-sm font-medium transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2'
+            aria-label='Sign in to your account'
+          >
+            Sign In
+          </button>
+        </div>
+        {showSignInDialog && (
+          <SignInDialog onClose={() => setShowSignInDialog(false)} />
+        )}
+      </>
     )
   }
 
   return (
     <div
       className={`relative flex items-center ${className}`}
-      ref={dropdownRef}>
+      ref={dropdownRef}
+    >
       {/* Avatar Button */}
       <button
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         className='flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-cherenkov to-primary text-primary-foreground font-semibold text-sm transition-all duration-200 hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-2 border-transparent hover:border-cherenkov/30'
         aria-label='Open account menu'
-        aria-expanded={isDropdownOpen}>
-        {user?.profile?.avatarUrl ? (
+        aria-expanded={isDropdownOpen}
+      >
+        {user?.image ? (
           <Image
-            src={user.profile?.avatarUrl}
+            src={user.image}
             width={60}
             height={60}
-            alt={user.name || user.profile?.alias || 'Unknown'}
+            alt={user.name || user.alias || 'Unknown'}
             className='w-full h-full rounded-full object-cover'
           />
         ) : (
           <span className='text-sm font-bold'>
             {user?.name
               ? getInitials(user.name)
-              : user?.profile?.alias
-              ? getInitials(user.profile?.alias)
+              : user?.alias
+              ? getInitials(user.alias)
               : 'U'}
           </span>
         )}
@@ -108,8 +138,13 @@ export function AccountWidget({ className = '' }: AccountWidgetProps) {
           {/* User Info Header */}
           <div className='px-4 py-3 border-b border-border'>
             <p className='text-sm font-medium text-popover-foreground'>
-              {user?.name || user?.profile?.alias || 'Unknown'}
+              {user?.name || user?.alias || 'Unknown'}
             </p>
+            {user?.membership && (
+              <p className='text-xs text-muted-foreground'>
+                {user.membership.level} • {user.membership.status}
+              </p>
+            )}
           </div>
 
           {/* Menu Items */}
@@ -117,10 +152,11 @@ export function AccountWidget({ className = '' }: AccountWidgetProps) {
             <a
               href='/account'
               className='flex items-center px-4 py-2 text-sm text-popover-foreground hover:bg-muted transition-colors duration-150'
-              onClick={() => setIsDropdownOpen(false)}>
-              <Icon
-                icon='ph:user-duotone'
-                width={16}
+              onClick={() => setIsDropdownOpen(false)}
+            >
+              <User
+                size={16}
+                weight='duotone'
                 className='mr-3 text-muted-foreground'
               />
               Account
@@ -129,10 +165,11 @@ export function AccountWidget({ className = '' }: AccountWidgetProps) {
             <a
               href='/settings'
               className='flex items-center px-4 py-2 text-sm text-popover-foreground hover:bg-muted transition-colors duration-150'
-              onClick={() => setIsDropdownOpen(false)}>
-              <Icon
-                icon='ph:gear-duotone'
-                width={16}
+              onClick={() => setIsDropdownOpen(false)}
+            >
+              <GearSix
+                size={16}
+                weight='duotone'
                 className='mr-3 text-muted-foreground'
               />
               Settings
@@ -141,10 +178,11 @@ export function AccountWidget({ className = '' }: AccountWidgetProps) {
             <a
               href='/profile'
               className='flex items-center px-4 py-2 text-sm text-popover-foreground hover:bg-muted transition-colors duration-150'
-              onClick={() => setIsDropdownOpen(false)}>
-              <Icon
-                icon='ph:user-circle-duotone'
-                width={16}
+              onClick={() => setIsDropdownOpen(false)}
+            >
+              <UserCircle
+                size={16}
+                weight='duotone'
                 className='mr-3 text-muted-foreground'
               />
               Profile
@@ -153,13 +191,11 @@ export function AccountWidget({ className = '' }: AccountWidgetProps) {
             <div className='border-t border-border my-1'></div>
 
             <button
-              onClick={() => {
-                signOut()
-                setIsDropdownOpen(false)
-              }}
+              onClick={handleSignOut}
               className='flex items-center w-full px-4 py-2 text-sm text-error hover:bg-error/10 transition-colors duration-150'
-              aria-label='Sign out of your account'>
-              <Icon icon='ph:sign-out-duotone' width={16} className='mr-3' />
+              aria-label='Sign out of your account'
+            >
+              <SignOut size={16} weight='duotone' className='mr-3' />
               Sign Out
             </button>
           </div>

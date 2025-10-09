@@ -1,7 +1,6 @@
 'use client'
 
 import { signIn } from 'next-auth/react'
-import { Icon } from '@iconify/react'
 import {
   XLogoIcon,
   GoogleLogoIcon,
@@ -24,48 +23,55 @@ export default function SignIn() {
         <button
           onClick={() => doSignIn('twitter')}
           className='btn btn-primary flex items-center gap-2'
-          type='submit'>
+          type='submit'
+        >
           <XLogoIcon className='w-4 h-4' />X
         </button>
         <button
           onClick={() => doSignIn('google')}
           className='btn btn-primary flex items-center gap-2'
-          type='submit'>
+          type='submit'
+        >
           <GoogleLogoIcon className='w-4 h-4' />
           Google
         </button>
         <button
           onClick={() => doSignIn('discord')}
           className='btn btn-primary flex items-center gap-2'
-          type='submit'>
+          type='submit'
+        >
           <DiscordLogoIcon className='w-4 h-4' />
           Discord
         </button>
         <button
           onClick={() => doSignIn('spotify')}
           className='btn btn-primary flex items-center gap-2'
-          type='submit'>
+          type='submit'
+        >
           <SpotifyLogoIcon className='w-4 h-4' />
           Spotify
         </button>
         <button
           onClick={() => doSignIn('apple')}
           className='btn btn-primary flex items-center gap-2'
-          type='submit'>
+          type='submit'
+        >
           <AppleLogoIcon className='w-4 h-4' />
           Apple
         </button>
         <button
           onClick={() => doSignIn('linkedin')}
           className='btn btn-primary flex items-center gap-2'
-          type='submit'>
+          type='submit'
+        >
           <LinkedinLogoIcon className='w-4 h-4' />
           LinkedIn
         </button>
         <button
           onClick={() => doSignIn('github')}
           className='btn btn-primary flex items-center gap-2'
-          type='submit'>
+          type='submit'
+        >
           <GithubLogoIcon className='w-4 h-4' />
           GitHub
         </button>
