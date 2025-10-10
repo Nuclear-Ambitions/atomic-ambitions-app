@@ -10,6 +10,7 @@
     "start": "next start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "cypress:open": "cypress open",
     "deploy": "next build"
   },
   "dependencies": {
@@ -45,6 +46,7 @@
     "@types/pg": "^8.15.5",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
+    "cypress": "^15.4.0",
     "eslint": "^9.36.0",
     "eslint-config-next": "15.5.4",
     "tailwindcss": "^4.1.14",
@@ -56,6 +58,7 @@
     },
     "onlyBuiltDependencies": [
       "@tailwindcss/oxide",
+      "cypress",
       "sharp",
       "unrs-resolver"
     ]
