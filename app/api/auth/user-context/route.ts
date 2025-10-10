@@ -9,9 +9,7 @@ export async function GET(request: NextRequest) {
 
     console.log('🔐 [USER CONTEXT] Session:', {
       hasSession: !!session,
-      hasUser: !!session?.user,
-      userId: session?.user?.id,
-      userEmail: session?.user?.email,
+      session
     })
 
     if (!session?.user?.id) {
@@ -24,8 +22,6 @@ export async function GET(request: NextRequest) {
         { status: 401 }
       )
     }
-
-    console.log('🔐 [USER CONTEXT] Querying database for user:', session.user.id)
 
     // Fetch user data with membership info
     const userData = await db

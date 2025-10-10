@@ -28,18 +28,12 @@ async function verifyTurnstile(token: string): Promise<boolean> {
 }
 
 export async function POST(request: NextRequest) {
-  console.log('🔐 [TURNSTILE DEBUG] POST request received')
-  console.log('🔐 [TURNSTILE DEBUG] Request URL:', request.url)
-  console.log('🔐 [TURNSTILE DEBUG] Request headers:', Object.fromEntries(request.headers.entries()))
+  console.log('🔐 [TURNSTILE DEBUG] POST URL:', request.url)
 
   try {
     const body = await request.json() as { token: string }
-    console.log('🔐 [TURNSTILE DEBUG] Request body:', { hasToken: !!body.token, tokenLength: body.token?.length || 0 })
-
     const { token } = body
     const isValidToken = await verifyTurnstile(token)
-
-    console.log('🔐 [TURNSTILE DEBUG] Verification result:', isValidToken)
 
     return NextResponse.json({
       isValidToken,
