@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useAuthStore } from '../lib/stores/auth-store'
+import { useUserStore } from '../lib/stores/user-store'
 import { Icon } from '@iconify/react'
 
 interface NavigationItem {
@@ -11,27 +11,35 @@ interface NavigationItem {
   label: string
   icon?: string
   description?: string
+  requiredRole?: string
 }
 
 // Base navigation items that are always visible
-const baseNavigationItems: NavigationItem[] = [
+const navigationItems: NavigationItem[] = [
   {
     href: '/',
     label: 'Home',
     icon: 'ph:house-duotone',
     description: 'Main page',
   },
-  // {
-  //   href: "/adventure",
-  //   label: "Adventure",
-  //   description: "Explore and discover",
-  // },
-  // { href: "/flux", label: "Atomic Flux", description: "Social idea exchange " },
-  // {
-  //   href: "/learning",
-  //   label: "Atomic Learning",
-  //   description: "Learn about atomic energy",
-  // },
+  {
+    href: '/adventures',
+    label: 'Adventure',
+    description: 'Explore and discover',
+  },
+  { href: '/flux', label: 'Atomic Flux', description: 'Social idea exchange ' },
+  {
+    href: '/lessons',
+    label: 'Atomic Learning',
+    description: 'Learn about atomic energy',
+  },
+  {
+    href: '/member-area',
+    label: 'Member Area',
+    icon: 'ph:user-duotone',
+    description: 'Your account and settings',
+    requiredRole: 'member',
+  },
   {
     href: '/join',
     label: 'Join',
@@ -55,72 +63,35 @@ const baseNavigationItems: NavigationItem[] = [
   //   label: "Art Gallery",
   //   description: "Flux-inspired eye candy",
   // },
+  {
+    href: '/admin-console',
+    label: 'Atomic Admin',
+    icon: 'ph:gear-six-duotone',
+    description: 'For overlords only',
+    requiredRole: 'admin',
+  },
+  {
+    href: '/scratch/style-review',
+    label: 'Style Review',
+    icon: 'ph:palette-duotone',
+    description: 'UI theme test pattern',
+    requiredRole: 'admin',
+  },
+  {
+    href: '/scratch/data',
+    label: 'Data Access Testing',
+    icon: 'ph:database-duotone',
+    description: 'Data access tests',
+    requiredRole: 'admin',
+  },
 ]
-
-// Conditional navigation items based on auth state
-const getConditionalNavigationItems = (
-  isSignedIn: boolean,
-  hasRole: (role: string) => boolean
-): NavigationItem[] => {
-  const items: NavigationItem[] = []
-
-  if (isSignedIn) {
-    items.push({
-      href: '/member-area',
-      label: 'Member Area',
-      icon: 'ph:user-duotone',
-      description: 'Your account and settings',
-    })
-  }
-
-  if (!isSignedIn) {
-    items.push({
-      href: '/sign-in',
-      label: 'Sign In',
-      icon: 'ph:sign-in-duotone',
-      description: 'Access your account',
-    })
-  }
-
-  // Example: Admin-only items
-  if (hasRole('admin')) {
-    items.push({
-      href: '/admin-console',
-      label: 'Atomic Admin',
-      icon: 'ph:gear-six-duotone',
-      description: 'For overlords only',
-    })
-  }
-
-  if (isSignedIn) {
-    items.push({
-      href: '/scratch/style-review',
-      label: 'Style Review',
-      icon: 'ph:palette-duotone',
-      description: 'UI theme test pattern',
-    })
-    items.push({
-      href: '/scratch/data',
-      label: 'Data Access Testing',
-      icon: 'ph:database-duotone',
-      description: 'Data access tests',
-    })
-  }
-
-  return items
-}
 
 export default function DynamicMenu() {
   const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname()
-  const { isSignedIn, hasRole } = useAuthStore()
+  const { isSignedIn, roles } = useUserStore()
 
   // Combine base and conditional navigation items
-  const navigationItems = [
-    ...baseNavigationItems,
-    ...getConditionalNavigationItems(isSignedIn, hasRole),
-  ]
-
   const toggleMenu = () => {
     setIsOpen(!isOpen)
   }
@@ -173,6 +144,10 @@ export default function DynamicMenu() {
 
               <nav className='space-y-1'>
                 {navigationItems.map((item) => {
+                  if (item.requiredRole && !roles.includes(item.requiredRole)) {
+                    return null
+                  }
+
                   const isActive = pathname === item.href
 
                   return (

@@ -1,12 +1,12 @@
 import { ThemeToggle } from '../components/theme-toggle'
-import { AccountWidget } from '../components/account-widget'
+import UserAccountWidget from '../components/user-account-widget'
 import DynamicMenu from '../components/dynamic-menu'
 import Image from 'next/image'
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <div className='min-h-screen flex flex-col'>
@@ -32,7 +32,7 @@ export default function RootLayout({
             </div>
             <div className='flex items-center space-x-4'>
               <DynamicMenu />
-              <AccountWidget />
+              <UserAccountWidget />
             </div>
           </div>
         </div>

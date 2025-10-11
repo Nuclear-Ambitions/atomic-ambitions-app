@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Orbitron, Roboto, Courier_Prime } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from './theme-context'
+import { SessionProvider } from 'next-auth/react'
 import { Analytics } from '@vercel/analytics/next'
 
 const orbitron = Orbitron({
@@ -37,7 +38,9 @@ export default function RootLayout({
       <body
         className={`${orbitron.variable} ${roboto.variable} ${courier_prime.variable} antialiased`}
       >
-        <ThemeProvider>{children}</ThemeProvider>
+        <SessionProvider>
+          <ThemeProvider>{children}</ThemeProvider>
+        </SessionProvider>
         <Analytics />
       </body>
     </html>
