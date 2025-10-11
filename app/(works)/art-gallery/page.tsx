@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Icon } from '@iconify/react'
+import Link from 'next/link'
 
 interface ArtItem {
   src: string
@@ -113,13 +114,13 @@ export default function ArtGallery() {
 
         {/* Link to Home */}
         <div className='flex justify-end mt-6'>
-          <a
+          <Link
             href='/'
             className='text-blue-400 hover:text-blue-300 transition-colors text-lg font-medium flex items-center gap-2'
           >
             This way to Atomic Ambitions{' '}
             <Icon icon='ph:arrow-right' width={24} />
-          </a>
+          </Link>
         </div>
       </div>
 
