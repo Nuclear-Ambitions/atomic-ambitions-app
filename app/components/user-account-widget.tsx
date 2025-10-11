@@ -1,13 +1,27 @@
 'use client'
 
 import { signIn, signOut, useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+
+function AvatarDropdown() {
+  const router = useRouter()
+
+  const handleSignOut = async () => {
+    const data = await signOut({ redirect: false, callbackUrl: '/' })
+    router.push(data.url)
+  }
+
+  return (
+    <div>
+      <button className='btn btn-primary text-sm' onClick={handleSignOut}>
+        Sign Out
+      </button>
+    </div>
+  )
+}
 
 export default function UserAccountWidget() {
   const session = useSession()
-
-  const handleSignOut = () => {
-    signOut()
-  }
 
   const handleSignIn = () => {
     signIn()
@@ -15,13 +29,7 @@ export default function UserAccountWidget() {
 
   console.log('session', session)
   if (session.status === 'authenticated') {
-    return (
-      <div>
-        <button className='btn btn-primary text-sm' onClick={handleSignOut}>
-          Sign Out
-        </button>
-      </div>
-    )
+    return <AvatarDropdown />
   } else {
     return (
       <div>

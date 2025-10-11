@@ -1,27 +1,10 @@
 'use client'
 
-import React, { useEffect } from 'react'
 import Link from 'next/link'
 import FeatureCard from '@/components/feature-card'
 import { StepProps } from './types'
-import { useAuthStore } from '@/lib/stores/auth-store'
 
-const ConfirmMembershipStep: React.FC<StepProps> = ({ formData, onNext }) => {
-  const { checkAuthStatus } = useAuthStore()
-
-  // Refresh auth status when this step loads to update membership info
-  useEffect(() => {
-    console.log(
-      '🔐 [CONFIRM MEMBERSHIP] Refreshing auth status to update membership info'
-    )
-    checkAuthStatus()
-  }, [checkAuthStatus])
-
-  const handleContinue = () => {
-    // Mark identity as verified for Explorer accounts
-    onNext()
-  }
-
+const ConfirmMembershipStep: React.FC<StepProps> = ({ formData }) => {
   return (
     <div className='max-w-4xl mx-auto'>
       <div className='text-center mb-12'>

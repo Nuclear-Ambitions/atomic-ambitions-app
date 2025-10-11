@@ -12,17 +12,12 @@ import {
 import MembershipStep from './MembershipStep'
 import IdentityStep from './IdentityStep'
 import ConfirmMembershipStep from './ConfirmMembershipStep'
-import { useAuthStore } from '@/lib/stores/auth-store'
+import { useSession } from 'next-auth/react'
 
 const RegistrationContent = () => {
   const searchParams = useSearchParams()
-  const {
-    isSignedIn,
-    user,
-    checkAuthStatus,
-    isLoading: authLoading,
-  } = useAuthStore()
-  const [isInitializing, setIsInitializing] = useState(true)
+  const session = useSession()
+  const [isLoading, setIsLoading] = useState(true)
 
   // Step configuration with canSkip functions
   const stepConfigs: Record<RegistrationStep, StepConfig> = {
@@ -99,22 +94,17 @@ const RegistrationContent = () => {
   // Load registration state and check auth status on mount
   useEffect(() => {
     let isMounted = true
-
+    setIsLoading(true)
     const loadRegistrationState = async () => {
       try {
-        // First, check authentication status
-        await checkAuthStatus()
-
         if (!isMounted) return
 
-        // Get the current auth state after the check
-        const currentAuthState = useAuthStore.getState()
-        const currentIsSignedIn = currentAuthState.isSignedIn
-        const currentUser = currentAuthState.user
+        const isSignedIn = session.status === 'authenticated'
+        const currentUser = session.data?.user
 
         console.log('Auth state after check:', {
-          isSignedIn: currentIsSignedIn,
-          user: currentUser,
+          isSignedIn,
+          currentUser,
         })
 
         // Load registration data from the database
@@ -132,7 +122,7 @@ const RegistrationContent = () => {
         }
 
         // If user is signed in, try to load their registration state
-        if (currentIsSignedIn) {
+        if (isSignedIn) {
           try {
             const response = await fetch('/api/registration', {
               method: 'GET',
@@ -151,7 +141,7 @@ const RegistrationContent = () => {
         if (!isMounted) return
 
         // If user is signed in, populate from auth data if not already set from database
-        if (currentIsSignedIn && currentUser) {
+        if (isSignedIn && currentUser) {
           if (!loadedData.alias && currentUser.name) {
             loadedData.alias = currentUser.name
           }
@@ -163,14 +153,14 @@ const RegistrationContent = () => {
         if (!isMounted) return
 
         console.log('Final loaded data:', loadedData)
-        console.log('Current isSignedIn:', currentIsSignedIn)
+        console.log('Current isSignedIn:', isSignedIn)
 
         // Update form data with loaded state
         setFormData(loadedData)
 
         // Determine and set the appropriate initial step and completed steps
         const { step: initialStep, completedSteps } =
-          getInitialStepAndCompletedSteps(loadedData, currentIsSignedIn)
+          getInitialStepAndCompletedSteps(loadedData, isSignedIn)
         console.log('Initial step determined:', initialStep)
         console.log('Completed steps:', completedSteps)
 
@@ -190,7 +180,7 @@ const RegistrationContent = () => {
         }
       } finally {
         if (isMounted) {
-          setIsInitializing(false)
+          setIsLoading(false)
         }
       }
     }
@@ -275,7 +265,7 @@ const RegistrationContent = () => {
   }
 
   // Show loading state while initializing or checking auth
-  if (isInitializing || authLoading) {
+  if (isLoading) {
     return (
       <div className='min-h-screen bg-background py-12'>
         <div className='container mx-auto px-6'>
@@ -284,9 +274,7 @@ const RegistrationContent = () => {
               <div className='text-center'>
                 <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4'></div>
                 <p className='text-muted-foreground'>
-                  {authLoading
-                    ? 'Checking authentication...'
-                    : 'Loading registration state...'}
+                  Loading next registration step...
                 </p>
               </div>
             </div>
