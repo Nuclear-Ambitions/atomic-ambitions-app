@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useRouter } from 'next/navigation'
-import { statementSets } from '../../lib/data/statements'
+import { statementSets } from '@/lib/data/statements'
 import { Icon } from '@iconify/react'
 
 export default function NeutronTales() {

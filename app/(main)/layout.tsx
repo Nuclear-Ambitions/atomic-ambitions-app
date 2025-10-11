@@ -1,6 +1,6 @@
-import { ThemeToggle } from '../components/theme-toggle'
-import UserAccountWidget from '../components/user-account-widget'
-import DynamicMenu from '../components/dynamic-menu'
+import { ThemeToggle } from '@/components/theme-toggle'
+import UserAccountWidget from '@/components/user-account-widget'
+import DynamicMenu from '@/components/dynamic-menu'
 import Image from 'next/image'
 
 export default function RootLayout({
