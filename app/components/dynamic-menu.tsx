@@ -25,12 +25,19 @@ const navigationItems: NavigationItem[] = [
   {
     href: '/adventures',
     label: 'Adventure',
+    icon: 'ph:person-simple-hike-duotone',
     description: 'Explore and discover',
   },
-  { href: '/flux', label: 'Atomic Flux', description: 'Social idea exchange ' },
+  {
+    href: '/flux',
+    label: 'Atomic Flux',
+    icon: 'ph:lightning-duotone',
+    description: 'Social idea exchange ',
+  },
   {
     href: '/lessons',
     label: 'Atomic Learning',
+    icon: 'ph:book-duotone',
     description: 'Learn about atomic energy',
   },
   {
@@ -58,11 +65,12 @@ const navigationItems: NavigationItem[] = [
     icon: 'ph:circle-duotone',
     description: 'A quickie ',
   },
-  // {
-  //   href: "/art-gallery",
-  //   label: "Art Gallery",
-  //   description: "Flux-inspired eye candy",
-  // },
+  {
+    href: '/art-gallery',
+    label: 'Art Gallery',
+    icon: 'ph:image-duotone',
+    description: 'Flux-inspired eye candy',
+  },
   {
     href: '/admin-console',
     label: 'Atomic Admin',
