@@ -1,5 +1,5 @@
 import { DefaultSession } from 'next-auth' // Or 'next-auth'
-import { UserContext } from '@/lib/db/users'
+import { UserContext } from '@/lib/data/users'
 
 declare module 'next-auth' {
   // Or 'next-auth'

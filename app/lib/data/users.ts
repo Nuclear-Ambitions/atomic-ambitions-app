@@ -1,4 +1,4 @@
-import { db } from './Database'
+import { db } from '../db/Database'
 import { jsonBuildObject } from 'kysely/helpers/postgres'
 
 export interface MembershipSummary {

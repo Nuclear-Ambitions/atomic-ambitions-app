@@ -7,7 +7,7 @@ import Discord from 'next-auth/providers/discord'
 import Twitter from 'next-auth/providers/twitter'
 import { sendVerificationRequest } from '@/lib/authSendRequest'
 import { pool } from '@/lib/db/Database'
-import { UserDataAccess } from '@/lib/db/users'
+import { UserDataAccess } from '@/lib/data/users'
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PostgresAdapter(pool),

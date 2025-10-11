@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
-import { SubscriptionDataAccess as subscriptionDA } from '@/lib/db/subscriptions'
-import { SubscriptionData, SubscriptionSummary } from '@/lib/db/subscriptions'
+import { SubscriptionDataAccess as subDataAccess, SubscriptionData } from '@/lib/data/subscriptions'
 
 export async function GET(request: NextRequest) {
   try {
@@ -17,7 +16,7 @@ export async function GET(request: NextRequest) {
 
     console.log('🔍 [SUBSCRIPTION CHECK] Checking if subscription exists:', subscriptionId)
 
-    const exists = await subscriptionDA.subscriptionExists(subscriptionId)
+    const exists = await subDataAccess.subscriptionExists(subscriptionId)
 
     if (!exists) {
       return NextResponse.json(
@@ -26,7 +25,7 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    const subscription = await subscriptionDA.getSubscription(subscriptionId)
+    const subscription = await subDataAccess.getSubscription(subscriptionId)
 
     return NextResponse.json({
       success: true,
@@ -73,7 +72,7 @@ export async function POST(request: NextRequest) {
     const subId = await recordSubscription(subData)
 
     // Get the subscription record to return
-    const subRecord = await subscriptionDA.getSubscription(subId)
+    const subRecord = await subDataAccess.getSubscription(subId)
 
     console.log('📝 [SUBSCRIPTION REGISTRATION] Successfully processed subscription:', subId)
 
@@ -100,11 +99,11 @@ async function recordSubscription(subData: SubscriptionData): Promise<string> {
       throw new Error('No user_id found')
     }
 
-    const result = await subscriptionDA.insertSubscription(subData)
+    const result = await subDataAccess.insertSubscription(subData)
 
-    await subscriptionDA.updateUserStripeCustomerId(userId, subData.stripeCustomerId)
+    await subDataAccess.updateUserStripeCustomerId(userId, subData.stripeCustomerId)
 
-    await subscriptionDA.setMembershipLevel(userId, 'charter')
+    await subDataAccess.setMembershipLevel(userId, 'charter')
 
     return result[0].id
 
