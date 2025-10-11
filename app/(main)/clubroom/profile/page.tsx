@@ -1,12 +1,13 @@
 'use client'
 
-import { useAuthStore } from '../../../lib/stores/auth-store'
 import { Icon } from '@iconify/react'
 import Image from 'next/image'
+import { useSession } from 'next-auth/react'
 
 export default function ProfilePage() {
-  const { user } = useAuthStore()
-  const profile = user?.profile
+  const session = useSession()
+  const user = session.data?.user
+  const profile = user?.summary
 
   return (
     <div className='min-h-screen bg-background'>

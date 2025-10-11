@@ -10,12 +10,14 @@ export interface MembershipSummary {
 export interface UserContext {
   id?: string | null;
   alias?: string | null;
+  email?: string | null;
   avatarUrl?: string | null;
   membership?: {
     level: string | null;
     status: string | null;
     joinedAt: string | null;
   } | null;
+  isSubscriber?: boolean | null;
   roles?: string[] | null;
 }
 
@@ -27,6 +29,7 @@ export const UserDataAccess = {
       .select([
         'users.id',
         'users.alias',
+        'users.email',
         'users.image as avatarUrl',
         (eb) => jsonBuildObject({
           level: eb.ref('memberships.level'),
@@ -37,10 +40,13 @@ export const UserDataAccess = {
       .where('users.id', '=', userId)
       .executeTakeFirst()
 
+    const hasActiveSubscription = await UserDataAccess.hasActiveSubscription(userId)
+
     const roles = await UserDataAccess.getUserRoles(userId)
     return {
       ...result,
       roles,
+      isSubscriber: hasActiveSubscription,
     }
   },
 
@@ -51,5 +57,18 @@ export const UserDataAccess = {
       .where('user_id', '=', userId)
       .execute()
     return result.map((r) => r.role_id)
+  },
+
+  async hasActiveSubscription(userId: string): Promise<boolean> {
+    const result = await db
+      .selectFrom('stripe_subscriptions')
+      .select(['id', 'status', 'current_period_end', 'current_period_start', 'interval', 'payment_status'])
+      .where('user_id', '=', userId)
+      .orderBy('current_period_start', 'desc')
+      .executeTakeFirst()
+
+    console.log('🔍 [HAS ACTIVE SUBSCRIPTION] Result:', result)
+
+    return (result?.status == 'active' && result?.payment_status == 'paid' && result?.current_period_end && result?.current_period_end > new Date()) || false
   },
 }

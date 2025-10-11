@@ -1,8 +1,8 @@
 'use client'
 
-import { useAuthStore } from '../../lib/stores/auth-store'
 import JoinCta from '../../components/join-cta'
 import { Icon } from '@iconify/react'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -68,8 +68,9 @@ const mockStats = {
 }
 
 function MemberDashboard() {
-  const { user } = useAuthStore()
-  const profile = user?.profile
+  const session = useSession()
+  const user = session.data?.user
+  const profile = user?.summary
 
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat('en-US', {
@@ -121,10 +122,11 @@ function MemberDashboard() {
             )}
             <div>
               <h1 className='text-3xl font-bold text-foreground'>
-                Welcome back, {user?.name || profile?.alias || 'Member'}!
+                Hello, {profile?.alias || user?.name || 'Member'}!
               </h1>
               <p className='text-muted-foreground'>
-                Member since {formatDate(mockStats.memberSince)}
+                Member since{' '}
+                {formatDate(new Date(profile?.membership?.joinedAt || ''))}
               </p>
             </div>
           </div>
@@ -475,7 +477,8 @@ function NonMemberLanding() {
 }
 
 export default function ClubroomPage() {
-  const { isSignedIn } = useAuthStore()
+  const session = useSession()
+  const isSignedIn = session.status === 'authenticated'
 
   // Set page title for bookmarking
   if (typeof document !== 'undefined') {
