@@ -97,6 +97,14 @@ export async function POST(request: NextRequest) {
       .where('id', '=', userId)
       .execute()
 
+    await db
+      .insertInto('user_roles')
+      .values({
+        user_id: userId,
+        role_id: 'member',
+      })
+      .execute()
+
     // Insert membership record
     const membership = await db
       .insertInto('memberships')
