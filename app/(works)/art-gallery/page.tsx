@@ -86,7 +86,7 @@ export default function ArtGallery() {
         </h1>
 
         {/* Carousel Container */}
-        <div className='relative w-full aspect-video bg-black rounded-lg overflow-hidden shadow-2xl'>
+        <div className='relative w-7/8 mx-auto aspect-square bg-black rounded-lg overflow-hidden shadow-2xl'>
           {/* Image */}
           <div
             className={`transition-opacity duration-500 ${
@@ -103,74 +103,12 @@ export default function ArtGallery() {
             />
           </div>
 
-          {/* Navigation Arrows */}
-          <button
-            onClick={goToPrevious}
-            className='absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all'
-            aria-label='Previous image'
-          >
-            <svg
-              className='w-6 h-6'
-              fill='none'
-              stroke='currentColor'
-              viewBox='0 0 24 24'
-            >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth={2}
-                d='M15 19l-7-7 7-7'
-              />
-            </svg>
-          </button>
-
-          <button
-            onClick={goToNext}
-            className='absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all'
-            aria-label='Next image'
-          >
-            <svg
-              className='w-6 h-6'
-              fill='none'
-              stroke='currentColor'
-              viewBox='0 0 24 24'
-            >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth={2}
-                d='M9 5l7 7-7 7'
-              />
-            </svg>
-          </button>
-
           {/* Caption Overlay */}
           <div className='absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6'>
             <p className='text-white text-lg text-center font-medium'>
               {artItems[currentIndex].caption}
             </p>
           </div>
-        </div>
-
-        {/* Dot Indicators */}
-        <div className='flex justify-center gap-3 mt-8'>
-          {artItems.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={`transition-all rounded-full ${
-                index === currentIndex
-                  ? 'w-12 h-3 bg-blue-500'
-                  : 'w-3 h-3 bg-gray-500 hover:bg-gray-400'
-              }`}
-              aria-label={`Go to image ${index + 1}`}
-            />
-          ))}
-        </div>
-
-        {/* Counter */}
-        <div className='text-center mt-4 text-gray-400'>
-          {currentIndex + 1} / {artItems.length}
         </div>
 
         {/* Link to Home */}
