@@ -1,35 +1,41 @@
 import { db } from './Database'
+import { jsonBuildObject } from 'kysely/helpers/postgres'
 
 export interface MembershipSummary {
   level: string;
   status: string;
-  joinedAt: Date;
+  joinedAt: Date | string;
 }
 
 export interface UserContext {
   id: string;
-  alias?: string;
-  avatarUrl?: string;
-  level?: string;
-  status?: string;
-  joinedAt?: Date;
+  alias?: string | null;
+  avatarUrl?: string | null;
+  membership?: {
+    level: string | null;
+    status: string | null;
+    joinedAt: string | null;
+  } | null;
 }
 
 export const UserDataAccess = {
   async getUserContext(userId: string): Promise<UserContext | undefined> {
-    const userContext = await db
+    const result = await db
       .selectFrom('users')
       .leftJoin('memberships', 'users.id', 'memberships.user_id')
       .select([
         'users.id',
         'users.alias',
         'users.image as avatarUrl',
-        'memberships.level',
-        'memberships.status',
-        'memberships.joined_at',
+        (eb) => jsonBuildObject({
+          level: eb.ref('memberships.level'),
+          status: eb.ref('memberships.status'),
+          joinedAt: eb.ref('memberships.joined_at'),
+        }).as('membership')
       ])
       .where('users.id', '=', userId)
       .executeTakeFirst()
-    return userContext as UserContext
+
+    return result
   },
 }
