@@ -3,8 +3,8 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useUserStore } from '../lib/stores/user-store'
 import { Icon } from '@iconify/react'
+import { useSession } from 'next-auth/react'
 
 interface NavigationItem {
   href: string
@@ -89,7 +89,7 @@ const navigationItems: NavigationItem[] = [
 export default function DynamicMenu() {
   const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname()
-  const { isSignedIn, roles } = useUserStore()
+  const roles = useSession().data?.user?.summary?.roles
 
   // Combine base and conditional navigation items
   const toggleMenu = () => {
@@ -144,7 +144,11 @@ export default function DynamicMenu() {
 
               <nav className='space-y-1'>
                 {navigationItems.map((item) => {
-                  if (item.requiredRole && !roles.includes(item.requiredRole)) {
+                  if (
+                    item.requiredRole &&
+                    roles != null &&
+                    !roles.includes(item.requiredRole)
+                  ) {
                     return null
                   }
 

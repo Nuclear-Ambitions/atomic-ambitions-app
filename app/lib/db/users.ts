@@ -8,7 +8,7 @@ export interface MembershipSummary {
 }
 
 export interface UserContext {
-  id: string;
+  id?: string | null;
   alias?: string | null;
   avatarUrl?: string | null;
   membership?: {
@@ -16,6 +16,7 @@ export interface UserContext {
     status: string | null;
     joinedAt: string | null;
   } | null;
+  roles?: string[] | null;
 }
 
 export const UserDataAccess = {
@@ -36,6 +37,19 @@ export const UserDataAccess = {
       .where('users.id', '=', userId)
       .executeTakeFirst()
 
-    return result
+    const roles = await UserDataAccess.getUserRoles(userId)
+    return {
+      ...result,
+      roles,
+    }
+  },
+
+  async getUserRoles(userId: string): Promise<string[]> {
+    const result = await db
+      .selectFrom('user_roles')
+      .select('role_id')
+      .where('user_id', '=', userId)
+      .execute()
+    return result.map((r) => r.role_id)
   },
 }

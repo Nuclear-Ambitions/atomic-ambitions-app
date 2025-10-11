@@ -3,7 +3,7 @@
  * Please do not edit it manually.
  */
 
-import type { ColumnType } from 'kysely'
+import type { ColumnType } from "kysely";
 
 export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
   ? ColumnType<S, I | undefined, U>
@@ -58,6 +58,14 @@ export interface PlayingWithNeon {
   value: number | null;
 }
 
+export interface Roles {
+  created_at: Generated<Timestamp>;
+  description: string | null;
+  key: string;
+  label: string;
+  updated_at: Generated<Timestamp>;
+}
+
 export interface Sessions {
   expires: Timestamp;
   id: Generated<string>;
@@ -90,6 +98,13 @@ export interface StripeSubscriptions {
   user_id: string | null;
 }
 
+export interface UserRoles {
+  granted_at: Generated<Timestamp>;
+  id: Generated<string>;
+  role_id: string;
+  user_id: string;
+}
+
 export interface Users {
   alias: string | null;
   created_at: Generated<Timestamp>;
@@ -114,9 +129,11 @@ export interface DB {
   accounts: Accounts;
   memberships: Memberships;
   playing_with_neon: PlayingWithNeon;
+  roles: Roles;
   sessions: Sessions;
   stripe_sessions: StripeSessions;
   stripe_subscriptions: StripeSubscriptions;
+  user_roles: UserRoles;
   users: Users;
   verification_token: VerificationToken;
 }
