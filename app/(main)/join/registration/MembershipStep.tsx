@@ -2,8 +2,7 @@
 
 import React from 'react'
 import Link from 'next/link'
-import { MembershipLevel, StepProps } from './types'
-import { useAuthStore } from '@/lib/stores/auth-store'
+import { StepProps } from './types'
 
 const MembershipStep: React.FC<StepProps> = ({
   formData,
@@ -15,7 +14,6 @@ const MembershipStep: React.FC<StepProps> = ({
   onNext,
   refreshRegistrationData,
 }) => {
-  const { checkAuthStatus } = useAuthStore()
   const validateMembershipStep = () => {
     const newErrors: Record<string, string> = {}
 
@@ -69,7 +67,6 @@ const MembershipStep: React.FC<StepProps> = ({
         console.log(
           '🔐 [MEMBERSHIP STEP] Membership created, refreshing auth status'
         )
-        await checkAuthStatus()
         onNext()
       } else {
         const errorData = (await response.json()) as { message?: string }

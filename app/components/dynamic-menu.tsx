@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Icon } from '@iconify/react'
@@ -41,10 +41,10 @@ const navigationItems: NavigationItem[] = [
     description: 'Learn about atomic energy',
   },
   {
-    href: '/member-area',
-    label: 'Member Area',
+    href: '/clubroom',
+    label: 'Clubroom',
     icon: 'ph:user-duotone',
-    description: 'Your account and settings',
+    description: 'Members start here',
     requiredRole: 'member',
   },
   {
@@ -98,6 +98,10 @@ export default function DynamicMenu() {
   const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname()
   const roles = useSession().data?.user?.summary?.roles
+
+  useEffect(() => {
+    console.log('roles', roles)
+  }, [roles])
 
   // Combine base and conditional navigation items
   const toggleMenu = () => {

@@ -94,9 +94,16 @@ const RegistrationContent = () => {
   // Load registration state and check auth status on mount
   useEffect(() => {
     let isMounted = true
-    setIsLoading(true)
+
     const loadRegistrationState = async () => {
       try {
+        // Wait for session to finish loading
+        if (session.status === 'loading') {
+          return
+        }
+
+        setIsLoading(true)
+
         if (!isMounted) return
 
         const isSignedIn = session.status === 'authenticated'
@@ -191,7 +198,7 @@ const RegistrationContent = () => {
       isMounted = false
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []) // Empty dependency array - only run once on mount
+  }, [session.status]) // Re-run when session status changes (loading -> authenticated/unauthenticated)
 
   // Refresh registration data from backend
   const refreshRegistrationData = async () => {
