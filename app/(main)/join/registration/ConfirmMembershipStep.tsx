@@ -120,7 +120,7 @@ const ConfirmMembershipStep: React.FC<StepProps> = ({ formData }) => {
       </div>
 
       <div className='flex flex-col sm:flex-row gap-4 justify-center'>
-        <Link href='/join/subscribe'>
+        <Link href='/join/level-up'>
           <button className='btn btn-primary px-8'>
             Level Up Your Membership
           </button>

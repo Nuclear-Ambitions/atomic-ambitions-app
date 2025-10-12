@@ -23,6 +23,7 @@ export interface UserContext {
 
 export const UserDataAccess = {
   async getUserContext(userId: string): Promise<UserContext | undefined> {
+    console.log('🔍 [GET USER CONTEXT] Getting user context for user:', userId)
     const result = await db
       .selectFrom('users')
       .leftJoin('memberships', 'users.id', 'memberships.user_id')

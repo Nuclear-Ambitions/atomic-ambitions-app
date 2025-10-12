@@ -10,7 +10,6 @@ type PaymentInterval = 'month' | 'year'
 
 const SubscriptionContent = () => {
   const searchParams = useSearchParams()
-  const [isInitializing, setIsInitializing] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [selectedInterval, setSelectedInterval] =
     useState<PaymentInterval>('year')
@@ -19,25 +18,22 @@ const SubscriptionContent = () => {
   const [isLookingUpSession, setIsLookingUpSession] = useState(false)
 
   // Check for session_id from Stripe redirect
-  const sessionId = searchParams.get('session_id')
+  const stripeSessionId = searchParams.get('session_id')
   const session = useSession()
   const isSignedIn = session.status === 'authenticated' // FIXME: antipattern; should have one way to check, util method? add function to session?
+  const isSubscriber = session.data?.user?.summary?.isSubscriber
   const user = session.data?.user?.summary
 
   // Lookup session data if session_id is present
   useEffect(() => {
     const lookupSession = async () => {
-      if (!sessionId) return
-
-      console.log(
-        '🔍 [STRIPE SESSION LOOKUP] Looking up Stripe session:',
-        sessionId
-      )
+      if (!stripeSessionId) return
       setIsLookingUpSession(true)
+
       try {
         // First, get the session from Stripe
         const sessionResponse = await fetch(
-          `/api/stripe/session-lookup?session_id=${sessionId}`
+          `/api/stripe/session-lookup?session_id=${stripeSessionId}`
         )
         if (!sessionResponse.ok) {
           throw new Error('Failed to retrieve session from Stripe')
@@ -120,7 +116,7 @@ const SubscriptionContent = () => {
     }
 
     lookupSession()
-  }, [sessionId])
+  }, [stripeSessionId])
 
   const handlePayment = async () => {
     if (!isSignedIn) {
@@ -162,8 +158,8 @@ const SubscriptionContent = () => {
     }
   }
 
-  // Show loading state while initializing, checking auth, or looking up session
-  if (isInitializing || isLookingUpSession) {
+  // Show loading state while looking up session
+  if (isLookingUpSession) {
     return (
       <div className='min-h-screen bg-background py-12'>
         <div className='container mx-auto px-6'>
@@ -253,7 +249,7 @@ const SubscriptionContent = () => {
   // This happens when user returns from Stripe without a session_id
   if (
     searchParams.get('canceled') === 'true' ||
-    (sessionId &&
+    (stripeSessionId &&
       subscriptionData &&
       subscriptionData.payment_status === 'unpaid')
   ) {
