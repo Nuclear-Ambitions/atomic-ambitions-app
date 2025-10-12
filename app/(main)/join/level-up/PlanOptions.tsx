@@ -4,9 +4,9 @@ import AtomicButton from './AtomicButton'
 export default function PlanOptions({
   onSelect,
 }: {
-  onSelect: (renewal: string) => void
+  onSelect: (interval: string) => void
 }) {
-  const [renewalFrequency, setRenewalFrequency] = useState('year')
+  const [renewalInterval, setRenewalInterval] = useState('year')
 
   const plans = [
     {
@@ -25,15 +25,19 @@ export default function PlanOptions({
     },
   ]
 
+  function getPlanLabel(interval: string) {
+    return interval === 'month' ? 'Monthly' : 'Annual'
+  }
+
   const planItems = plans.map((plan) => (
     <div
       key={plan.key}
       className={`card cursor-pointer transition-all ${
-        renewalFrequency === plan.key
+        renewalInterval === plan.key
           ? 'ring-2 ring-primary bg-primary/5'
           : 'hover:shadow-lg'
       }`}
-      onClick={() => setRenewalFrequency(plan.key)}
+      onClick={() => setRenewalInterval(plan.key)}
     >
       <div className='text-center'>
         <h4 className='text-lg font-bold text-primary mb-2'>{plan.label}</h4>
@@ -58,8 +62,8 @@ export default function PlanOptions({
       <div className='grid grid-cols-2 gap-4'>{planItems}</div>
       <div className='mx-auto'>
         <AtomicButton
-          label={'Go with ' + renewalFrequency}
-          onClick={() => onSelect(renewalFrequency)}
+          label={'Go with ' + getPlanLabel(renewalInterval)}
+          onClick={() => onSelect(renewalInterval)}
         />
       </div>
     </div>

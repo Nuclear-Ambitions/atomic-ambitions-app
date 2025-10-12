@@ -1,6 +1,20 @@
+import { SubscriptionSummary } from '@/lib/data/subscriptions'
 import Link from 'next/link'
 
-function Confirmation() {
+function Confirmation({
+  subscription,
+}: {
+  subscription?: SubscriptionSummary
+}) {
+  console.log('🔍 [CONFIRMATION] subscription:', subscription)
+
+  const interval =
+    subscription?.interval === 'month'
+      ? 'monthly'
+      : subscription?.interval === 'year'
+      ? 'annually'
+      : 'unknown'
+
   return (
     <div className='min-h-screen bg-background py-12'>
       <div className='container mx-auto px-6'>
@@ -37,7 +51,9 @@ function Confirmation() {
               </div>
               <div className='flex items-center space-x-3'>
                 <span className='text-green-500 font-bold'>✓</span>
-                <span className='text-foreground'>Cancel anytime</span>
+                <span className='text-foreground'>
+                  Your plan renews {interval}. Cancel anytime
+                </span>
               </div>
             </div>
           </div>
