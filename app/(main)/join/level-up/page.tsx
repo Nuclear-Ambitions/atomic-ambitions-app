@@ -1,14 +1,15 @@
 'use client'
 
 import PickAndPay from './PickAndPay'
+import ingestStripeSession from './stripeCallback'
 import Confirmation from './Confirmation'
+import AcknowledgeIncomplete from './AcknowledgeIncomplete'
 import { useSession } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation'
 import { Suspense, useEffect, useState } from 'react'
-import ingestStripeSession from './stripeCallback'
 import { SubscriptionSummary } from '@/lib/data/subscriptions'
 
-function SignInMsg() {
+const SignInMsg = () => {
   return (
     <div className='min-h-screen max-w-4xl mx-auto bg-background py-12'>
       <h1 className='mb-6'>Level Up Your Membership</h1>
@@ -20,18 +21,20 @@ function SignInMsg() {
 const LevelUpContent = () => {
   const searchParams = useSearchParams()
   const stripeSessionId = searchParams.get('session_id')
+  const canceled = searchParams.get('canceled')
   const session = useSession()
   const isSignedIn = session.status === 'authenticated'
-  const isSubscriber = session.data?.user?.summary?.isSubscriber
 
   const [isRetrievingPaymentInfo, setIsRetrievingPaymentInfo] = useState(false)
+  const [isSubscribed, setIsSubscribed] = useState(false)
+  const [isCanceled, setIsCanceled] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [subscriptionData, setSubscriptionData] =
     useState<SubscriptionSummary>()
 
   // Lookup session data if session_id is present
   useEffect(() => {
-    const lookupSession = async () => {
+    const syncWithStripe = async () => {
       if (!stripeSessionId) return
 
       setIsRetrievingPaymentInfo(true)
@@ -49,8 +52,29 @@ const LevelUpContent = () => {
       }
     }
 
-    lookupSession()
+    syncWithStripe()
   }, [stripeSessionId])
+
+  useEffect(() => {
+    console.log('🔍 [LEVEL UP CONTENT] Subscription data:', subscriptionData)
+    if (subscriptionData) {
+      setIsSubscribed(true)
+    }
+  }, [subscriptionData])
+
+  useEffect(() => {
+    if (canceled) {
+      setIsCanceled(true)
+    }
+  }, [canceled])
+
+  const handleTryAgain = () => {
+    setIsCanceled(false)
+    setIsSubscribed(false)
+    setIsRetrievingPaymentInfo(false)
+    setErrors({})
+    setSubscriptionData(undefined)
+  }
 
   return (
     <div>
@@ -62,7 +86,9 @@ const LevelUpContent = () => {
       )}
       {!isSignedIn ? (
         <SignInMsg />
-      ) : !isSubscriber ? (
+      ) : isCanceled ? (
+        <AcknowledgeIncomplete onTryAgain={handleTryAgain} />
+      ) : !isSubscribed ? (
         <PickAndPay />
       ) : (
         <Confirmation subscription={subscriptionData} />
