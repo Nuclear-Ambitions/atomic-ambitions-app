@@ -14,7 +14,6 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // Fetch registration data from the database based on the authenticated user
     const userId = session.user.id
 
     const user = await db.selectFrom('users').selectAll().where('id', '=', userId).executeTakeFirst()
@@ -96,6 +95,14 @@ export async function POST(request: NextRequest) {
       .updateTable('users')
       .set({ alias })
       .where('id', '=', userId)
+      .execute()
+
+    await db
+      .insertInto('user_roles')
+      .values({
+        user_id: userId,
+        role_id: 'member',
+      })
       .execute()
 
     // Insert membership record

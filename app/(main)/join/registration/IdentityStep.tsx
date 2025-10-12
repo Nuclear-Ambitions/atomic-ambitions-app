@@ -5,16 +5,7 @@ import { StepProps } from './types'
 import SignIn from '@/components/sign-in-oauth'
 import MagicLinkSignIn from '@/components/sign-in-magic-link'
 
-const IdentityStep: React.FC<StepProps> = ({
-  formData,
-  setFormData,
-  errors,
-  setErrors,
-  isSubmitting,
-  setIsSubmitting,
-  onNext,
-  onSkip,
-}) => {
+const IdentityStep: React.FC<StepProps> = () => {
   return (
     <div className='max-w-md mx-auto'>
       <div className='card'>

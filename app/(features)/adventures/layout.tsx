@@ -1,9 +1,9 @@
 import { ReactNode } from 'react'
-import { AccountWidget } from '../../components/account-widget'
+import UserAccountWidget from '@/components/user-account-widget'
 import Image from 'next/image'
 
 interface AdventuresLayoutProps {
-  children: ReactNode;
+  children: ReactNode
 }
 
 export default function AdventuresLayout({ children }: AdventuresLayoutProps) {
@@ -25,9 +25,7 @@ export default function AdventuresLayout({ children }: AdventuresLayoutProps) {
               </div>
               <h1 className='text-2xl font-bold text-highlight'>Adventure</h1>
             </div>
-
-            {/* Account Widget */}
-            <AccountWidget />
+            <UserAccountWidget />
           </div>
         </div>
       </header>

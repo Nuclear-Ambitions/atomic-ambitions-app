@@ -3,13 +3,13 @@ import Link from 'next/link'
 export default function JoinCta({
   title = 'Join Us',
   encouragement = 'To get started, click the button. We will help sign in and create your free account.',
-  buttonText = 'Sign me in, please.',
+  buttonText = 'Begin',
   className = '',
 }: {
-  title?: string;
-  encouragement?: string;
-  buttonText?: string;
-  className?: string;
+  title?: string
+  encouragement?: string
+  buttonText?: string
+  className?: string
 }) {
   return (
     <div className={`card max-w-md mx-auto text-center ${className}`}>

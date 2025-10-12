@@ -1,12 +1,13 @@
 'use client'
 
-import { useAuthStore } from '../../../lib/stores/auth-store'
 import { Icon } from '@iconify/react'
 import Image from 'next/image'
+import { useSession } from 'next-auth/react'
 
 export default function ProfilePage() {
-  const { user } = useAuthStore()
-  const profile = user?.profile
+  const session = useSession()
+  const user = session.data?.user
+  const profile = user?.summary
 
   return (
     <div className='min-h-screen bg-background'>
@@ -36,7 +37,8 @@ export default function ProfilePage() {
               <h1 className='text-3xl font-bold text-foreground flex items-center'>
                 <Icon
                   icon='ph:user-circle-duotone'
-                  className='w-8 h-8 mr-3 text-primary'
+                  width={32}
+                  className='mr-3 text-primary'
                 />
                 Atomic Profile
               </h1>
@@ -51,8 +53,9 @@ export default function ProfilePage() {
         <div className='card p-8 text-center'>
           <div className='flex items-center justify-center w-16 h-16 bg-gradient-to-br from-muted to-muted/50 rounded-full mx-auto mb-4'>
             <Icon
-              icon='ph:gear-duotone'
-              className='w-8 h-8 text-muted-foreground'
+              icon='ph:gear-six-duotone'
+              width={32}
+              className='text-muted-foreground'
             />
           </div>
           <h2 className='text-xl font-semibold text-highlight mb-2'>

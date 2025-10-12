@@ -1,16 +1,10 @@
 'use client'
 
-import React from 'react'
 import Link from 'next/link'
 import FeatureCard from '@/components/feature-card'
 import { StepProps } from './types'
 
-const ConfirmMembershipStep: React.FC<StepProps> = ({ formData, onNext }) => {
-  const handleContinue = () => {
-    // Mark identity as verified for Explorer accounts
-    onNext()
-  }
-
+const ConfirmMembershipStep: React.FC<StepProps> = ({ formData }) => {
   return (
     <div className='max-w-4xl mx-auto'>
       <div className='text-center mb-12'>
@@ -72,7 +66,7 @@ const ConfirmMembershipStep: React.FC<StepProps> = ({ formData, onNext }) => {
             title='Alchemy Lab'
             description='Hands-on experiments and simulations'
             icon='🧪'
-            href='/lab'
+            href='/alchemy-lab'
           />
           <FeatureCard
             title='Atomic Who'

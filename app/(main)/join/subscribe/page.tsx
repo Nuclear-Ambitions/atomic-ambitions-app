@@ -3,19 +3,13 @@
 import React, { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
-import { useAuthStore } from '@/lib/stores/auth-store'
 import Link from 'next/link'
+import { useSession } from 'next-auth/react'
 
 type PaymentInterval = 'month' | 'year'
 
 const SubscriptionContent = () => {
   const searchParams = useSearchParams()
-  const {
-    isSignedIn,
-    user,
-    checkAuthStatus,
-    isLoading: authLoading,
-  } = useAuthStore()
   const [isInitializing, setIsInitializing] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [selectedInterval, setSelectedInterval] =
@@ -26,14 +20,9 @@ const SubscriptionContent = () => {
 
   // Check for session_id from Stripe redirect
   const sessionId = searchParams.get('session_id')
-
-  useEffect(() => {
-    const initializeAuth = async () => {
-      await checkAuthStatus()
-      setIsInitializing(false)
-    }
-    initializeAuth()
-  }, [checkAuthStatus])
+  const session = useSession()
+  const isSignedIn = session.status === 'authenticated' // FIXME: antipattern; should have one way to check, util method? add function to session?
+  const user = session.data?.user?.summary
 
   // Lookup session data if session_id is present
   useEffect(() => {
@@ -134,7 +123,7 @@ const SubscriptionContent = () => {
   }, [sessionId])
 
   const handlePayment = async () => {
-    if (!isSignedIn || !user) {
+    if (!isSignedIn) {
       setErrors({ auth: 'Please sign in to continue' })
       return
     }
@@ -152,8 +141,8 @@ const SubscriptionContent = () => {
         body: JSON.stringify({
           productCode: 'charter-member',
           interval: selectedInterval,
-          userId: user.id,
-          email: user.email,
+          userId: user?.id,
+          email: user?.email,
         }),
       })
 
@@ -174,7 +163,7 @@ const SubscriptionContent = () => {
   }
 
   // Show loading state while initializing, checking auth, or looking up session
-  if (isInitializing || authLoading || isLookingUpSession) {
+  if (isInitializing || isLookingUpSession) {
     return (
       <div className='min-h-screen bg-background py-12'>
         <div className='container mx-auto px-6'>
@@ -185,8 +174,6 @@ const SubscriptionContent = () => {
                 <p className='text-muted-foreground'>
                   {isLookingUpSession
                     ? 'Retrieving transaction information...'
-                    : authLoading
-                    ? 'Checking authentication...'
                     : 'Loading...'}
                 </p>
               </div>

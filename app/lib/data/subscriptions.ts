@@ -1,4 +1,4 @@
-import { db } from './Database'
+import { db } from '@/lib/db/Database'
 
 export interface SubscriptionData {
   id: string;

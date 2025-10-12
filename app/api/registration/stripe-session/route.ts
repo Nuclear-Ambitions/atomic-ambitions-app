@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
-import { SubscriptionDataAccess as subscriptionDA } from '@/lib/db/subscriptions'
+import { SubscriptionDataAccess as subDataAccess } from '@/lib/data/subscriptions'
 
 export async function POST(request: NextRequest) {
   try {
@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
     console.log('💾 [STRIPE SESSION STORAGE] Storing session:', session.id)
 
     // Store the session payload in the database
-    const sessionId = await subscriptionDA.insertStripeSession(session)
+    const sessionId = await subDataAccess.insertStripeSession(session)
 
     console.log('💾 [STRIPE SESSION STORAGE] Successfully stored session:', sessionId)
 

@@ -1,10 +1,10 @@
 'use client'
 
-import { useTheme } from '../theme-context'
+import { useTheme } from '@/theme-context'
 
 interface ThemeToggleProps {
-  variant?: 'fixed' | 'inline';
-  className?: string;
+  variant?: 'fixed' | 'inline'
+  className?: string
 }
 
 export function ThemeToggle({
@@ -22,7 +22,8 @@ export function ThemeToggle({
     <button
       onClick={toggleTheme}
       className={`${baseClasses} ${variantClasses} ${className}`}
-      aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}>
+      aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
+    >
       {theme === 'light' ? (
         // Moon icon for dark mode
         <svg
@@ -30,7 +31,8 @@ export function ThemeToggle({
           fill='none'
           stroke='currentColor'
           viewBox='0 0 24 24'
-          xmlns='http://www.w3.org/2000/svg'>
+          xmlns='http://www.w3.org/2000/svg'
+        >
           <path
             strokeLinecap='round'
             strokeLinejoin='round'
@@ -45,7 +47,8 @@ export function ThemeToggle({
           fill='none'
           stroke='currentColor'
           viewBox='0 0 24 24'
-          xmlns='http://www.w3.org/2000/svg'>
+          xmlns='http://www.w3.org/2000/svg'
+        >
           <path
             strokeLinecap='round'
             strokeLinejoin='round'

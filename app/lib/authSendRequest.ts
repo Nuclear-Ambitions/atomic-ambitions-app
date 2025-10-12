@@ -1,25 +1,7 @@
 export async function sendVerificationRequest(params: any) {
-  console.log('🔐 [MAGIC LINK DEBUG] Starting sendVerificationRequest')
-  console.log('🔐 [MAGIC LINK DEBUG] Environment:', process.env.NODE_ENV)
-  console.log('🔐 [MAGIC LINK DEBUG] Params received:', {
-    identifier: params.identifier,
-    provider: params.provider ? { from: params.provider.from, hasApiKey: !!params.provider.apiKey } : null,
-    url: params.url,
-    theme: params.theme
-  })
-
   const { identifier: to, provider, url, theme } = params
   const { host } = new URL(url)
-
-  console.log('🔐 [MAGIC LINK DEBUG] Parsed values:', {
-    to,
-    host,
-    from: provider?.from,
-    hasApiKey: !!provider?.apiKey
-  })
-
   try {
-    console.log('🔐 [MAGIC LINK DEBUG] Making request to Resend API...')
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
@@ -34,20 +16,12 @@ export async function sendVerificationRequest(params: any) {
         text: text({ url, host }),
       }),
     })
-
-    console.log('🔐 [MAGIC LINK DEBUG] Resend API response status:', res.status)
-    console.log('🔐 [MAGIC LINK DEBUG] Resend API response headers:', Object.fromEntries(res.headers.entries()))
-
     if (!res.ok) {
       const errorBody = await res.json()
       console.error('🔐 [MAGIC LINK DEBUG] Resend API error:', errorBody)
       throw new Error('Resend error: ' + JSON.stringify(errorBody))
     }
-
     const successBody = await res.json()
-    console.log('🔐 [MAGIC LINK DEBUG] Resend API success:', successBody)
-    console.log('🔐 [MAGIC LINK DEBUG] Magic link email sent successfully to:', to)
-
   } catch (error) {
     console.error('🔐 [MAGIC LINK DEBUG] Error in sendVerificationRequest:', error)
     console.error('🔐 [MAGIC LINK DEBUG] Error stack:', error instanceof Error ? error.stack : 'No stack trace')

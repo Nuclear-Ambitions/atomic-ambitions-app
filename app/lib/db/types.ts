@@ -7,116 +7,137 @@ import type { ColumnType } from 'kysely'
 
 export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
   ? ColumnType<S, I | undefined, U>
-  : ColumnType<T, T | undefined, T>;
+  : ColumnType<T, T | undefined, T>
 
-export type Int8 = ColumnType<string, bigint | number | string, bigint | number | string>;
+export type Int8 = ColumnType<
+  string,
+  bigint | number | string,
+  bigint | number | string
+>
 
-export type Json = JsonValue;
+export type Json = JsonValue
 
-export type JsonArray = JsonValue[];
+export type JsonArray = JsonValue[]
 
 export type JsonObject = {
-  [x: string]: JsonValue | undefined;
-};
+  [x: string]: JsonValue | undefined
+}
 
-export type JsonPrimitive = boolean | number | string | null;
+export type JsonPrimitive = boolean | number | string | null
 
-export type JsonValue = JsonArray | JsonObject | JsonPrimitive;
+export type JsonValue = JsonArray | JsonObject | JsonPrimitive
 
-export type Timestamp = ColumnType<Date, Date | string, Date | string>;
+export type Timestamp = ColumnType<Date, Date | string, Date | string>
 
 export interface Accounts {
-  access_token: string | null;
-  expires_at: Int8 | null;
-  id: Generated<string>;
-  id_token: string | null;
-  provider: string;
-  providerAccountId: string;
-  refresh_token: string | null;
-  scope: string | null;
-  session_state: string | null;
-  token_type: string | null;
-  type: string;
-  userId: string;
+  access_token: string | null
+  expires_at: Int8 | null
+  id: Generated<string>
+  id_token: string | null
+  provider: string
+  providerAccountId: string
+  refresh_token: string | null
+  scope: string | null
+  session_state: string | null
+  token_type: string | null
+  type: string
+  userId: string
 }
 
 export interface Memberships {
-  agreed_to_terms: Timestamp | null;
-  ended_at: Timestamp | null;
-  id: Generated<number>;
-  joined_at: Timestamp | null;
-  level: string | null;
-  privacy_policy_ok: Timestamp | null;
-  status: string | null;
-  updated_at: Timestamp | null;
-  user_id: string | null;
+  agreed_to_terms: Timestamp | null
+  ended_at: Timestamp | null
+  id: Generated<number>
+  joined_at: Timestamp | null
+  level: string | null
+  privacy_policy_ok: Timestamp | null
+  status: string | null
+  updated_at: Timestamp | null
+  user_id: string | null
 }
 
 export interface PlayingWithNeon {
-  id: Generated<number>;
-  name: string;
-  value: number | null;
+  id: Generated<number>
+  name: string
+  value: number | null
+}
+
+export interface Roles {
+  created_at: Generated<Timestamp>
+  description: string | null
+  key: string
+  label: string
+  updated_at: Generated<Timestamp>
 }
 
 export interface Sessions {
-  expires: Timestamp;
-  id: Generated<string>;
-  sessionToken: string;
-  userId: string;
+  expires: Timestamp
+  id: Generated<string>
+  sessionToken: string
+  userId: string
 }
 
 export interface StripeSessions {
-  id: string;
-  payload: Json | null;
+  id: string
+  payload: Json | null
 }
 
 export interface StripeSubscriptions {
-  amount: number | null;
-  cancel_at: Timestamp | null;
-  created_at: Generated<Timestamp>;
-  currency: string | null;
-  current_period_end: Timestamp | null;
-  current_period_start: Timestamp | null;
-  customer_email: string | null;
-  id: string;
-  interval: string | null;
-  payment_status: string | null;
-  price_id: string | null;
-  product_id: string | null;
-  status: string | null;
-  stripe_customer_id: string | null;
-  total_amount: number | null;
-  updated_at: Generated<Timestamp>;
-  user_id: string | null;
+  amount: number | null
+  cancel_at: Timestamp | null
+  created_at: Generated<Timestamp>
+  currency: string | null
+  current_period_end: Timestamp | null
+  current_period_start: Timestamp | null
+  customer_email: string | null
+  id: string
+  interval: string | null
+  payment_status: string | null
+  price_id: string | null
+  product_id: string | null
+  status: string | null
+  stripe_customer_id: string | null
+  total_amount: number | null
+  updated_at: Generated<Timestamp>
+  user_id: string | null
+}
+
+export interface UserRoles {
+  granted_at: Generated<Timestamp>
+  id: Generated<string>
+  role_id: string
+  user_id: string
 }
 
 export interface Users {
-  alias: string | null;
-  created_at: Generated<Timestamp>;
-  email: string;
-  emailVerified: Timestamp | null;
-  full_name: string | null;
-  handle: string | null;
-  id: Generated<string>;
-  image: string | null;
-  name: string | null;
-  stripe_customer_id: string | null;
-  updated_at: Generated<Timestamp>;
+  alias: string | null
+  created_at: Generated<Timestamp>
+  email: string
+  emailVerified: Timestamp | null
+  full_name: string | null
+  handle: string | null
+  id: Generated<string>
+  image: string | null
+  name: string | null
+  stripe_customer_id: string | null
+  updated_at: Generated<Timestamp>
 }
 
 export interface VerificationToken {
-  expires: Timestamp;
-  identifier: string;
-  token: string;
+  expires: Timestamp
+  identifier: string
+  token: string
 }
 
 export interface DB {
-  accounts: Accounts;
-  memberships: Memberships;
-  playing_with_neon: PlayingWithNeon;
-  sessions: Sessions;
-  stripe_sessions: StripeSessions;
-  stripe_subscriptions: StripeSubscriptions;
-  users: Users;
-  verification_token: VerificationToken;
+  accounts: Accounts
+  memberships: Memberships
+  playing_with_neon: PlayingWithNeon
+  roles: Roles
+  sessions: Sessions
+  stripe_sessions: StripeSessions
+  stripe_subscriptions: StripeSubscriptions
+  user_roles: UserRoles
+  users: Users
+  verification_token: VerificationToken
 }

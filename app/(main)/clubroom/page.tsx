@@ -1,8 +1,8 @@
 'use client'
 
-import { useAuthStore } from '../../lib/stores/auth-store'
-import JoinCta from '../../components/join-cta'
+import JoinCta from '@/components/join-cta'
 import { Icon } from '@iconify/react'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -68,8 +68,9 @@ const mockStats = {
 }
 
 function MemberDashboard() {
-  const { user } = useAuthStore()
-  const profile = user?.profile
+  const session = useSession()
+  const user = session.data?.user
+  const profile = user?.summary
 
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat('en-US', {
@@ -121,10 +122,11 @@ function MemberDashboard() {
             )}
             <div>
               <h1 className='text-3xl font-bold text-foreground'>
-                Welcome back, {user?.name || profile?.alias || 'Member'}!
+                Hello, {profile?.alias || user?.name || 'Member'}!
               </h1>
               <p className='text-muted-foreground'>
-                Member since {formatDate(mockStats.memberSince)}
+                Member since{' '}
+                {formatDate(new Date(profile?.membership?.joinedAt || ''))}
               </p>
             </div>
           </div>
@@ -136,7 +138,8 @@ function MemberDashboard() {
             <div className='flex items-center justify-center w-12 h-12 bg-gradient-to-br from-cherenkov to-primary rounded-full mx-auto mb-4'>
               <Icon
                 icon='ph:star-duotone'
-                className='w-6 h-6 text-primary-foreground'
+                width={24}
+                className='text-primary-foreground'
               />
             </div>
             <h3 className='text-2xl font-bold text-primary mb-2'>
@@ -149,7 +152,8 @@ function MemberDashboard() {
             <div className='flex items-center justify-center w-12 h-12 bg-gradient-to-br from-success to-success/80 rounded-full mx-auto mb-4'>
               <Icon
                 icon='ph:graduation-cap-duotone'
-                className='w-6 h-6 text-white'
+                width={24}
+                className='text-white'
               />
             </div>
             <h3 className='text-2xl font-bold text-success mb-2'>
@@ -162,7 +166,8 @@ function MemberDashboard() {
             <div className='flex items-center justify-center w-12 h-12 bg-gradient-to-br from-warning to-warning/80 rounded-full mx-auto mb-4'>
               <Icon
                 icon='ph:chat-circle-duotone'
-                className='w-6 h-6 text-white'
+                width={24}
+                className='text-white'
               />
             </div>
             <h3 className='text-2xl font-bold text-warning mb-2'>
@@ -175,7 +180,8 @@ function MemberDashboard() {
             <div className='flex items-center justify-center w-12 h-12 bg-gradient-to-br from-info to-info/80 rounded-full mx-auto mb-4'>
               <Icon
                 icon='ph:chat-text-duotone'
-                className='w-6 h-6 text-white'
+                width={24}
+                className='text-white'
               />
             </div>
             <h3 className='text-2xl font-bold text-info mb-2'>
@@ -189,12 +195,14 @@ function MemberDashboard() {
         <div className='grid grid-cols-1 md:grid-cols-3 gap-6 mb-8'>
           <Link
             href='/lessons'
-            className='card p-6 hover:shadow-lg transition-all duration-200 hover:scale-105 group'>
+            className='card p-6 hover:shadow-lg transition-all duration-200 hover:scale-105 group'
+          >
             <div className='flex items-center space-x-4'>
               <div className='flex items-center justify-center w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-lg group-hover:scale-110 transition-transform duration-200'>
                 <Icon
                   icon='ph:book-open-duotone'
-                  className='w-6 h-6 text-white'
+                  width={24}
+                  className='text-white'
                 />
               </div>
               <div>
@@ -210,12 +218,14 @@ function MemberDashboard() {
 
           <Link
             href='/flux'
-            className='card p-6 hover:shadow-lg transition-all duration-200 hover:scale-105 group'>
+            className='card p-6 hover:shadow-lg transition-all duration-200 hover:scale-105 group'
+          >
             <div className='flex items-center space-x-4'>
               <div className='flex items-center justify-center w-12 h-12 bg-gradient-to-br from-logo-background to-logo-background/80 rounded-lg group-hover:scale-110 transition-transform duration-200'>
                 <Icon
                   icon='ph:lightning-duotone'
-                  className='w-6 h-6 text-highlight'
+                  width={24}
+                  className='text-highlight'
                 />
               </div>
               <div>
@@ -231,10 +241,15 @@ function MemberDashboard() {
 
           <Link
             href='/adventures'
-            className='card p-6 hover:shadow-lg transition-all duration-200 hover:scale-105 group'>
+            className='card p-6 hover:shadow-lg transition-all duration-200 hover:scale-105 group'
+          >
             <div className='flex items-center space-x-4'>
               <div className='flex items-center justify-center w-12 h-12 bg-gradient-to-br from-accent to-accent/80 rounded-lg group-hover:scale-110 transition-transform duration-200'>
-                <Icon icon='ph:rocket-duotone' className='w-6 h-6 text-white' />
+                <Icon
+                  icon='ph:rocket-duotone'
+                  width={24}
+                  className='text-white'
+                />
               </div>
               <div>
                 <h3 className='text-lg font-semibold text-foreground'>
@@ -256,13 +271,15 @@ function MemberDashboard() {
               <h2 className='text-xl font-semibold text-foreground flex items-center'>
                 <Icon
                   icon='ph:graduation-cap-duotone'
-                  className='w-5 h-5 mr-2 text-primary'
+                  width={20}
+                  className='mr-2 text-primary'
                 />
                 Recent Lessons
               </h2>
               <Link
                 href='/lessons'
-                className='text-primary hover:text-primary/80 text-sm font-medium'>
+                className='text-primary hover:text-primary/80 text-sm font-medium'
+              >
                 View All
               </Link>
             </div>
@@ -270,7 +287,8 @@ function MemberDashboard() {
               {mockRecentLessons.map((lesson) => (
                 <div
                   key={lesson.id}
-                  className='flex items-center justify-between p-4 bg-muted/30 rounded-lg'>
+                  className='flex items-center justify-between p-4 bg-muted/30 rounded-lg'
+                >
                   <div className='flex-1'>
                     <h3 className='font-medium text-foreground'>
                       {lesson.title}
@@ -282,7 +300,8 @@ function MemberDashboard() {
                       <div className='w-full bg-muted rounded-full h-2 mr-3'>
                         <div
                           className='bg-primary h-2 rounded-full'
-                          style={{ width: `${lesson.progress}%` }}></div>
+                          style={{ width: `${lesson.progress}%` }}
+                        ></div>
                       </div>
                       <span className='text-xs text-muted-foreground'>
                         {lesson.progress}%
@@ -303,13 +322,15 @@ function MemberDashboard() {
               <h2 className='text-xl font-semibold text-foreground flex items-center'>
                 <Icon
                   icon='ph:lightning-duotone'
-                  className='w-5 h-5 mr-2 text-secondary'
+                  width={20}
+                  className='mr-2 text-secondary'
                 />
                 Recent Flux Posts
               </h2>
               <Link
                 href='/flux'
-                className='text-primary hover:text-primary/80 text-sm font-medium'>
+                className='text-primary hover:text-primary/80 text-sm font-medium'
+              >
                 View All
               </Link>
             </div>
@@ -327,14 +348,16 @@ function MemberDashboard() {
                       <span className='flex items-center'>
                         <Icon
                           icon='ph:heart-duotone'
-                          className='w-3 h-3 mr-1'
+                          width={12}
+                          className='mr-1'
                         />
                         {post.likes}
                       </span>
                       <span className='flex items-center'>
                         <Icon
                           icon='ph:chat-circle-duotone'
-                          className='w-3 h-3 mr-1'
+                          width={12}
+                          className='mr-1'
                         />
                         {post.replies}
                       </span>
@@ -385,7 +408,8 @@ function NonMemberLanding() {
               <div className='flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary to-primary/80 rounded-full mx-auto mb-4'>
                 <Icon
                   icon='ph:graduation-cap-duotone'
-                  className='w-8 h-8 text-white'
+                  width={32}
+                  className='text-white'
                 />
               </div>
               <h3 className='text-lg font-semibold text-foreground mb-2'>
@@ -401,7 +425,8 @@ function NonMemberLanding() {
               <div className='flex items-center justify-center w-16 h-16 bg-gradient-to-br from-secondary to-secondary/80 rounded-full mx-auto mb-4'>
                 <Icon
                   icon='ph:lightning-duotone'
-                  className='w-8 h-8 text-white'
+                  width={32}
+                  className='text-white'
                 />
               </div>
               <h3 className='text-lg font-semibold text-foreground mb-2'>
@@ -414,7 +439,11 @@ function NonMemberLanding() {
 
             <div className='card p-6 text-center'>
               <div className='flex items-center justify-center w-16 h-16 bg-gradient-to-br from-accent to-accent/80 rounded-full mx-auto mb-4'>
-                <Icon icon='ph:rocket-duotone' className='w-8 h-8 text-white' />
+                <Icon
+                  icon='ph:rocket-duotone'
+                  width={32}
+                  className='text-white'
+                />
               </div>
               <h3 className='text-lg font-semibold text-foreground mb-2'>
                 Interactive Adventures
@@ -448,7 +477,8 @@ function NonMemberLanding() {
 }
 
 export default function ClubroomPage() {
-  const { isSignedIn } = useAuthStore()
+  const session = useSession()
+  const isSignedIn = session.status === 'authenticated'
 
   // Set page title for bookmarking
   if (typeof document !== 'undefined') {

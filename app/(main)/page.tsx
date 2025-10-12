@@ -1,7 +1,7 @@
-import JoinCta from '../components/join-cta'
-import FeatureCard from '../components/feature-card'
-import BenefitItem from '../components/benefit-item'
-import Attribution from '../components/attribution'
+import JoinCta from '@/components/join-cta'
+import FeatureCard from '@/components/feature-card'
+import BenefitItem from '@/components/benefit-item'
+import Attribution from '@/components/attribution'
 import Image from 'next/image'
 
 const features = [
@@ -74,7 +74,8 @@ export default function Home() {
                 artist='Patrick Federi'
                 artistLink='https://unsplash.com/@federi?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash'
                 source='Unsplash'
-                sourceLink='https://unsplash.com/photos/white-smoke-coming-out-from-green-field-uvtUELc92SI?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash'>
+                sourceLink='https://unsplash.com/photos/white-smoke-coming-out-from-green-field-uvtUELc92SI?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash'
+              >
                 <Image
                   src='/nuclear-power-plant.jpg'
                   alt='Nuclear Power Plant'

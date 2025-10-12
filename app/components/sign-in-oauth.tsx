@@ -2,15 +2,6 @@
 
 import { signIn } from 'next-auth/react'
 import { Icon } from '@iconify/react'
-import {
-  XLogoIcon,
-  GoogleLogoIcon,
-  DiscordLogoIcon,
-  GithubLogoIcon,
-  SpotifyLogoIcon,
-  AppleLogoIcon,
-  LinkedinLogoIcon,
-} from '@phosphor-icons/react'
 
 export default function SignIn() {
   const doSignIn = async (provider: string) => {
@@ -24,49 +15,56 @@ export default function SignIn() {
         <button
           onClick={() => doSignIn('twitter')}
           className='btn btn-primary flex items-center gap-2'
-          type='submit'>
-          <XLogoIcon className='w-4 h-4' />X
+          type='submit'
+        >
+          <Icon icon='ph:x-logo' width={16} />X
         </button>
         <button
           onClick={() => doSignIn('google')}
           className='btn btn-primary flex items-center gap-2'
-          type='submit'>
-          <GoogleLogoIcon className='w-4 h-4' />
+          type='submit'
+        >
+          <Icon icon='ph:google-logo' width={16} />
           Google
         </button>
         <button
           onClick={() => doSignIn('discord')}
           className='btn btn-primary flex items-center gap-2'
-          type='submit'>
-          <DiscordLogoIcon className='w-4 h-4' />
+          type='submit'
+        >
+          <Icon icon='ph:discord-logo' width={16} />
           Discord
         </button>
         <button
           onClick={() => doSignIn('spotify')}
           className='btn btn-primary flex items-center gap-2'
-          type='submit'>
-          <SpotifyLogoIcon className='w-4 h-4' />
+          type='submit'
+        >
+          <Icon icon='ph:spotify-logo' width={16} />
           Spotify
         </button>
         <button
           onClick={() => doSignIn('apple')}
           className='btn btn-primary flex items-center gap-2'
-          type='submit'>
-          <AppleLogoIcon className='w-4 h-4' />
+          type='submit'
+        >
+          <Icon icon='ph:apple-logo' width={16} />
           Apple
         </button>
         <button
           onClick={() => doSignIn('linkedin')}
           className='btn btn-primary flex items-center gap-2'
-          type='submit'>
-          <LinkedinLogoIcon className='w-4 h-4' />
+          type='submit'
+        >
+          <Icon icon='ph:linkedin-logo' width={16} />
           LinkedIn
         </button>
         <button
           onClick={() => doSignIn('github')}
           className='btn btn-primary flex items-center gap-2'
-          type='submit'>
-          <GithubLogoIcon className='w-4 h-4' />
+          type='submit'
+        >
+          <Icon icon='ph:github-logo' width={16} />
           GitHub
         </button>
       </div>

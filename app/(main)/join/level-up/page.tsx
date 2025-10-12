@@ -2,7 +2,7 @@
 
 import PickAndPay from './PickAndPay'
 import Confirmation from './Confirmation'
-import { useAuthStore } from '@/lib/stores/auth-store'
+import { useSession } from 'next-auth/react'
 
 // NOTE: this page is an alternative to the subscribe page. Since subscribe page is working, just keeping this as an option for later.
 
@@ -16,20 +16,15 @@ function SignInMsg() {
 }
 
 export default function LevelUpPage() {
-  const {
-    isSignedIn,
-    user,
-    checkAuthStatus,
-    isLoading: authLoading,
-  } = useAuthStore()
-
-  const hasActiveSubscription = false
+  const session = useSession()
+  const isSignedIn = session.status === 'authenticated'
+  const isSubscriber = session.data?.user?.summary?.isSubscriber
 
   return (
     <div>
       {!isSignedIn ? (
         <SignInMsg />
-      ) : !hasActiveSubscription ? (
+      ) : !isSubscriber ? (
         <PickAndPay />
       ) : (
         <Confirmation />

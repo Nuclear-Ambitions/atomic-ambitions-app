@@ -1,43 +1,56 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useAuthStore } from '../lib/stores/auth-store'
-// import Icon from "./icon";
-// import { UserRectangle, User, SignIn, Gear } from "react-icons/ph";
 import { Icon } from '@iconify/react'
+import { useSession } from 'next-auth/react'
 
 interface NavigationItem {
-  href: string;
-  label: string;
-  icon?: string;
-  description?: string;
+  href: string
+  label: string
+  icon?: string
+  description?: string
+  requiredRole?: string
 }
 
 // Base navigation items that are always visible
-const baseNavigationItems: NavigationItem[] = [
+const navigationItems: NavigationItem[] = [
   {
     href: '/',
     label: 'Home',
     icon: 'ph:house-duotone',
     description: 'Main page',
   },
-  // {
-  //   href: "/adventure",
-  //   label: "Adventure",
-  //   description: "Explore and discover",
-  // },
-  // { href: "/flux", label: "Atomic Flux", description: "Social idea exchange " },
-  // {
-  //   href: "/learning",
-  //   label: "Atomic Learning",
-  //   description: "Learn about atomic energy",
-  // },
+  {
+    href: '/adventures',
+    label: 'Adventure',
+    icon: 'ph:person-simple-hike-duotone',
+    description: 'Explore and discover',
+  },
+  {
+    href: '/flux',
+    label: 'Atomic Flux',
+    icon: 'ph:lightning-duotone',
+    description: 'Social idea exchange ',
+  },
+  {
+    href: '/lessons',
+    label: 'Atomic Learning',
+    icon: 'ph:book-duotone',
+    description: 'Learn about atomic energy',
+  },
+  {
+    href: '/clubroom',
+    label: 'Clubroom',
+    icon: 'ph:user-duotone',
+    description: 'Members start here',
+    requiredRole: 'member',
+  },
   {
     href: '/join',
     label: 'Join',
-    icon: 'ph-handshake-duotone',
+    icon: 'ph:handshake-duotone',
     description: 'Benefits of membership',
   },
   {
@@ -52,77 +65,45 @@ const baseNavigationItems: NavigationItem[] = [
     icon: 'ph:circle-duotone',
     description: 'A quickie ',
   },
-  // {
-  //   href: "/art-gallery",
-  //   label: "Art Gallery",
-  //   description: "Flux-inspired eye candy",
-  // },
+  {
+    href: '/art-gallery',
+    label: 'Art Gallery',
+    icon: 'ph:image-duotone',
+    description: 'Flux-inspired eye candy',
+  },
+  {
+    href: '/admin-console',
+    label: 'Atomic Admin',
+    icon: 'ph:gear-six-duotone',
+    description: 'For overlords only',
+    requiredRole: 'admin',
+  },
+  {
+    href: '/scratch/style-review',
+    label: 'Style Review',
+    icon: 'ph:palette-duotone',
+    description: 'UI theme test pattern',
+    requiredRole: 'admin',
+  },
+  {
+    href: '/scratch/data',
+    label: 'Data Access Testing',
+    icon: 'ph:database-duotone',
+    description: 'Data access tests',
+    requiredRole: 'admin',
+  },
 ]
-
-// Conditional navigation items based on auth state
-const getConditionalNavigationItems = (
-  isSignedIn: boolean,
-  hasRole: (role: string) => boolean
-): NavigationItem[] => {
-  const items: NavigationItem[] = []
-
-  if (isSignedIn) {
-    items.push({
-      href: '/member-area',
-      label: 'Member Area',
-      icon: 'ph:user-duotone',
-      description: 'Your account and settings',
-    })
-  }
-
-  if (!isSignedIn) {
-    items.push({
-      href: '/sign-in',
-      label: 'Sign In',
-      icon: 'ph:sign-in-duotone',
-      description: 'Access your account',
-    })
-  }
-
-  // Example: Admin-only items
-  if (hasRole('admin')) {
-    items.push({
-      href: '/admin-console',
-      label: 'Atomic Admin',
-      icon: 'ph:gear-duotone',
-      description: 'For overlords only',
-    })
-  }
-
-  if (isSignedIn) {
-    items.push({
-      href: '/scratch/style-review',
-      label: 'Style Review',
-      icon: 'ph:palette-duotone',
-      description: 'UI theme test pattern',
-    })
-    items.push({
-      href: '/scratch/style-review',
-      label: 'Data Access Testing',
-      icon: 'ph:database-duotone',
-      description: 'Data access tests',
-    })
-  }
-
-  return items
-}
 
 export default function DynamicMenu() {
   const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname()
-  const { isSignedIn, hasRole } = useAuthStore()
+  const roles = useSession().data?.user?.summary?.roles
+
+  useEffect(() => {
+    console.log('roles', roles)
+  }, [roles])
 
   // Combine base and conditional navigation items
-  const navigationItems = [
-    ...baseNavigationItems,
-    ...getConditionalNavigationItems(isSignedIn, hasRole),
-  ]
-
   const toggleMenu = () => {
     setIsOpen(!isOpen)
   }
@@ -138,7 +119,8 @@ export default function DynamicMenu() {
         onClick={toggleMenu}
         className='flex flex-col justify-center items-center w-8 h-8 space-y-1 focus:outline-none focus:ring-2 focus:ring-highlight focus:ring-offset-2 rounded-md'
         aria-label='Toggle navigation menu'
-        aria-expanded={isOpen}>
+        aria-expanded={isOpen}
+      >
         <span
           className={`block w-6 h-0.5 bg-foreground transition-all duration-300 ease-in-out ${
             isOpen ? 'rotate-45 translate-y-1.5' : ''
@@ -174,6 +156,14 @@ export default function DynamicMenu() {
 
               <nav className='space-y-1'>
                 {navigationItems.map((item) => {
+                  if (
+                    item.requiredRole &&
+                    roles != null &&
+                    !roles.includes(item.requiredRole)
+                  ) {
+                    return null
+                  }
+
                   const isActive = pathname === item.href
 
                   return (
@@ -185,7 +175,8 @@ export default function DynamicMenu() {
                         isActive
                           ? 'bg-highlight text-highlight-background'
                           : 'text-popover-foreground hover:bg-muted hover:text-foreground'
-                      }`}>
+                      }`}
+                    >
                       <div className='flex items-start gap-3'>
                         {/* Icon column - fixed width for alignment */}
                         <div className='flex-shrink-0 w-6 h-6 flex items-center justify-center'>
@@ -213,7 +204,8 @@ export default function DynamicMenu() {
                                 isActive
                                   ? 'text-highlight-background/80'
                                   : 'text-muted-foreground group-hover:text-foreground/70'
-                              }`}>
+                              }`}
+                            >
                               {item.description}
                             </span>
                           )}
