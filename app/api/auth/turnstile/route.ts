@@ -1,11 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 async function verifyTurnstile(token: string): Promise<boolean> {
-  console.log('🔐 [TURNSTILE DEBUG] Starting Turnstile verification')
-  console.log('🔐 [TURNSTILE DEBUG] Token length:', token?.length || 0)
-  console.log('🔐 [TURNSTILE DEBUG] Has secret key:', !!process.env.TURNSTILE_SECRET_KEY)
-  console.log('🔐 [TURNSTILE DEBUG] Environment:', process.env.NODE_ENV)
-
   try {
     const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
       method: 'POST',
@@ -13,12 +8,7 @@ async function verifyTurnstile(token: string): Promise<boolean> {
       body: `secret=${process.env.TURNSTILE_SECRET_KEY}&response=${token}`
     })
 
-    console.log('🔐 [TURNSTILE DEBUG] Turnstile API response status:', response.status)
-    console.log('🔐 [TURNSTILE DEBUG] Turnstile API response headers:', Object.fromEntries(response.headers.entries()))
-
     const result = await response.json() as { success: boolean }
-    console.log('🔐 [TURNSTILE DEBUG] Turnstile API result:', result)
-
     return result.success
   } catch (error) {
     console.error('🔐 [TURNSTILE DEBUG] Error verifying Turnstile token:', error)
@@ -28,8 +18,6 @@ async function verifyTurnstile(token: string): Promise<boolean> {
 }
 
 export async function POST(request: NextRequest) {
-  console.log('🔐 [TURNSTILE DEBUG] POST URL:', request.url)
-
   try {
     const body = await request.json() as { token: string }
     const { token } = body
