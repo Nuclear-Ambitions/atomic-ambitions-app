@@ -41,7 +41,10 @@ export default function JoinPage() {
                 <JoinCta title='Welcome!' />
               </div>
               <div className='order-1 md:order-2'>
-                <h2 className='text-4xl font-bold text-highlight mb-6'>
+                <h2
+                  data-aa='page-heading'
+                  className='text-4xl font-bold text-highlight mb-6'
+                >
                   Join the Atomic Ambitions Community
                 </h2>
                 <div className='space-y-6 text-muted-foreground leading-relaxed'>
