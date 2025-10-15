@@ -4,38 +4,59 @@ import Link from 'next/link'
 import FeatureCard from '@/components/feature-card'
 import { StepProps } from './types'
 
-const ConfirmMembershipStep: React.FC<StepProps> = ({ formData }) => {
+const ConfirmMembershipStep: React.FC<StepProps> = () => {
   return (
     <div className='max-w-4xl mx-auto'>
       <div className='text-center mb-12'>
+        <h2 className='text-3xl font-bold text-primary mb-4'>
+          Thanks for joining!
+        </h2>
+        <p className='text-muted-foreground text-lg mb-6'>
+          Your membership is now active.
+        </p>
         <div className='w-32 h-32 mx-auto mb-6 bg-primary/10 rounded-full flex items-center justify-center'>
           <span className='text-6xl'>🎉</span>
         </div>
-        <h2 className='text-3xl font-bold text-primary mb-4'>
-          Welcome to Atomic Ambitions!
-        </h2>
-        <p className='text-muted-foreground text-lg mb-6'>
-          Your Explorer account has been created successfully.
-        </p>
-        <div className='bg-primary/5 border border-primary/20 rounded-lg p-6 mb-8'>
-          <p className='text-foreground'>
-            <strong>Account Details:</strong> {formData.alias} ({formData.email}
-            )
-          </p>
-          <p className='text-foreground mt-2'>
-            <strong>Membership Level:</strong> Explorer (Free)
-          </p>
-          {formData.userId && (
-            <p className='text-green-600 mt-2'>
-              <strong>✓ Identity Verified</strong>
-            </p>
-          )}
+      </div>
+
+      <div className='bg-muted/50 border border-muted rounded-lg p-6 mb-8 text-center md:max-w-1/2 mx-auto'>
+        <h4 className='text-lg font-semibold text-primary mb-3'>
+          Explorer Benefits Unlocked
+        </h4>
+        <div className='space-y-2 grid grid-cols-1'>
+          <div className='flex items-center space-x-3'>
+            <span className='text-green-500 font-bold'>✓</span>
+            <span className='text-foreground'>
+              Participate in public forums
+            </span>
+          </div>
+          <div className='flex items-center space-x-3'>
+            <span className='text-green-500 font-bold'>✓</span>
+            <span className='text-foreground'>
+              Unlimited access to learning
+            </span>
+          </div>
+          <div className='flex items-center space-x-3'>
+            <span className='text-green-500 font-bold'>✓</span>
+            <span className='text-foreground'>
+              Basic listing in member directory
+            </span>
+          </div>
         </div>
       </div>
 
-      <div className='mb-12'>
+      <div className='flex flex-col sm:flex-row gap-4 justify-center'>
+        <Link href='/clubroom'>
+          <button className='btn btn-primary px-8'>Head to the Clubroom</button>
+        </Link>
+        <Link href='/clubroom/profile'>
+          <button className='btn btn-outline px-8'>Set Up Your Profile</button>
+        </Link>
+      </div>
+
+      <div className='mb-12 mt-18'>
         <h3 className='text-2xl font-bold text-primary mb-6 text-center'>
-          What&apos;s Next?
+          Can we interest you in one of these?
         </h3>
         <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-6'>
           <FeatureCard
@@ -47,7 +68,7 @@ const ConfirmMembershipStep: React.FC<StepProps> = ({ formData }) => {
           <FeatureCard
             title='Adventures'
             description='Explore interactive learning experiences'
-            icon='🚀'
+            icon='🥾'
             href='/adventures'
           />
           <FeatureCard
@@ -75,66 +96,6 @@ const ConfirmMembershipStep: React.FC<StepProps> = ({ formData }) => {
             href='/whos-who'
           />
         </div>
-      </div>
-
-      <div className='bg-muted/50 border border-muted rounded-lg p-6 mb-8'>
-        <h4 className='text-lg font-semibold text-primary mb-3'>
-          Explorer Benefits Unlocked
-        </h4>
-        <div className='grid md:grid-cols-2 gap-4'>
-          <div className='space-y-2'>
-            <div className='flex items-center space-x-3'>
-              <span className='text-green-500 font-bold'>✓</span>
-              <span className='text-foreground'>
-                Participate in public forums
-              </span>
-            </div>
-            <div className='flex items-center space-x-3'>
-              <span className='text-green-500 font-bold'>✓</span>
-              <span className='text-foreground'>
-                Unlimited access to learning
-              </span>
-            </div>
-            <div className='flex items-center space-x-3'>
-              <span className='text-green-500 font-bold'>✓</span>
-              <span className='text-foreground'>
-                Basic listing in member directory
-              </span>
-            </div>
-          </div>
-          <div className='space-y-2'>
-            <div className='flex items-center space-x-3'>
-              <span className='text-muted-foreground'>✗</span>
-              <span className='text-muted-foreground'>Premium content</span>
-            </div>
-            <div className='flex items-center space-x-3'>
-              <span className='text-muted-foreground'>✗</span>
-              <span className='text-muted-foreground'>Advanced features</span>
-            </div>
-            <div className='flex items-center space-x-3'>
-              <span className='text-muted-foreground'>✗</span>
-              <span className='text-muted-foreground'>Priority support</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className='flex flex-col sm:flex-row gap-4 justify-center'>
-        <Link href='/join/level-up'>
-          <button className='btn btn-primary px-8'>
-            Level Up Your Membership
-          </button>
-        </Link>
-        <Link href='/clubroom/profile'>
-          <button className='btn btn-outline px-8'>Build Your Profile</button>
-        </Link>
-      </div>
-
-      <div className='text-center mt-6'>
-        <p className='text-sm text-muted-foreground'>
-          You can upgrade to Supporter membership anytime you want to show us
-          how much you love Atomic Ambitions.
-        </p>
       </div>
     </div>
   )

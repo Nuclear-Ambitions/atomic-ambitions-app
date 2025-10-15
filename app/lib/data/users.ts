@@ -1,5 +1,6 @@
 import { db } from '../db/Database'
 import { jsonBuildObject } from 'kysely/helpers/postgres'
+import { isAfter } from 'date-fns'
 
 export interface MembershipSummary {
   level: string;
@@ -68,8 +69,10 @@ export const UserDataAccess = {
       .orderBy('current_period_start', 'desc')
       .executeTakeFirst()
 
-    console.log('🔍 [HAS ACTIVE SUBSCRIPTION] Result:', result)
+    const isActive = result?.status == 'active'
+    const isPaid = result?.payment_status == 'paid'
+    const isCurrent = !!result?.current_period_end && isAfter(result?.current_period_end, new Date())
 
-    return (result?.status == 'active' && result?.payment_status == 'paid' && result?.current_period_end && result?.current_period_end > new Date()) || false
+    return isActive && isPaid && isCurrent
   },
 }
