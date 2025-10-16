@@ -56,12 +56,6 @@ export interface Memberships {
   user_id: string | null
 }
 
-export interface PlayingWithNeon {
-  id: Generated<number>
-  name: string
-  value: number | null
-}
-
 export interface ProfileFavoritesLinks {
   created_at: Generated<Timestamp>
   explanation: string | null
@@ -134,6 +128,7 @@ export interface UserProfiles {
   id: Generated<number>
   location: string | null
   own_website: string | null
+  published_at: Timestamp | null
   updated_at: Generated<Timestamp>
   user_id: string
   why_joined: string | null
@@ -170,7 +165,6 @@ export interface VerificationToken {
 export interface DB {
   accounts: Accounts
   memberships: Memberships
-  playing_with_neon: PlayingWithNeon
   profile_favorites_links: ProfileFavoritesLinks
   profile_social_ids: ProfileSocialIds
   roles: Roles
