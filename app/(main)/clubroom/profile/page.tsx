@@ -1,6 +1,7 @@
 'use client'
 
 import { Icon } from '@iconify/react'
+import Link from 'next'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import { useState, useEffect } from 'react'
@@ -637,9 +638,33 @@ export default function ProfilePage() {
                             )?.display_name || socialId.platform_code}
                           </span>
                           <span className='text-muted-foreground'>:</span>
-                          <span className='text-foreground'>
-                            {socialId.social_id}
-                          </span>
+                          {(() => {
+                            const platform = profileData.socialPlatforms.find(
+                              (p) => p.code === socialId.platform_code
+                            )
+                            const profileUrl =
+                              platform?.profile_url_format && socialId.social_id
+                                ? platform.profile_url_format.replace(
+                                    '{social_id}',
+                                    socialId.social_id
+                                  )
+                                : null
+
+                            return profileUrl ? (
+                              <a
+                                href={profileUrl}
+                                target='_blank'
+                                rel='noopener noreferrer'
+                                className='text-primary hover:underline'
+                              >
+                                {socialId.social_id}
+                              </a>
+                            ) : (
+                              <span className='text-foreground'>
+                                {socialId.social_id}
+                              </span>
+                            )
+                          })()}
                         </div>
                       )}
                     </div>
