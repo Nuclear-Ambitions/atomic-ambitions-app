@@ -214,7 +214,7 @@ export async function PUT(request: NextRequest) {
   }
 }
 
-// PATCH /api/profile - Publish/unpublish profile
+// PATCH /api/profile - Publish/unpublish profile or update individual fields
 export async function PATCH(request: NextRequest) {
   try {
     const session = await auth()
@@ -224,32 +224,90 @@ export async function PATCH(request: NextRequest) {
 
     const userId = session.user.id
     const body = await request.json()
-    const { published } = body
 
-    // Get user profile ID
-    const userProfile = await db
-      .selectFrom('user_profiles')
-      .select('id')
-      .where('user_id', '=', userId)
-      .executeTakeFirst()
+    // Handle publish/unpublish
+    if (body.published !== undefined) {
+      const { published } = body
 
-    if (!userProfile) {
-      return NextResponse.json({ error: 'User profile not found' }, { status: 404 })
+      // Get user profile ID
+      const userProfile = await db
+        .selectFrom('user_profiles')
+        .select('id')
+        .where('user_id', '=', userId)
+        .executeTakeFirst()
+
+      if (!userProfile) {
+        return NextResponse.json({ error: 'User profile not found' }, { status: 404 })
+      }
+
+      // Update published status
+      await db
+        .updateTable('user_profiles')
+        .set({
+          published_at: published ? new Date() : null,
+          updated_at: new Date(),
+        })
+        .where('id', '=', userProfile.id)
+        .execute()
+
+      return NextResponse.json({ success: true, published })
     }
 
-    // Update published status
-    await db
-      .updateTable('user_profiles')
-      .set({
-        published_at: published ? new Date() : null,
-        updated_at: new Date(),
-      })
-      .where('id', '=', userProfile.id)
-      .execute()
+    // Handle field-level updates
+    if (body.field && body.value !== undefined) {
+      const { field, value } = body
 
-    return NextResponse.json({ success: true, published })
+      // Get or create user profile
+      let userProfile = await db
+        .selectFrom('user_profiles')
+        .select('id')
+        .where('user_id', '=', userId)
+        .executeTakeFirst()
+
+      if (!userProfile) {
+        const newProfile = await db
+          .insertInto('user_profiles')
+          .values({
+            user_id: userId,
+            [field]: value,
+          })
+          .returning('id')
+          .executeTakeFirst()
+        userProfile = newProfile
+      } else {
+        // Update specific field
+        await db
+          .updateTable('user_profiles')
+          .set({
+            [field]: value,
+            updated_at: new Date(),
+          })
+          .where('id', '=', userProfile.id)
+          .execute()
+      }
+
+      return NextResponse.json({ success: true, field, value })
+    }
+
+    // Handle user table field updates (alias, handle)
+    if (body.field && ['alias', 'handle'].includes(body.field)) {
+      const { field, value } = body
+
+      await db
+        .updateTable('users')
+        .set({
+          [field]: value,
+          updated_at: new Date(),
+        })
+        .where('id', '=', userId)
+        .execute()
+
+      return NextResponse.json({ success: true, field, value })
+    }
+
+    return NextResponse.json({ error: 'Invalid request body' }, { status: 400 })
   } catch (error) {
-    console.error('Error updating profile publish status:', error)
+    console.error('Error updating profile:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

@@ -11,6 +11,11 @@ import {
   ProfileFavorite,
   ProfileSocialId,
 } from '@/types/custom'
+import ProfileSection from './ProfileSection'
+import ProfileField from './ProfileField'
+import ProfileListSection from './ProfileListSection'
+import FavoriteItem from './FavoriteItem'
+import SocialIdItem from './SocialIdItem'
 
 export default function ProfilePage() {
   const session = useSession()
@@ -21,6 +26,8 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [isPublished, setIsPublished] = useState(false)
+  const [editingField, setEditingField] = useState<string | null>(null)
+  const [fieldSaving, setFieldSaving] = useState<Record<string, boolean>>({})
 
   // Load profile data
   useEffect(() => {
@@ -176,6 +183,44 @@ export default function ProfilePage() {
     })
   }
 
+  // Field-level save function for inline editing
+  const saveField = async (field: string, value: string) => {
+    if (!profileData) return
+
+    setFieldSaving((prev) => ({ ...prev, [field]: true }))
+    try {
+      const response = await fetch('/api/profile', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ field, value }),
+      })
+
+      if (response.ok) {
+        // Update local state
+        if (['alias', 'handle'].includes(field)) {
+          setProfileData({
+            ...profileData,
+            profile: { ...profileData.profile, [field]: value },
+          })
+        } else {
+          setProfileData({
+            ...profileData,
+            profile: { ...profileData.profile, [field]: value },
+          })
+        }
+      } else {
+        throw new Error('Failed to save field')
+      }
+    } catch (error) {
+      console.error('Error saving field:', error)
+      throw error
+    } finally {
+      setFieldSaving((prev) => ({ ...prev, [field]: false }))
+    }
+  }
+
   if (loading) {
     return (
       <div className='min-h-screen bg-background flex items-center justify-center'>
@@ -302,376 +347,140 @@ export default function ProfilePage() {
         {profileData && (
           <div className='space-y-8'>
             {/* Basic Information */}
-            <div className='card p-6'>
-              <h2 className='text-xl font-semibold text-highlight mb-4 flex items-center'>
-                <Icon icon='ph:user-duotone' width={24} className='mr-2' />
-                Basic Information
-              </h2>
+            <ProfileSection icon='ph:user-duotone' title='Basic Information'>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                <div>
-                  <label className='block text-sm font-medium text-foreground mb-2'>
-                    Alias
-                  </label>
-                  {isEditing ? (
-                    <input
-                      type='text'
-                      value={profileData.profile.alias || ''}
-                      onChange={(e) =>
-                        updateProfileField('alias', e.target.value)
-                      }
-                      className='w-full px-3 py-2 border border-border rounded-md bg-background text-foreground'
-                      placeholder='Your alias'
-                    />
-                  ) : (
-                    <p className='text-foreground'>
-                      {profileData.profile.alias || 'Not set'}
-                    </p>
-                  )}
-                </div>
-                <div>
-                  <label className='block text-sm font-medium text-foreground mb-2'>
-                    Handle
-                  </label>
-                  {isEditing ? (
-                    <input
-                      type='text'
-                      value={profileData.profile.handle || ''}
-                      onChange={(e) =>
-                        updateProfileField('handle', e.target.value)
-                      }
-                      className='w-full px-3 py-2 border border-border rounded-md bg-background text-foreground'
-                      placeholder='@yourhandle'
-                    />
-                  ) : (
-                    <p className='text-foreground'>
-                      {profileData.profile.handle || 'Not set'}
-                    </p>
-                  )}
-                </div>
-                <div>
-                  <label className='block text-sm font-medium text-foreground mb-2'>
-                    Location
-                  </label>
-                  {isEditing ? (
-                    <input
-                      type='text'
-                      value={profileData.profile.location || ''}
-                      onChange={(e) =>
-                        updateProfileField('location', e.target.value)
-                      }
-                      className='w-full px-3 py-2 border border-border rounded-md bg-background text-foreground'
-                      placeholder='Your location'
-                    />
-                  ) : (
-                    <p className='text-foreground'>
-                      {profileData.profile.location || 'Not set'}
-                    </p>
-                  )}
-                </div>
-                <div>
-                  <label className='block text-sm font-medium text-foreground mb-2'>
-                    Website
-                  </label>
-                  {isEditing ? (
-                    <input
-                      type='url'
-                      value={profileData.profile.own_website || ''}
-                      onChange={(e) =>
-                        updateProfileField('own_website', e.target.value)
-                      }
-                      className='w-full px-3 py-2 border border-border rounded-md bg-background text-foreground'
-                      placeholder='https://yourwebsite.com'
-                    />
-                  ) : (
-                    <p className='text-foreground'>
-                      {profileData.profile.own_website ? (
-                        <a
-                          href={profileData.profile.own_website}
-                          target='_blank'
-                          rel='noopener noreferrer'
-                          className='text-primary hover:underline'
-                        >
-                          {profileData.profile.own_website}
-                        </a>
-                      ) : (
-                        'Not set'
-                      )}
-                    </p>
-                  )}
-                </div>
+                <ProfileField
+                  label='Alias'
+                  value={profileData.profile.alias || ''}
+                  onSave={(value) => saveField('alias', value)}
+                  isGlobalEditMode={isEditing}
+                  placeholder='Your alias'
+                />
+                <ProfileField
+                  label='Handle'
+                  value={profileData.profile.handle || ''}
+                  onSave={(value) => saveField('handle', value)}
+                  isGlobalEditMode={isEditing}
+                  placeholder='@yourhandle'
+                />
+                <ProfileField
+                  label='Location'
+                  value={profileData.profile.location || ''}
+                  onSave={(value) => saveField('location', value)}
+                  isGlobalEditMode={isEditing}
+                  placeholder='Your location'
+                />
+                <ProfileField
+                  label='Website'
+                  value={profileData.profile.own_website || ''}
+                  onSave={(value) => saveField('own_website', value)}
+                  isGlobalEditMode={isEditing}
+                  type='url'
+                  placeholder='https://yourwebsite.com'
+                />
               </div>
-            </div>
+            </ProfileSection>
 
             {/* Bio */}
-            <div className='card p-6'>
-              <h2 className='text-xl font-semibold text-highlight mb-4 flex items-center'>
-                <Icon icon='ph:file-text-duotone' width={24} className='mr-2' />
-                Bio
-              </h2>
-              {isEditing ? (
-                <textarea
-                  value={profileData.profile.bio || ''}
-                  onChange={(e) => updateProfileField('bio', e.target.value)}
-                  className='w-full px-3 py-2 border border-border rounded-md bg-background text-foreground min-h-[100px]'
-                  placeholder='Tell us about yourself...'
-                />
-              ) : (
-                <p className='text-foreground whitespace-pre-wrap'>
-                  {profileData.profile.bio || 'No bio provided'}
-                </p>
-              )}
-            </div>
+            <ProfileSection icon='ph:file-text-duotone' title='Bio'>
+              <ProfileField
+                label=''
+                value={profileData.profile.bio || ''}
+                onSave={(value) => saveField('bio', value)}
+                isGlobalEditMode={isEditing}
+                type='textarea'
+                placeholder='Tell us about yourself...'
+                multiline={true}
+              />
+            </ProfileSection>
 
             {/* Why Joined & Why Nuclear */}
             <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-              <div className='card p-6'>
-                <h2 className='text-xl font-semibold text-highlight mb-4 flex items-center'>
-                  <Icon icon='ph:heart-duotone' width={24} className='mr-2' />
-                  Why I Joined
-                </h2>
-                {isEditing ? (
-                  <textarea
-                    value={profileData.profile.why_joined || ''}
-                    onChange={(e) =>
-                      updateProfileField('why_joined', e.target.value)
-                    }
-                    className='w-full px-3 py-2 border border-border rounded-md bg-background text-foreground min-h-[100px]'
-                    placeholder='What brought you to Atomic Ambitions?'
-                  />
-                ) : (
-                  <p className='text-foreground whitespace-pre-wrap'>
-                    {profileData.profile.why_joined || 'Not provided'}
-                  </p>
-                )}
-              </div>
-              <div className='card p-6'>
-                <h2 className='text-xl font-semibold text-highlight mb-4 flex items-center'>
-                  <Icon icon='ph:atom-duotone' width={24} className='mr-2' />
-                  Why Nuclear
-                </h2>
-                {isEditing ? (
-                  <textarea
-                    value={profileData.profile.why_nuclear || ''}
-                    onChange={(e) =>
-                      updateProfileField('why_nuclear', e.target.value)
-                    }
-                    className='w-full px-3 py-2 border border-border rounded-md bg-background text-foreground min-h-[100px]'
-                    placeholder='What draws you to nuclear energy?'
-                  />
-                ) : (
-                  <p className='text-foreground whitespace-pre-wrap'>
-                    {profileData.profile.why_nuclear || 'Not provided'}
-                  </p>
-                )}
-              </div>
+              <ProfileSection icon='ph:heart-duotone' title='Why I Joined'>
+                <ProfileField
+                  label=''
+                  value={profileData.profile.why_joined || ''}
+                  onSave={(value) => saveField('why_joined', value)}
+                  isGlobalEditMode={isEditing}
+                  type='textarea'
+                  placeholder='What brought you to Atomic Ambitions?'
+                  multiline={true}
+                />
+              </ProfileSection>
+              <ProfileSection icon='ph:atom-duotone' title='Why Nuclear'>
+                <ProfileField
+                  label=''
+                  value={profileData.profile.why_nuclear || ''}
+                  onSave={(value) => saveField('why_nuclear', value)}
+                  isGlobalEditMode={isEditing}
+                  type='textarea'
+                  placeholder='What draws you to nuclear energy?'
+                  multiline={true}
+                />
+              </ProfileSection>
             </div>
 
             {/* Favorites */}
-            <div className='card p-6'>
-              <div className='flex items-center justify-between mb-4'>
-                <h2 className='text-xl font-semibold text-highlight flex items-center'>
-                  <Icon icon='ph:star-duotone' width={24} className='mr-2' />
-                  Favorites
-                </h2>
-                {isEditing && (
-                  <button
-                    onClick={addFavorite}
-                    className='px-3 py-1 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors'
-                  >
-                    Add Favorite
-                  </button>
-                )}
-              </div>
-              {profileData.favorites.length === 0 ? (
-                <p className='text-muted-foreground'>No favorites added yet</p>
-              ) : (
-                <div className='space-y-4'>
-                  {profileData.favorites.map((favorite, index) => (
-                    <div
-                      key={index}
-                      className='border border-border rounded-md p-4'
-                    >
-                      {isEditing ? (
-                        <div className='space-y-3'>
-                          <div className='flex justify-between items-start'>
-                            <div className='flex-1 space-y-3'>
-                              <input
-                                type='text'
-                                value={favorite.label || ''}
-                                onChange={(e) =>
-                                  updateFavorite(index, 'label', e.target.value)
-                                }
-                                className='w-full px-3 py-2 border border-border rounded-md bg-background text-foreground'
-                                placeholder='Favorite name'
-                              />
-                              <input
-                                type='url'
-                                value={favorite.url || ''}
-                                onChange={(e) =>
-                                  updateFavorite(index, 'url', e.target.value)
-                                }
-                                className='w-full px-3 py-2 border border-border rounded-md bg-background text-foreground'
-                                placeholder='https://example.com'
-                              />
-                              <textarea
-                                value={favorite.explanation || ''}
-                                onChange={(e) =>
-                                  updateFavorite(
-                                    index,
-                                    'explanation',
-                                    e.target.value
-                                  )
-                                }
-                                className='w-full px-3 py-2 border border-border rounded-md bg-background text-foreground'
-                                placeholder='Why is this a favorite?'
-                                rows={2}
-                              />
-                            </div>
-                            <button
-                              onClick={() => removeFavorite(index)}
-                              className='ml-3 p-2 text-destructive hover:bg-destructive/10 rounded-md transition-colors'
-                            >
-                              <Icon icon='ph:trash-duotone' width={20} />
-                            </button>
-                          </div>
-                        </div>
-                      ) : (
-                        <div>
-                          <h3 className='font-medium text-foreground'>
-                            {favorite.label}
-                          </h3>
-                          {favorite.url && (
-                            <a
-                              href={favorite.url}
-                              target='_blank'
-                              rel='noopener noreferrer'
-                              className='text-primary hover:underline text-sm'
-                            >
-                              {favorite.url}
-                            </a>
-                          )}
-                          {favorite.explanation && (
-                            <p className='text-muted-foreground text-sm mt-1'>
-                              {favorite.explanation}
-                            </p>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
+            <ProfileListSection
+              icon='ph:star-duotone'
+              title='Favorites'
+              items={profileData.favorites}
+              isGlobalEditMode={isEditing}
+              onAdd={addFavorite}
+              onRemove={removeFavorite}
+              renderView={(favorite, index) => (
+                <FavoriteItem
+                  favorite={favorite}
+                  index={index}
+                  isGlobalEditMode={false}
+                  onUpdate={updateFavorite}
+                  onRemove={removeFavorite}
+                />
               )}
-            </div>
+              renderEdit={(favorite, index) => (
+                <FavoriteItem
+                  favorite={favorite}
+                  index={index}
+                  isGlobalEditMode={true}
+                  onUpdate={updateFavorite}
+                  onRemove={removeFavorite}
+                />
+              )}
+              emptyMessage='No favorites added yet'
+              addButtonText='Add Favorite'
+            />
 
             {/* Social IDs */}
-            <div className='card p-6'>
-              <div className='flex items-center justify-between mb-4'>
-                <h2 className='text-xl font-semibold text-highlight flex items-center'>
-                  <Icon
-                    icon='ph:share-network-duotone'
-                    width={24}
-                    className='mr-2'
-                  />
-                  Social Links
-                </h2>
-                {isEditing && (
-                  <button
-                    onClick={addSocialId}
-                    className='px-3 py-1 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors'
-                  >
-                    Add Social Link
-                  </button>
-                )}
-              </div>
-              {profileData.socialIds.length === 0 ? (
-                <p className='text-muted-foreground'>
-                  No social links added yet
-                </p>
-              ) : (
-                <div className='space-y-4'>
-                  {profileData.socialIds.map((socialId, index) => (
-                    <div
-                      key={index}
-                      className='border border-border rounded-md p-4'
-                    >
-                      {isEditing ? (
-                        <div className='flex items-center space-x-3'>
-                          <select
-                            value={socialId.platform_code}
-                            onChange={(e) =>
-                              updateSocialId(
-                                index,
-                                'platform_code',
-                                e.target.value
-                              )
-                            }
-                            className='px-3 py-2 border border-border rounded-md bg-background text-foreground'
-                          >
-                            <option value=''>Select platform</option>
-                            {profileData.socialPlatforms.map((platform) => (
-                              <option key={platform.code} value={platform.code}>
-                                {platform.display_name}
-                              </option>
-                            ))}
-                          </select>
-                          <input
-                            type='text'
-                            value={socialId.social_id || ''}
-                            onChange={(e) =>
-                              updateSocialId(index, 'social_id', e.target.value)
-                            }
-                            className='flex-1 px-3 py-2 border border-border rounded-md bg-background text-foreground'
-                            placeholder='Username or ID'
-                          />
-                          <button
-                            onClick={() => removeSocialId(index)}
-                            className='p-2 text-destructive hover:bg-destructive/10 rounded-md transition-colors'
-                          >
-                            <Icon icon='ph:trash-duotone' width={20} />
-                          </button>
-                        </div>
-                      ) : (
-                        <div className='flex items-center space-x-3'>
-                          <span className='font-medium text-foreground'>
-                            {profileData.socialPlatforms.find(
-                              (p) => p.code === socialId.platform_code
-                            )?.display_name || socialId.platform_code}
-                          </span>
-                          <span className='text-muted-foreground'>:</span>
-                          {(() => {
-                            const platform = profileData.socialPlatforms.find(
-                              (p) => p.code === socialId.platform_code
-                            )
-                            const profileUrl =
-                              platform?.profile_url_format && socialId.social_id
-                                ? platform.profile_url_format.replace(
-                                    '{social_id}',
-                                    socialId.social_id
-                                  )
-                                : null
-
-                            return profileUrl ? (
-                              <a
-                                href={profileUrl}
-                                target='_blank'
-                                rel='noopener noreferrer'
-                                className='text-primary hover:underline'
-                              >
-                                {socialId.social_id}
-                              </a>
-                            ) : (
-                              <span className='text-foreground'>
-                                {socialId.social_id}
-                              </span>
-                            )
-                          })()}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
+            <ProfileListSection
+              icon='ph:share-network-duotone'
+              title='Social Links'
+              items={profileData.socialIds}
+              isGlobalEditMode={isEditing}
+              onAdd={addSocialId}
+              onRemove={removeSocialId}
+              renderView={(socialId, index) => (
+                <SocialIdItem
+                  socialId={socialId}
+                  index={index}
+                  isGlobalEditMode={false}
+                  socialPlatforms={profileData.socialPlatforms}
+                  onUpdate={updateSocialId}
+                  onRemove={removeSocialId}
+                />
               )}
-            </div>
+              renderEdit={(socialId, index) => (
+                <SocialIdItem
+                  socialId={socialId}
+                  index={index}
+                  isGlobalEditMode={true}
+                  socialPlatforms={profileData.socialPlatforms}
+                  onUpdate={updateSocialId}
+                  onRemove={removeSocialId}
+                />
+              )}
+              emptyMessage='No social links added yet'
+              addButtonText='Add Social Link'
+            />
           </div>
         )}
       </div>
