@@ -251,4 +251,57 @@ export const ProfileDataAccess = {
       .where('id', '=', userProfile.id)
       .execute()
   },
+
+  async addFavorite(userId: string, favorite: ProfileFavorite): Promise<void> {
+    const userProfile = await db
+      .selectFrom('user_profiles')
+      .select('id')
+      .where('user_id', '=', userId)
+      .executeTakeFirst()
+
+    if (!userProfile) {
+      throw new Error('User profile not found')
+    }
+
+    // Get the next order number
+    const maxOrder = await db
+      .selectFrom('profile_favorites_links')
+      .select(db.fn.max('order').as('maxOrder'))
+      .where('user_profile_id', '=', userProfile.id)
+      .executeTakeFirst()
+
+    const nextOrder = (maxOrder?.maxOrder ?? -1) + 1
+
+    await db
+      .insertInto('profile_favorites_links')
+      .values({
+        user_profile_id: userProfile.id,
+        label: favorite.label,
+        url: favorite.url,
+        explanation: favorite.explanation,
+        order: nextOrder,
+      })
+      .execute()
+  },
+
+  async addSocialId(userId: string, socialId: ProfileSocialId): Promise<void> {
+    const userProfile = await db
+      .selectFrom('user_profiles')
+      .select('id')
+      .where('user_id', '=', userId)
+      .executeTakeFirst()
+
+    if (!userProfile) {
+      throw new Error('User profile not found')
+    }
+
+    await db
+      .insertInto('profile_social_ids')
+      .values({
+        user_profile_id: userProfile.id,
+        platform_code: socialId.platform_code,
+        social_id: socialId.social_id,
+      })
+      .execute()
+  },
 }

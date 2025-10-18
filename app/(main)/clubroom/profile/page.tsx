@@ -15,6 +15,7 @@ import ProfileField from './ProfileField'
 import ProfileListSection from './ProfileListSection'
 import FavoriteItem from './FavoriteItem'
 import SocialIdItem from './SocialIdItem'
+import AddItemModal from './AddItemModal'
 
 export default function ProfilePage() {
   const session = useSession()
@@ -25,6 +26,10 @@ export default function ProfilePage() {
   const [saving, setSaving] = useState(false)
   const [isPublished, setIsPublished] = useState(false)
   const [fieldSaving, setFieldSaving] = useState<Record<string, boolean>>({})
+  const [modalState, setModalState] = useState<{
+    isOpen: boolean
+    type: 'favorite' | 'socialId'
+  }>({ isOpen: false, type: 'favorite' })
 
   // Load profile data
   useEffect(() => {
@@ -178,6 +183,41 @@ export default function ProfilePage() {
       ...profileData,
       profile: { ...profileData.profile, [field]: value },
     })
+  }
+
+  // Modal functions
+  const openModal = (type: 'favorite' | 'socialId') => {
+    setModalState({ isOpen: true, type })
+  }
+
+  const closeModal = () => {
+    setModalState({ isOpen: false, type: 'favorite' })
+  }
+
+  const handleAddItem = async (item: ProfileFavorite | ProfileSocialId) => {
+    if (!profileData) return
+
+    try {
+      const response = await fetch('/api/profile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: modalState.type,
+          item,
+        }),
+      })
+
+      if (response.ok) {
+        const updatedData = await response.json()
+        setProfileData(updatedData)
+      } else {
+        console.error('Error adding item')
+      }
+    } catch (error) {
+      console.error('Error adding item:', error)
+    }
   }
 
   // Field-level save function for inline editing
@@ -443,6 +483,8 @@ export default function ProfilePage() {
               )}
               emptyMessage='No favorites added yet'
               addButtonText='Add Favorite'
+              showAddInViewMode={!isEditing}
+              onAddInViewMode={() => openModal('favorite')}
             />
 
             {/* Social IDs */}
@@ -473,9 +515,20 @@ export default function ProfilePage() {
               )}
               emptyMessage='No social links added yet'
               addButtonText='Add Social Link'
+              showAddInViewMode={!isEditing}
+              onAddInViewMode={() => openModal('socialId')}
             />
           </div>
         )}
+
+        {/* Add Item Modal */}
+        <AddItemModal
+          isOpen={modalState.isOpen}
+          onClose={closeModal}
+          onSave={handleAddItem}
+          type={modalState.type}
+          socialPlatforms={profileData?.socialPlatforms || []}
+        />
       </div>
     </div>
   )

@@ -14,6 +14,8 @@ interface ProfileListSectionProps<T> {
   renderEdit: (item: T, index: number) => ReactNode
   emptyMessage?: string
   addButtonText?: string
+  showAddInViewMode?: boolean
+  onAddInViewMode?: () => void
 }
 
 export default function ProfileListSection<T>({
@@ -27,6 +29,8 @@ export default function ProfileListSection<T>({
   renderEdit,
   emptyMessage = 'No items added yet',
   addButtonText = 'Add Item',
+  showAddInViewMode = false,
+  onAddInViewMode,
 }: ProfileListSectionProps<T>) {
   return (
     <div className='card p-6'>
@@ -35,12 +39,19 @@ export default function ProfileListSection<T>({
           <Icon icon={icon} width={24} className='mr-2' />
           {title}
         </h2>
-        {isGlobalEditMode && (
+        {(isGlobalEditMode || showAddInViewMode) && (
           <button
-            onClick={onAdd}
-            className='px-3 py-1 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors'
+            onClick={isGlobalEditMode ? onAdd : onAddInViewMode}
+            className='px-3 py-1 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors flex items-center'
           >
-            {addButtonText}
+            {isGlobalEditMode ? (
+              addButtonText
+            ) : (
+              <>
+                <Icon icon='ph:plus-duotone' width={16} className='mr-1' />
+                Add
+              </>
+            )}
           </button>
         )}
       </div>
