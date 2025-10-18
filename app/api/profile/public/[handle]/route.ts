@@ -8,7 +8,7 @@ export async function GET(
   { params }: { params: { handle: string } }
 ) {
   try {
-    const handle = params.handle
+    const { handle } = await params
 
     // Get user by handle
     const user = await db

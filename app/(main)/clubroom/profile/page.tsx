@@ -1,7 +1,6 @@
 'use client'
 
 import { Icon } from '@iconify/react'
-import Link from 'next'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import { useState, useEffect } from 'react'
@@ -20,13 +19,11 @@ import SocialIdItem from './SocialIdItem'
 export default function ProfilePage() {
   const session = useSession()
   const user = session.data?.user
-  const profile = user?.summary
   const [isEditing, setIsEditing] = useState(false)
   const [profileData, setProfileData] = useState<ProfileResponse | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [isPublished, setIsPublished] = useState(false)
-  const [editingField, setEditingField] = useState<string | null>(null)
   const [fieldSaving, setFieldSaving] = useState<Record<string, boolean>>({})
 
   // Load profile data
