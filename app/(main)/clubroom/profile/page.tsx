@@ -431,7 +431,6 @@ export default function ProfilePage() {
                   index={index}
                   isGlobalEditMode={false}
                   onUpdate={updateFavorite}
-                  onRemove={removeFavorite}
                 />
               )}
               renderEdit={(favorite, index) => (
@@ -440,7 +439,6 @@ export default function ProfilePage() {
                   index={index}
                   isGlobalEditMode={true}
                   onUpdate={updateFavorite}
-                  onRemove={removeFavorite}
                 />
               )}
               emptyMessage='No favorites added yet'
@@ -462,7 +460,6 @@ export default function ProfilePage() {
                   isGlobalEditMode={false}
                   socialPlatforms={profileData.socialPlatforms}
                   onUpdate={updateSocialId}
-                  onRemove={removeSocialId}
                 />
               )}
               renderEdit={(socialId, index) => (
@@ -472,7 +469,6 @@ export default function ProfilePage() {
                   isGlobalEditMode={true}
                   socialPlatforms={profileData.socialPlatforms}
                   onUpdate={updateSocialId}
-                  onRemove={removeSocialId}
                 />
               )}
               emptyMessage='No social links added yet'

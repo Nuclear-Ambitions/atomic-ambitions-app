@@ -9,7 +9,6 @@ interface SocialIdItemProps {
   isGlobalEditMode: boolean
   socialPlatforms: SocialPlatform[]
   onUpdate: (index: number, field: keyof ProfileSocialId, value: string) => void
-  onRemove: (index: number) => void
 }
 
 export default function SocialIdItem({
@@ -18,7 +17,6 @@ export default function SocialIdItem({
   isGlobalEditMode,
   socialPlatforms,
   onUpdate,
-  onRemove,
 }: SocialIdItemProps) {
   if (isGlobalEditMode) {
     return (
@@ -42,12 +40,6 @@ export default function SocialIdItem({
           className='flex-1 px-3 py-2 border border-border rounded-md bg-background text-foreground'
           placeholder='Username or ID'
         />
-        <button
-          onClick={() => onRemove(index)}
-          className='p-2 text-destructive hover:bg-destructive/10 rounded-md transition-colors'
-        >
-          <Icon icon='ph:trash-duotone' width={20} />
-        </button>
       </div>
     )
   }
