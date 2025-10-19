@@ -94,7 +94,7 @@ export default function RichTextEditor({
             }`}
             title='Bold'
           >
-            <Icon icon='ph:bold-duotone' width={16} />
+            <Icon icon='ph:text-b-duotone' width={16} />
           </button>
           <button
             type='button'
@@ -106,7 +106,7 @@ export default function RichTextEditor({
             }`}
             title='Italic'
           >
-            <Icon icon='ph:italic-duotone' width={16} />
+            <Icon icon='ph:text-italic-duotone' width={16} />
           </button>
           <button
             type='button'
@@ -118,7 +118,7 @@ export default function RichTextEditor({
             }`}
             title='Strikethrough'
           >
-            <Icon icon='ph:strikethrough-duotone' width={16} />
+            <Icon icon='ph:text-strikethrough-duotone' width={16} />
           </button>
 
           {/* Separator */}
