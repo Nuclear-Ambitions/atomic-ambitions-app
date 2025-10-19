@@ -425,9 +425,8 @@ export default function ProfilePage() {
                 value={profileData.profile.bio || ''}
                 onSave={(value) => saveField('bio', value)}
                 isGlobalEditMode={isEditing}
-                type='textarea'
+                type='richtext'
                 placeholder='Tell us about yourself...'
-                multiline={true}
               />
             </ProfileSection>
 
@@ -439,9 +438,8 @@ export default function ProfilePage() {
                   value={profileData.profile.why_joined || ''}
                   onSave={(value) => saveField('why_joined', value)}
                   isGlobalEditMode={isEditing}
-                  type='textarea'
+                  type='richtext'
                   placeholder='What brought you to Atomic Ambitions?'
-                  multiline={true}
                 />
               </ProfileSection>
               <ProfileSection icon='ph:atom-duotone' title='Why Nuclear'>
@@ -450,9 +448,8 @@ export default function ProfilePage() {
                   value={profileData.profile.why_nuclear || ''}
                   onSave={(value) => saveField('why_nuclear', value)}
                   isGlobalEditMode={isEditing}
-                  type='textarea'
+                  type='richtext'
                   placeholder='What draws you to nuclear energy?'
-                  multiline={true}
                 />
               </ProfileSection>
             </div>

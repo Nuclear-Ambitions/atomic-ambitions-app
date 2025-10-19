@@ -2,13 +2,14 @@
 
 import { Icon } from '@iconify/react'
 import { useState, useRef, useEffect } from 'react'
+import RichTextEditor from '@/components/rich-text-editor'
 
 interface ProfileFieldProps {
   label: string
   value: string
   onSave: (value: string) => Promise<void>
   isGlobalEditMode: boolean
-  type?: 'text' | 'textarea' | 'url'
+  type?: 'text' | 'textarea' | 'url' | 'richtext'
   placeholder?: string
   multiline?: boolean
   className?: string
@@ -73,6 +74,10 @@ export default function ProfileField({
     }
   }
 
+  const handleRichTextChange = (content: string) => {
+    setEditValue(content)
+  }
+
   const handleCancel = () => {
     setEditValue(value)
     setIsEditing(false)
@@ -98,7 +103,52 @@ export default function ProfileField({
 
       {isEditable ? (
         <div className='relative'>
-          {type === 'textarea' ? (
+          {type === 'richtext' ? (
+            <div className='relative'>
+              <RichTextEditor
+                content={editValue}
+                onChange={handleRichTextChange}
+                placeholder={placeholder}
+                editable={true}
+              />
+              {/* Loading indicator for rich text */}
+              {isSaving && (
+                <div className='absolute top-2 right-2 z-10'>
+                  <Icon
+                    icon='ph:spinner-duotone'
+                    width={16}
+                    className='animate-spin text-primary bg-background rounded-full p-1'
+                  />
+                </div>
+              )}
+              {/* Success indicator for rich text */}
+              {showSuccess && !isSaving && (
+                <div className='absolute top-2 right-2 z-10'>
+                  <Icon
+                    icon='ph:check-circle-duotone'
+                    width={16}
+                    className='text-green-500 bg-background rounded-full p-1'
+                  />
+                </div>
+              )}
+              {/* Save/Cancel buttons for rich text */}
+              <div className='flex justify-end gap-2 mt-2'>
+                <button
+                  onClick={handleCancel}
+                  className='px-3 py-1 text-sm text-muted-foreground hover:text-foreground transition-colors'
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSave}
+                  disabled={isSaving}
+                  className='px-3 py-1 text-sm bg-primary text-primary-foreground rounded hover:bg-primary/90 transition-colors disabled:opacity-50'
+                >
+                  {isSaving ? 'Saving...' : 'Save'}
+                </button>
+              </div>
+            </div>
+          ) : type === 'textarea' ? (
             <textarea
               ref={inputRef as React.RefObject<HTMLTextAreaElement>}
               value={editValue}
@@ -121,8 +171,8 @@ export default function ProfileField({
             />
           )}
 
-          {/* Loading indicator */}
-          {isSaving && (
+          {/* Loading indicator for non-rich text */}
+          {type !== 'richtext' && isSaving && (
             <div className='absolute right-3 top-1/2 transform -translate-y-1/2'>
               <Icon
                 icon='ph:spinner-duotone'
@@ -132,8 +182,8 @@ export default function ProfileField({
             </div>
           )}
 
-          {/* Success indicator */}
-          {showSuccess && !isSaving && (
+          {/* Success indicator for non-rich text */}
+          {type !== 'richtext' && showSuccess && !isSaving && (
             <div className='absolute right-3 top-1/2 transform -translate-y-1/2'>
               <Icon
                 icon='ph:check-circle-duotone'
@@ -145,20 +195,27 @@ export default function ProfileField({
         </div>
       ) : (
         <div className='group relative'>
-          <p className='text-foreground whitespace-pre-wrap'>
-            {type === 'url' && value ? (
-              <a
-                href={value}
-                target='_blank'
-                rel='noopener noreferrer'
-                className='text-primary hover:underline'
-              >
-                {value}
-              </a>
-            ) : (
-              displayValue
-            )}
-          </p>
+          {type === 'richtext' && value ? (
+            <div
+              className='prose prose-sm max-w-none text-foreground'
+              dangerouslySetInnerHTML={{ __html: value }}
+            />
+          ) : (
+            <p className='text-foreground whitespace-pre-wrap'>
+              {type === 'url' && value ? (
+                <a
+                  href={value}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='text-primary hover:underline'
+                >
+                  {value}
+                </a>
+              ) : (
+                displayValue
+              )}
+            </p>
+          )}
 
           {/* Edit button - only show in non-global edit mode */}
           {!isGlobalEditMode && (
