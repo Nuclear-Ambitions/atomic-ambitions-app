@@ -12,6 +12,7 @@ import {
 } from '@/types/custom'
 import ProfileSection from './ProfileSection'
 import ProfileField from './ProfileField'
+import HandleField from './HandleField'
 import ProfileListSection from './ProfileListSection'
 import FavoriteItem from './FavoriteItem'
 import SocialIdItem from './SocialIdItem'
@@ -393,7 +394,7 @@ export default function ProfilePage() {
                   isGlobalEditMode={isEditing}
                   placeholder='Your alias'
                 />
-                <ProfileField
+                <HandleField
                   label='Handle'
                   value={profileData.profile.handle || ''}
                   onSave={(value) => saveField('handle', value)}
