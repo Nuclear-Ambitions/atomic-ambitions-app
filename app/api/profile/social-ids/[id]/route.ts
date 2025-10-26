@@ -6,16 +6,17 @@ import { ProfileSocialId } from '@/types/custom'
 // PUT /api/profile/social-ids/[id] - Update a social ID
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const resolvedParams = await params
     const session = await auth()
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
     const userId = session.user.id
-    const socialId = parseInt(params.id)
+    const socialId = parseInt(resolvedParams.id)
     const body: Partial<ProfileSocialId> = await request.json()
 
     // Verify the social ID belongs to the current user
@@ -64,16 +65,17 @@ export async function PUT(
 // DELETE /api/profile/social-ids/[id] - Delete a social ID
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const resolvedParams = await params
     const session = await auth()
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
     const userId = session.user.id
-    const socialId = parseInt(params.id)
+    const socialId = parseInt(resolvedParams.id)
 
     // Verify the social ID belongs to the current user
     const existingSocialId = await db
