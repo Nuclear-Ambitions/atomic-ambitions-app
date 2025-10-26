@@ -10,12 +10,12 @@
     "start": "next start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "generate:db:types": "kysely-codegen --dialect=postgres --out-file=./app/lib/db/types.ts",
     "cypress:open": "cypress open",
     "test:e2e": "start-server-and-test dev http://localhost:3000 \"cypress open --e2e\"",
     "test:e2e:headless": "start-server-and-test dev http://localhost:3000 \"cypress run --e2e\"",
     "test:comp": "cypress open --component",
-    "test:comp:headless": "cypress run --component",
-    "deploy": "next build"
+    "test:comp:headless": "cypress run --component"
   },
   "dependencies": {
     "@auth/kysely-adapter": "^1.11.0",
@@ -26,6 +26,10 @@
     "@stripe/react-stripe-js": "^5.2.0",
     "@stripe/stripe-js": "^8.0.0",
     "@tailwindcss/forms": "^0.5.10",
+    "@tiptap/extension-link": "^3.7.2",
+    "@tiptap/extension-placeholder": "^3.7.2",
+    "@tiptap/react": "^3.7.2",
+    "@tiptap/starter-kit": "^3.7.2",
     "@vercel/analytics": "^1.5.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
@@ -52,6 +56,7 @@
     "cypress": "^15.4.0",
     "eslint": "^9.37.0",
     "eslint-config-next": "15.5.4",
+    "kysely-codegen": "^0.19.0",
     "start-server-and-test": "^2.1.2",
     "tailwindcss": "^4.1.14",
     "typescript": "^5.9.3"
