@@ -96,7 +96,7 @@ export const ProfileDataAccess = {
 
   async updateProfileField(userId: string, field: keyof ProfileData, value: string): Promise<void> {
     // Get or create user profile
-    let userProfile = await db
+    const userProfile = await db
       .selectFrom('user_profiles')
       .select('id')
       .where('user_id', '=', userId)

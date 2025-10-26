@@ -1,21 +1,22 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { auth } from '../../../../auth'
 import { db } from '@/lib/db/Database'
 import { ProfileFavorite } from '@/types/custom'
 
 // PUT /api/profile/favorites/[id] - Update a favorite
 export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const resolvedParams = await params
     const session = await auth()
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
     const userId = session.user.id
-    const favoriteId = parseInt(params.id)
+    const favoriteId = parseInt(resolvedParams.id)
     const body: Partial<ProfileFavorite> = await request.json()
 
     // Verify the favorite belongs to the current user
@@ -52,17 +53,18 @@ export async function PUT(
 
 // DELETE /api/profile/favorites/[id] - Delete a favorite
 export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const resolvedParams = await params
     const session = await auth()
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
     const userId = session.user.id
-    const favoriteId = parseInt(params.id)
+    const favoriteId = parseInt(resolvedParams.id)
 
     // Verify the favorite belongs to the current user
     const existingFavorite = await db

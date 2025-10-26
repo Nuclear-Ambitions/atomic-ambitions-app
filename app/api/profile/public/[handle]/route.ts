@@ -5,10 +5,14 @@ import { ProfileResponse } from '@/types/custom'
 // GET /api/profile/public/[handle] - Get public profile by handle
 export async function GET(
   request: NextRequest,
-  { params }: { params: { handle: string } }
+  { params }: { params: Promise<{ handle: string }> }
 ) {
   try {
-    const { handle } = await params
+    const resolvedParams = await params
+    const { handle } = resolvedParams
+    if (!handle) {
+      return NextResponse.json({ error: 'Handle is required' }, { status: 400 })
+    }
 
     // Get user by handle
     const user = await db
